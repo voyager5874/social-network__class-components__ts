@@ -1,0 +1,9 @@
+.addPostForm{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+.addPostForm button{
+    margin-top: 5px;
+}
