@@ -28,3 +28,10 @@ export const messagesData = [
   { id: v1(), message: STRING_STUB },
   { id: v1(), message: STRING_STUB },
 ];
+
+export const RossID = v1();
+export const MonicaID = v1();
+export const ChandlerID = v1();
+export const RachelID = v1();
+export const PhoebeID = v1();
+export const JoeyID = v1();

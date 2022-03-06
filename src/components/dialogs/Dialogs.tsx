@@ -5,11 +5,11 @@ import { v1 } from 'uuid';
 
 import styles from './Dialogs.module.css';
 
-import { interlocutorType, MessagePropsType } from 'components/dialogs/types';
+import { InterlocutorType, MessagePropsType } from 'components/dialogs/types';
 import { dialogsData, messagesData } from 'store/stubData';
 import { ComponentReturnType } from 'types';
 
-const Interlocutor: FC<interlocutorType> = ({ name, id }) => {
+const Interlocutor: FC<InterlocutorType> = ({ name, id }) => {
   const path = `/dialogs/${id}`;
   return (
     <div className={styles.person}>
