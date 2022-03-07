@@ -4,6 +4,7 @@ import {
   MessageType,
 } from 'components/dialogs/types';
 import { PostType } from 'components/profile/types';
+import { rootReducer } from 'store/store';
 
 export type ProfilePageStateType = {
   posts: PostType[];
@@ -27,3 +28,5 @@ export type MessagesStateType = {
   messages: { [personID: string]: MessageType[] };
   newMessageBody: string;
 };
+
+export type RootStateType = ReturnType<typeof rootReducer>

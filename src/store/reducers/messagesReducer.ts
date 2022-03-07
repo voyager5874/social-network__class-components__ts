@@ -1,7 +1,7 @@
 import { v1 } from 'uuid';
 
 import { MessageType } from 'components/dialogs/types';
-import { ChandlerID, MonicaID, PhoebeID, RossID } from 'store/stubData';
+import { ChandlerID, MonicaID, PhoebeID, RachelID, RossID } from 'store/stubData';
 import { MessagesStateType } from 'store/types';
 
 const initialState: MessagesStateType = {
@@ -61,6 +61,24 @@ const initialState: MessagesStateType = {
         messageText: 'Peace is the best',
       },
       { messageID: v1(), interlocutorID: PhoebeID, messageText: 'One of a kind' },
+    ],
+    [RachelID]: [
+      { messageID: v1(), interlocutorID: PhoebeID, messageText: 'Hello I am Rachel' },
+      {
+        messageID: v1(),
+        interlocutorID: RachelID,
+        messageText: 'My favourite movie is Coco Before Chanel',
+      },
+      {
+        messageID: v1(),
+        interlocutorID: PhoebeID,
+        messageText: 'Fashion is the best',
+      },
+      {
+        messageID: v1(),
+        interlocutorID: PhoebeID,
+        messageText: "I'm trained for nothing",
+      },
     ],
   },
   newMessageBody: '',

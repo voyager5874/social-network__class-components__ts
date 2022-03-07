@@ -1,47 +1,53 @@
-import { FC } from 'react';
+import { ChangeEvent } from 'react';
 
-import { NavLink } from 'react-router-dom';
-import { v1 } from 'uuid';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import styles from './Dialogs.module.css';
 
-import { InterlocutorType, MessagePropsType } from 'components/dialogs/types';
-import { dialogsData, messagesData } from 'store/stubData';
+import { Dialog } from 'components/dialogs/dialog/Dialog';
+import { Interlocutor } from 'components/dialogs/interlocutor/Interlocutor';
+import { InterlocutorType } from 'components/dialogs/types';
+import { addMessageAC, updateNewMessageTextAC } from 'store/reducers/messagesReducer';
+import { MonicaID } from 'store/stubData';
+import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
 
-const Interlocutor: FC<InterlocutorType> = ({ name, id }) => {
-  const path = `/dialogs/${id}`;
+export const Dialogs = (): ComponentReturnType => {
+  const people = useSelector<RootStateType, InterlocutorType[]>(
+    state => state.interlocutors,
+  );
+  const newMessage = useSelector<RootStateType, string>(
+    state => state.messages.newMessageBody,
+  );
+  const dispatch = useDispatch();
+  const { interlocutorID } = useParams();
+  debugger;
+  const handleNewMessageChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
+    const action = updateNewMessageTextAC(event.currentTarget.value);
+    dispatch(action);
+  };
+  const handleSendMessage = (): void => {
+    dispatch(addMessageAC(MonicaID));
+  };
+
   return (
-    <div className={styles.person}>
-      <NavLink to={path}>{name}</NavLink>
+    <div className={styles.dialogs}>
+      <div className={styles.peopleList}>
+        {people.map(({ name, id }) => (
+          <Interlocutor key={id} name={name} id={id} />
+        ))}
+      </div>
+
+      <div className={styles.messagesContainer}>
+        <Dialog interlocutorID={interlocutorID || MonicaID} />
+        <div>
+          <textarea onChange={handleNewMessageChange} value={newMessage} />
+          <button type="submit" onClick={handleSendMessage}>
+            send message
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
-
-const Message: FC<MessagePropsType> = ({ messageText }) => {
-  const someContent = `___`;
-
-  return (
-    <div className={styles.message}>
-      {messageText}
-      <div>{someContent}</div>
-    </div>
-  );
-};
-
-export const Dialogs = (): ComponentReturnType => (
-  <div className={styles.dialogs}>
-    <div className={styles.peopleList}>
-      <Interlocutor name="Monika" id={v1()} />
-      {dialogsData.map(({ name, id }) => (
-        <Interlocutor key={id} name={name} id={id} />
-      ))}
-    </div>
-
-    <div className={styles.messagesContainer}>
-      {messagesData.map(({ id, message }) => (
-        <Message key={id} messageText={message} />
-      ))}
-    </div>
-  </div>
-);
