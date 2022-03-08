@@ -29,4 +29,4 @@ export type MessagesStateType = {
   newMessageBody: string;
 };
 
-export type RootStateType = ReturnType<typeof rootReducer>
+export type RootStateType = ReturnType<typeof rootReducer>;

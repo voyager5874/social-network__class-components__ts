@@ -1,7 +1,8 @@
 import { v1 } from 'uuid';
 
 import { MessageType } from 'components/dialogs/types';
-import { ChandlerID, MonicaID, PhoebeID, RachelID, RossID } from 'store/stubData';
+import { InterlocutorsReducerActionsType } from 'store/reducers/interlocutorsReducer';
+import { ChandlerID, JoeyID, MonicaID, PhoebeID, RachelID, RossID } from 'store/stubData';
 import { MessagesStateType } from 'store/types';
 
 const initialState: MessagesStateType = {
@@ -63,7 +64,7 @@ const initialState: MessagesStateType = {
       { messageID: v1(), interlocutorID: PhoebeID, messageText: 'One of a kind' },
     ],
     [RachelID]: [
-      { messageID: v1(), interlocutorID: PhoebeID, messageText: 'Hello I am Rachel' },
+      { messageID: v1(), interlocutorID: RachelID, messageText: 'Hello I am Rachel' },
       {
         messageID: v1(),
         interlocutorID: RachelID,
@@ -71,13 +72,31 @@ const initialState: MessagesStateType = {
       },
       {
         messageID: v1(),
-        interlocutorID: PhoebeID,
+        interlocutorID: RachelID,
         messageText: 'Fashion is the best',
       },
       {
         messageID: v1(),
-        interlocutorID: PhoebeID,
+        interlocutorID: RachelID,
         messageText: "I'm trained for nothing",
+      },
+    ],
+    [JoeyID]: [
+      { messageID: v1(), interlocutorID: JoeyID, messageText: 'Hello I am Joey' },
+      {
+        messageID: v1(),
+        interlocutorID: JoeyID,
+        messageText: 'My favourite movie Terminator',
+      },
+      {
+        messageID: v1(),
+        interlocutorID: JoeyID,
+        messageText: 'Girls is the best',
+      },
+      {
+        messageID: v1(),
+        interlocutorID: JoeyID,
+        messageText: 'How you doin',
       },
     ],
   },
@@ -94,7 +113,7 @@ export const messagesReducer = (
     case 'ADD-MESSAGE': {
       const newMessage: MessageType = {
         interlocutorID: action.interlocutorID,
-        messageID: v1(),
+        messageID: action.newMessageID,
         messageText: state.newMessageBody,
       };
       return {
@@ -105,6 +124,9 @@ export const messagesReducer = (
         },
       };
     }
+    case 'ADD-INTERLOCUTOR':
+      return { ...state, [action.id]: [] };
+
     default:
       return state;
   }
@@ -112,12 +134,14 @@ export const messagesReducer = (
 
 export type MessagesReducerActionsType =
   | ReturnType<typeof addMessageAC>
-  | ReturnType<typeof updateNewMessageTextAC>;
+  | ReturnType<typeof updateNewMessageTextAC>
+  | InterlocutorsReducerActionsType;
 
 export const addMessageAC = (interlocutorID: string) =>
   ({
     type: 'ADD-MESSAGE',
     interlocutorID,
+    newMessageID: v1(),
   } as const);
 
 export const updateNewMessageTextAC = (content: string) =>

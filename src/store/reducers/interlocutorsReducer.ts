@@ -1,6 +1,6 @@
 import { v1 } from 'uuid';
 
-import { ChandlerID, MonicaID, PhoebeID, RachelID, RossID } from 'store/stubData';
+import { ChandlerID, JoeyID, MonicaID, PhoebeID, RachelID, RossID } from 'store/stubData';
 import { InterlocutorsStateType } from 'store/types';
 
 const initialState: InterlocutorsStateType = [
@@ -9,6 +9,7 @@ const initialState: InterlocutorsStateType = [
   { id: ChandlerID, name: 'Chandler' },
   { id: RachelID, name: 'Rachel' },
   { id: PhoebeID, name: 'Phoebe' },
+  { id: JoeyID, name: 'Joey' },
 ];
 
 export const interlocutorsReducer = (
@@ -17,7 +18,7 @@ export const interlocutorsReducer = (
 ): InterlocutorsStateType => {
   switch (action.type) {
     case 'ADD-INTERLOCUTOR':
-      return [{ id: v1(), name: action.name }, ...state];
+      return [{ id: action.id, name: action.name }, ...state];
     case 'DELETE-INTERLOCUTOR':
       return state.filter(person => person.id !== action.id);
     default:
@@ -33,6 +34,7 @@ export const addInterlocutorAC = (name: string) =>
   ({
     type: 'ADD-INTERLOCUTOR',
     name,
+    id: v1(),
   } as const);
 
 export const deleteInterlocutorAC = (id: string) =>

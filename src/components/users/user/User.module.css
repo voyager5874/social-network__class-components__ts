@@ -1,0 +1,23 @@
+.userCard{
+    display: flex;
+    background-color: rgba(59, 119, 180, 0.64);
+    margin: 2px;
+}
+
+.userPicture h3 {
+    background-color: #006699;
+    margin: 5px;
+}
+
+.userPicture{
+    background-color: #00ffe1;
+    padding: 5px;
+}
+
+.userTextInfo{
+    font-size: large;
+
+}
+.userAvatar{
+    width: 200px;
+}
