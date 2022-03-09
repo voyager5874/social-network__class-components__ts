@@ -26,6 +26,7 @@ type MapStateToPropsType = {
   total: number;
   page: number;
   usersPerPage: number;
+  totalNumberOfPages: number;
 };
 
 const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
@@ -33,6 +34,7 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
   total: state.users.totalCount,
   page: state.users.currentPage,
   usersPerPage: DATA_PORTION_SIZE,
+  totalNumberOfPages: Math.ceil(state.users.totalCount / DATA_PORTION_SIZE),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => ({

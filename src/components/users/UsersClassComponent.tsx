@@ -14,14 +14,13 @@ export class UsersClassComponent extends React.Component<UsersPropsType> {
     const { setUsers, page, usersPerPage, setTotalUsersCount } = this.props;
     usersAPI.getUsers(page, usersPerPage).then(response => {
       setUsers(response.data.items);
-      debugger;
       setTotalUsersCount(response.data.totalCount);
     });
   }
 
   getPage = (pageNumber: number): void => {
-    debugger;
-    const { setCurrentPage, usersPerPage, setUsers } = this.props;
+    const { setCurrentPage, usersPerPage, setUsers, totalNumberOfPages } = this.props;
+    if (pageNumber > totalNumberOfPages || pageNumber < 1) return;
     setCurrentPage(pageNumber);
     usersAPI
       .getUsers(pageNumber, usersPerPage)
@@ -29,12 +28,10 @@ export class UsersClassComponent extends React.Component<UsersPropsType> {
   };
 
   render(): ComponentReturnType {
-    const { users, page, usersPerPage, total } = this.props;
-    const totalNumberOfPages = Math.ceil(total / usersPerPage);
+    const { users, page, totalNumberOfPages } = this.props;
     const numberOfButtons = 5;
     const pageSelectionButtonSet = [];
     if (page >= totalNumberOfPages - numberOfButtons && totalNumberOfPages !== 0) {
-      debugger;
       for (
         let i = totalNumberOfPages - numberOfButtons;
         i <= totalNumberOfPages;
@@ -51,6 +48,13 @@ export class UsersClassComponent extends React.Component<UsersPropsType> {
     return (
       <div className={styles.users}>
         <div>
+          <button
+            type="button"
+            disabled={page < 10}
+            onClick={() => this.getPage(page - 10)}
+          >
+            prev
+          </button>
           <button type="button" onClick={() => this.getPage(1)}>
             go to 1
           </button>
@@ -65,6 +69,13 @@ export class UsersClassComponent extends React.Component<UsersPropsType> {
           ))}
           <button type="button" onClick={() => this.getPage(totalNumberOfPages)}>
             got to last
+          </button>
+          <button
+            type="button"
+            disabled={page > totalNumberOfPages - 10}
+            onClick={() => this.getPage(page + 10)}
+          >
+            next
           </button>
         </div>
         {users.map(
