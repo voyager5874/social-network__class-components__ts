@@ -1,3 +1,4 @@
+import { UserOnServerType } from 'api/types';
 import {
   InterlocutorType,
   MessageSimpleType,
@@ -27,6 +28,12 @@ export type InterlocutorsStateType = InterlocutorType[];
 export type MessagesStateType = {
   messages: { [personID: string]: MessageType[] };
   newMessageBody: string;
+};
+
+export type userReducerStateType = {
+  users: UserOnServerType[];
+  totalCount: number;
+  currentPage: number;
 };
 
 export type RootStateType = ReturnType<typeof rootReducer>;

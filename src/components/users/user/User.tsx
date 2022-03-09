@@ -11,6 +11,7 @@ type UserPropsType = {
   status: string;
   followed: boolean;
   photo: string;
+  uniqueUrlName: string;
 };
 
 export const User = ({
@@ -19,6 +20,7 @@ export const User = ({
   status,
   followed,
   photo,
+  uniqueUrlName,
 }: UserPropsType): ComponentReturnType => {
   const dispatch = useDispatch();
 
@@ -38,6 +40,7 @@ export const User = ({
       </div>
       <div className={styles.userTextInfo}>
         <div>{status}</div>
+        <div>{uniqueUrlName}</div>
         <div>USA</div>
         <div>New York</div>
       </div>

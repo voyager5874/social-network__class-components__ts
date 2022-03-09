@@ -1,4 +1,5 @@
 import { UserOnServerType } from 'api/types';
+import { userReducerStateType } from 'store/types';
 // import { UserType } from 'components/users/types';
 // import { ChandlerID, MonicaID, PhoebeID, RossID } from 'store/stubData';
 
@@ -39,28 +40,44 @@ import { UserOnServerType } from 'api/types';
 //   },
 // ];
 
-const initialState: Array<UserOnServerType> = [];
+const initialState: userReducerStateType = {
+  users: [],
+  totalCount: 0,
+  currentPage: 1,
+};
 
 export type usersReducerActionsType =
   | ReturnType<typeof followAC>
   | ReturnType<typeof unfollowAC>
-  | ReturnType<typeof setUsersAC>;
+  | ReturnType<typeof setUsersAC>
+  | ReturnType<typeof setTotalUsersCountAC>
+  | ReturnType<typeof setCurrentPageAC>;
 
 export const usersReducer = (
-  state: UserOnServerType[] = initialState,
+  state: userReducerStateType = initialState,
   action: usersReducerActionsType,
-): UserOnServerType[] => {
+): userReducerStateType => {
   switch (action.type) {
     case 'FOLLOW':
-      return state.map(user =>
-        user.id === action.userID ? { ...user, followed: true } : user,
-      );
+      return {
+        ...state,
+        users: state.users.map(user =>
+          user.id === action.userID ? { ...user, followed: true } : user,
+        ),
+      };
     case 'UNFOLLOW':
-      return state.map(user =>
-        user.id === action.userID ? { ...user, followed: false } : user,
-      );
+      return {
+        ...state,
+        users: state.users.map(user =>
+          user.id === action.userID ? { ...user, followed: false } : user,
+        ),
+      };
     case 'SET-USERS':
-      return [...state, ...action.users];
+      return { ...state, users: [...action.users] };
+    case 'SET-TOTAL-USERS-COUNT':
+      return { ...state, totalCount: action.count };
+    case 'SET-CURRENT-PAGE':
+      return { ...state, currentPage: action.page };
     default:
       return state;
   }
@@ -82,4 +99,16 @@ export const setUsersAC = (users: UserOnServerType[]) =>
   ({
     type: 'SET-USERS',
     users,
+  } as const);
+
+export const setTotalUsersCountAC = (count: number) =>
+  ({
+    type: 'SET-TOTAL-USERS-COUNT',
+    count,
+  } as const);
+
+export const setCurrentPageAC = (page: number) =>
+  ({
+    type: 'SET-CURRENT-PAGE',
+    page,
   } as const);

@@ -1,25 +1,38 @@
-import React from 'react';
-
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { UserOnServerType } from 'api/types';
 import { UsersClassComponent } from 'components/users/UsersClassComponent';
-import { followAC, setUsersAC, unfollowAC } from 'store/reducers/usersReducer';
+import { DATA_PORTION_SIZE } from 'constants/base';
+import {
+  followAC,
+  setCurrentPageAC,
+  setTotalUsersCountAC,
+  setUsersAC,
+  unfollowAC,
+} from 'store/reducers/usersReducer';
 import { RootStateType } from 'store/types';
 
 type MapDispatchToPropsType = {
-  follow: (id: number) => void;
-  unfollow: (id: number) => void;
+  follow: (userID: number) => void;
+  unfollow: (userID: number) => void;
   setUsers: (users: UserOnServerType[]) => void;
+  setCurrentPage: (page: number) => void;
+  setTotalUsersCount: (count: number) => void;
 };
 
 type MapStateToPropsType = {
-  users: Array<UserOnServerType>;
+  users: UserOnServerType[];
+  total: number;
+  page: number;
+  usersPerPage: number;
 };
 
 const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
-  users: state.users,
+  users: state.users.users,
+  total: state.users.totalCount,
+  page: state.users.currentPage,
+  usersPerPage: DATA_PORTION_SIZE,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => ({
@@ -31,6 +44,12 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => ({
   },
   setUsers: (users: UserOnServerType[]) => {
     dispatch(setUsersAC(users));
+  },
+  setTotalUsersCount: (count: number) => {
+    dispatch(setTotalUsersCountAC(count));
+  },
+  setCurrentPage: (page: number) => {
+    dispatch(setCurrentPageAC(page));
   },
 });
 

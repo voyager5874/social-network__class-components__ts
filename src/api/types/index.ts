@@ -12,7 +12,7 @@ export type UserOnServerType = {
   followed: boolean;
 };
 
-export type getUsersResponseType = {
+export type GetUsersResponseType = {
   items: UserOnServerType[];
   totalCount: number;
   error: Nullable<string>;

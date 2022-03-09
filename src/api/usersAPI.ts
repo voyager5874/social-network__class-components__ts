@@ -1,8 +1,10 @@
 import { axiosInstance } from 'api/config';
-import { getUsersResponseType } from 'api/types';
+import { GetUsersResponseType } from 'api/types';
 
 export const usersAPI = {
-  getUsers() {
-    return axiosInstance.get<getUsersResponseType>('users');
+  getUsers(pageNumber: number, usersPerPage: number) {
+    return axiosInstance.get<GetUsersResponseType>(
+      `users?page=${pageNumber}&count=${usersPerPage}`,
+    );
   },
 };

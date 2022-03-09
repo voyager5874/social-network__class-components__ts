@@ -1,16 +1,40 @@
 import { v1 } from 'uuid';
 
-import { STRING_STUB } from 'constants/base';
+import { STRING_STUB_SHORT } from 'constants/base';
 import { getRandomInteger } from 'utils';
 
 export const MAX_LIKES_COUNT = 100;
 export const postsElements = [
-  { id: v1(), postText: STRING_STUB, likesCount: getRandomInteger(MAX_LIKES_COUNT) },
-  { id: v1(), postText: STRING_STUB, likesCount: getRandomInteger(MAX_LIKES_COUNT) },
-  { id: v1(), postText: STRING_STUB, likesCount: getRandomInteger(MAX_LIKES_COUNT) },
-  { id: v1(), postText: STRING_STUB, likesCount: getRandomInteger(MAX_LIKES_COUNT) },
-  { id: v1(), postText: STRING_STUB, likesCount: getRandomInteger(MAX_LIKES_COUNT) },
-  { id: v1(), postText: STRING_STUB, likesCount: getRandomInteger(MAX_LIKES_COUNT) },
+  {
+    id: v1(),
+    postText: STRING_STUB_SHORT,
+    likesCount: getRandomInteger(MAX_LIKES_COUNT),
+  },
+  {
+    id: v1(),
+    postText: STRING_STUB_SHORT,
+    likesCount: getRandomInteger(MAX_LIKES_COUNT),
+  },
+  {
+    id: v1(),
+    postText: STRING_STUB_SHORT,
+    likesCount: getRandomInteger(MAX_LIKES_COUNT),
+  },
+  {
+    id: v1(),
+    postText: STRING_STUB_SHORT,
+    likesCount: getRandomInteger(MAX_LIKES_COUNT),
+  },
+  {
+    id: v1(),
+    postText: STRING_STUB_SHORT,
+    likesCount: getRandomInteger(MAX_LIKES_COUNT),
+  },
+  {
+    id: v1(),
+    postText: STRING_STUB_SHORT,
+    likesCount: getRandomInteger(MAX_LIKES_COUNT),
+  },
 ];
 
 export const dialogsData = [
@@ -22,11 +46,11 @@ export const dialogsData = [
 ];
 
 export const messagesData = [
-  { id: v1(), message: STRING_STUB },
-  { id: v1(), message: STRING_STUB },
-  { id: v1(), message: STRING_STUB },
-  { id: v1(), message: STRING_STUB },
-  { id: v1(), message: STRING_STUB },
+  { id: v1(), message: STRING_STUB_SHORT },
+  { id: v1(), message: STRING_STUB_SHORT },
+  { id: v1(), message: STRING_STUB_SHORT },
+  { id: v1(), message: STRING_STUB_SHORT },
+  { id: v1(), message: STRING_STUB_SHORT },
 ];
 
 export const RossID = v1();
