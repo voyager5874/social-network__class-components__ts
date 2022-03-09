@@ -5,6 +5,7 @@ import styles from './Users.module.css';
 
 import { usersAPI } from 'api';
 import { UserOnServerType } from 'api/types';
+import { Paginator } from 'components/paginator/Paginator';
 import { User } from 'components/users/user/User';
 import { UsersPropsType } from 'components/users/UsersContainer';
 import { ComponentReturnType } from 'types';
@@ -29,55 +30,14 @@ export class UsersClassComponent extends React.Component<UsersPropsType> {
 
   render(): ComponentReturnType {
     const { users, page, totalNumberOfPages } = this.props;
-    const numberOfButtons = 5;
-    const pageSelectionButtonSet = [];
-    if (page >= totalNumberOfPages - numberOfButtons && totalNumberOfPages !== 0) {
-      for (
-        let i = totalNumberOfPages - numberOfButtons;
-        i <= totalNumberOfPages;
-        i += 1
-      ) {
-        pageSelectionButtonSet.push(i);
-      }
-    } else if (page <= totalNumberOfPages - numberOfButtons * 2) {
-      for (let i = page; i <= page + numberOfButtons; i += 1) {
-        pageSelectionButtonSet.push(i);
-      }
-    }
-
     return (
       <div className={styles.users}>
-        <div>
-          <button
-            type="button"
-            disabled={page < 10}
-            onClick={() => this.getPage(page - 10)}
-          >
-            prev
-          </button>
-          <button type="button" onClick={() => this.getPage(1)}>
-            go to 1
-          </button>
-          {pageSelectionButtonSet.map(pageNumber => (
-            <button
-              key={pageNumber}
-              type="button"
-              onClick={() => this.getPage(pageNumber)}
-            >
-              {pageNumber}
-            </button>
-          ))}
-          <button type="button" onClick={() => this.getPage(totalNumberOfPages)}>
-            got to last
-          </button>
-          <button
-            type="button"
-            disabled={page > totalNumberOfPages - 10}
-            onClick={() => this.getPage(page + 10)}
-          >
-            next
-          </button>
-        </div>
+        <Paginator
+          totalNumberOfPages={totalNumberOfPages}
+          currentPage={page}
+          numberOfButtons={5}
+          getPage={this.getPage}
+        />
         {users.map(
           ({ id, status, name, uniqueUrlName, followed, photos }: UserOnServerType) => (
             <User
