@@ -1,2 +1,2 @@
 // TC or Saga
-export {}
+export {};

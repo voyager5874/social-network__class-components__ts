@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux';
 
 import styles from './User.module.css';
+
 import { ComponentReturnType } from 'types';
 
 type UserPropsType = {
