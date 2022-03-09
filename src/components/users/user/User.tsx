@@ -1,8 +1,6 @@
 import { useDispatch } from 'react-redux';
 
 import styles from './User.module.css';
-
-import { followAC, unfollowAC } from 'store/reducers/usersReducer';
 import { ComponentReturnType } from 'types';
 
 type UserPropsType = {
@@ -12,6 +10,8 @@ type UserPropsType = {
   followed: boolean;
   photo: string;
   uniqueUrlName: string;
+  follow: (userID: number) => void;
+  unfollow: (userID: number) => void;
 };
 
 export const User = ({
@@ -21,15 +21,15 @@ export const User = ({
   followed,
   photo,
   uniqueUrlName,
+  follow,
+  unfollow,
 }: UserPropsType): ComponentReturnType => {
-  const dispatch = useDispatch();
-
   const handleFollowClick = (userID: number): void => {
-    dispatch(followAC(userID));
+    follow(userID);
   };
 
   const handleUnfollowClick = (userID: number): void => {
-    dispatch(unfollowAC(userID));
+    unfollow(userID);
   };
 
   return (

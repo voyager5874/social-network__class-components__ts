@@ -1,4 +1,4 @@
-import React from 'react';
+import styles from './Paginator.module.css';
 
 import { ComponentReturnType } from 'types';
 
@@ -17,11 +17,11 @@ export const Paginator = ({
 }: PaginatorPropsType): ComponentReturnType => {
   const pageSelectionButtonSet = [];
 
-  if (currentPage >= totalNumberOfPages - numberOfButtons && totalNumberOfPages !== 0) {
+  if (totalNumberOfPages !== 0 && currentPage >= totalNumberOfPages - numberOfButtons) {
     for (let i = totalNumberOfPages - numberOfButtons; i <= totalNumberOfPages; i += 1) {
       pageSelectionButtonSet.push(i);
     }
-  } else if (currentPage <= totalNumberOfPages - numberOfButtons * 2) {
+  } else if (currentPage + numberOfButtons <= totalNumberOfPages) {
     for (let i = currentPage; i <= currentPage + numberOfButtons; i += 1) {
       pageSelectionButtonSet.push(i);
     }
@@ -40,7 +40,12 @@ export const Paginator = ({
         go to 1
       </button>
       {pageSelectionButtonSet.map(pageNumber => (
-        <button key={pageNumber} type="button" onClick={() => getPage(pageNumber)}>
+        <button
+          key={pageNumber}
+          className={pageNumber === currentPage ? styles.current : styles.paginatorButton}
+          type="button"
+          onClick={() => getPage(pageNumber)}
+        >
           {pageNumber}
         </button>
       ))}
