@@ -12,6 +12,10 @@
 .userPicture{
     background-color: #00ffe1;
     padding: 5px;
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .userTextInfo{

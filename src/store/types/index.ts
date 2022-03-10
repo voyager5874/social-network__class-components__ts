@@ -34,6 +34,7 @@ export type userReducerStateType = {
   users: UserOnServerType[];
   totalCount: number;
   currentPage: number;
+  isFetching: boolean;
 };
 
 export type RootStateType = ReturnType<typeof rootReducer>;

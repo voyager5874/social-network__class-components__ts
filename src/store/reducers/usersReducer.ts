@@ -44,6 +44,7 @@ const initialState: userReducerStateType = {
   users: [],
   totalCount: 0,
   currentPage: 1,
+  isFetching: false,
 };
 
 export type usersReducerActionsType =
@@ -51,7 +52,9 @@ export type usersReducerActionsType =
   | ReturnType<typeof unfollowAC>
   | ReturnType<typeof setUsersAC>
   | ReturnType<typeof setTotalUsersCountAC>
-  | ReturnType<typeof setCurrentPageAC>;
+  | ReturnType<typeof setCurrentPageAC>
+  | ReturnType<typeof setFetchingTrueAC>
+  | ReturnType<typeof setFetchingFalseAC>;
 
 export const usersReducer = (
   state: userReducerStateType = initialState,
@@ -78,6 +81,10 @@ export const usersReducer = (
       return { ...state, totalCount: action.count };
     case 'SET-CURRENT-PAGE':
       return { ...state, currentPage: action.page };
+    case 'SET-FETCHING-TRUE':
+      return { ...state, isFetching: true };
+    case 'SET-FETCHING-FALSE':
+      return { ...state, isFetching: false };
     default:
       return state;
   }
@@ -111,4 +118,14 @@ export const setCurrentPageAC = (page: number) =>
   ({
     type: 'SET-CURRENT-PAGE',
     page,
+  } as const);
+
+export const setFetchingTrueAC = () =>
+  ({
+    type: 'SET-FETCHING-TRUE',
+  } as const);
+
+export const setFetchingFalseAC = () =>
+  ({
+    type: 'SET-FETCHING-FALSE',
   } as const);
