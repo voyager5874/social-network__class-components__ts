@@ -1,7 +1,6 @@
 import { Component } from 'react';
 
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 
 import { usersAPI } from 'api';
 import { GetUserProfileResponseType } from 'api/types';
@@ -15,9 +14,15 @@ import { ComponentReturnType, Nullable } from 'types';
 class ProfileContainer extends Component<UserProfilePropsType> {
   componentDidMount(): void {
     debugger;
-    usersAPI
+    // eslint-disable-next-line react/destructuring-assignment
+    let userID = this.props.router.params.id;
+    if (!userID) {
+      userID = '21647'; // check nested routes
       // eslint-disable-next-line react/destructuring-assignment
-      .getUserProfile(this.props.router.params.id)
+      this.props.router.navigate(`/profile/${userID}`);
+    }
+    usersAPI
+      .getUserProfile(userID)
       // eslint-disable-next-line react/destructuring-assignment
       .then(response => this.props.setUserProfile(response.data));
   }
@@ -80,6 +85,7 @@ type WithRouterPropsType = {
     params: {
       id: string;
     };
+    navigate: (url: string) => void;
   };
 };
 

@@ -41,3 +41,16 @@ export type GetUserProfileResponseType = {
     large: Nullable<string>;
   };
 };
+
+export type AuthMeResponseDataType = {
+  id: Nullable<number>;
+  login: Nullable<string>;
+  email: Nullable<string>;
+};
+
+export type AuthMeResponseType = {
+  data: AuthMeResponseDataType;
+  messages: Array<string>;
+  fieldsErrors: Array<string>;
+  resultCode: number;
+};

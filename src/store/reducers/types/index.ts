@@ -1,4 +1,8 @@
-import { GetUserProfileResponseType, UserOnServerType } from 'api/types';
+import {
+  AuthMeResponseDataType,
+  GetUserProfileResponseType,
+  UserOnServerType,
+} from 'api/types';
 import {
   InterlocutorType,
   MessageSimpleType,
@@ -59,3 +63,5 @@ export type DialogPageStateType = {
   messages: MessageSimpleType[];
   newMessageBody: string;
 };
+
+export type AuthReducerStateType = AuthMeResponseDataType & { isLoggedIn: boolean };
