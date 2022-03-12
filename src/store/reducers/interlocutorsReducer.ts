@@ -1,7 +1,7 @@
 import { v1 } from 'uuid';
 
 import { ChandlerID, JoeyID, MonicaID, PhoebeID, RachelID, RossID } from 'store/stubData';
-import { InterlocutorsStateType } from 'store/types';
+import { InterlocutorsStateType } from 'store/reducers/types';
 
 const initialState: InterlocutorsStateType = [
   { id: RossID, name: 'Ross' },

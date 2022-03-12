@@ -1,5 +1,5 @@
 import { UserOnServerType } from 'api/types';
-import { userReducerStateType } from 'store/types';
+import { usersReducerStateType } from 'store/reducers/types';
 // import { UserType } from 'components/users/types';
 // import { ChandlerID, MonicaID, PhoebeID, RossID } from 'store/stubData';
 
@@ -40,7 +40,7 @@ import { userReducerStateType } from 'store/types';
 //   },
 // ];
 
-const initialState: userReducerStateType = {
+const initialState: usersReducerStateType = {
   users: [],
   totalCount: 0,
   currentPage: 1,
@@ -57,9 +57,9 @@ export type usersReducerActionsType =
   | ReturnType<typeof setFetchingFalseAC>;
 
 export const usersReducer = (
-  state: userReducerStateType = initialState,
+  state: usersReducerStateType = initialState,
   action: usersReducerActionsType,
-): userReducerStateType => {
+): usersReducerStateType => {
   switch (action.type) {
     case 'FOLLOW':
       return {

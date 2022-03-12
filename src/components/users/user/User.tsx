@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
 import styles from './User.module.css';
 
@@ -37,7 +37,9 @@ export const User = ({
     <div className={styles.userCard}>
       <div className={styles.userPicture}>
         <h3>{name}</h3>
-        <img className={styles.userAvatar} src={photo} alt="avatar" />
+        <NavLink to={`/profile/${id}`}>
+          <img className={styles.userAvatar} src={photo} alt="avatar" />
+        </NavLink>
       </div>
       <div className={styles.userTextInfo}>
         <div>{status}</div>

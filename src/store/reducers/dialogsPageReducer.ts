@@ -1,7 +1,7 @@
 import { v1 } from 'uuid';
 
 import { MessageSimpleType } from 'components/dialogs/types';
-import { DialogPageStateType } from 'store/types';
+import { DialogPageStateType } from 'store/reducers/types';
 
 const initialState: DialogPageStateType = {
   interlocutors: [

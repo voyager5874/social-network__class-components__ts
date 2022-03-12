@@ -1,3 +1,5 @@
+import { UserProfileContactsType } from 'api/types';
+
 export type PostPropsType = {
   message: string;
   likesCount: number;
@@ -28,3 +30,6 @@ export type AddPostFormValuesType = {
 export type AddPostFormPropsType = {
   onSubmit: Function;
 };
+
+// export type SocialMediaListType = keyof typeof state.profileData.contacts;
+

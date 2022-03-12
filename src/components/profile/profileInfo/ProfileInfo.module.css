@@ -1,7 +1,13 @@
-.about{
+.profileInfoContainer{
     background-color: coral;
+    display: flex;
 }
 
 .profilePicture{
-    height: 200px;
+    height: 300px;
+}
+
+.profileTextInfo{
+    margin-left: 10px;
+    background-color: rgba(213, 201, 121, 0.45);
 }

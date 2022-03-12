@@ -1,7 +1,7 @@
 import { v1 } from 'uuid';
 
 import { PostType } from 'components/profile/types';
-import { PostsStateType } from 'store/types';
+import { PostsStateType } from 'store/reducers/types';
 
 const initialState: PostsStateType = {
   posts: [
