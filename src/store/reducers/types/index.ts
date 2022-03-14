@@ -54,7 +54,10 @@ export type UsersReducerStateType = {
 //     large: Nullable<string>;
 //   };
 // };
-export type UserProfileReducerStateType = GetUserProfileResponseType;
+export type UserProfileReducerStateType = {
+  profileData: GetUserProfileResponseType;
+  entityStatus: EntityStatus;
+};
 
 export type ProfilePageStateType = {
   posts: PostType[];

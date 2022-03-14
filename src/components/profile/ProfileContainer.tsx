@@ -7,6 +7,7 @@ import { withRouter } from 'components/common';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { Profile } from 'components/profile/Profile';
 import { getUserProfile } from 'store/middlewares/userProfile';
+import { EntityStatus } from 'store/reducers/types';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType, Nullable } from 'types';
 
@@ -45,7 +46,7 @@ class ProfileContainer extends Component<UserProfilePropsType> {
       userId,
       // eslint-disable-next-line react/destructuring-assignment
     } = this.props.profile;
-    return userId !== +this.props.router.params.id ? (
+    return this.props.entityStatus === EntityStatus.busy ? (
       <LoadingVisualizer />
     ) : (
       <Profile
@@ -67,10 +68,12 @@ type MapDispatchToPropsType = {
 
 type MapStateToPropsType = {
   profile: GetUserProfileResponseType;
+  entityStatus: EntityStatus;
 };
 
 const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
-  profile: state.userProfile,
+  profile: state.userProfile.profileData,
+  entityStatus: state.userProfile.entityStatus,
 });
 
 type WithRouterPropsType = {
