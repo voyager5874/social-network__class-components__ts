@@ -11,6 +11,12 @@ import {
 import { PostType } from 'components/profile/types';
 import { Nullable } from 'types';
 
+export enum EntityStatus {
+  idle,
+  initialization,
+  busy,
+}
+
 export type InterlocutorsStateType = InterlocutorType[];
 
 export type MessagesStateType = {
@@ -18,11 +24,14 @@ export type MessagesStateType = {
   newMessageBody: string;
 };
 
-export type usersReducerStateType = {
-  users: UserOnServerType[];
+export type UserInAppType = UserOnServerType & { entityStatus: EntityStatus };
+
+export type UsersReducerStateType = {
+  users: UserInAppType[];
   totalCount: number;
   currentPage: number;
   isFetching: boolean;
+  busyEntities: Array<number>;
 };
 
 // export type UserProfileReducerStateType = {

@@ -1,5 +1,10 @@
 import { axiosInstance } from 'api/config';
-import { GetUserProfileResponseType, GetUsersResponseType } from 'api/types';
+import {
+  FollowUserResponseType,
+  GetUserProfileResponseType,
+  GetUsersResponseType,
+  UnfollowUserResponseType,
+} from 'api/types';
 
 export const usersAPI = {
   getUsers(pageNumber: number, usersPerPage: number) {
@@ -9,5 +14,14 @@ export const usersAPI = {
   },
   getUserProfile(userID: number | string) {
     return axiosInstance.get<GetUserProfileResponseType>(`profile/${userID}`);
+  },
+  followUser(userID: number | string) {
+    return axiosInstance.post<FollowUserResponseType>(`/follow/${userID}`);
+  },
+  unfollowUser(userID: number | string) {
+    return axiosInstance.delete<UnfollowUserResponseType>(`/follow/${userID}`);
+  },
+  checkIfUserFollowed(userID: number | string) {
+    return axiosInstance.get<boolean>(`/follow/${userID}`);
   },
 };

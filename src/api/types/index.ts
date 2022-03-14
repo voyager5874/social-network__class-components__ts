@@ -1,3 +1,4 @@
+import { ResponseCodes } from 'enums';
 import { Nullable } from 'types';
 
 export type UserOnServerType = {
@@ -52,5 +53,23 @@ export type AuthMeResponseType = {
   data: AuthMeResponseDataType;
   messages: Array<string>;
   fieldsErrors: Array<string>;
-  resultCode: number;
+  resultCode: ResponseCodes;
+};
+
+export type FollowUserResponseType = {
+  resultCode: ResponseCodes;
+  messages: Array<string>;
+  data: {};
+};
+
+export type UnfollowUserResponseType = {
+  resultCode: ResponseCodes;
+  messages: Array<string>;
+  data: {};
+};
+
+export type GenericResponseType<T = {}> = {
+  data: T;
+  resultCode: ResponseCodes;
+  messages: Array<string>;
 };

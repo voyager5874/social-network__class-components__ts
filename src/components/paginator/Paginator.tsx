@@ -7,6 +7,7 @@ export type PaginatorPropsType = {
   currentPage: number;
   numberOfButtons: number;
   getPage: (page: number) => void;
+  leapValue: number;
 };
 
 export const Paginator = ({
@@ -14,6 +15,7 @@ export const Paginator = ({
   totalNumberOfPages,
   numberOfButtons,
   getPage,
+  leapValue,
 }: PaginatorPropsType): ComponentReturnType => {
   const pageSelectionButtonSet = [];
 
@@ -26,7 +28,7 @@ export const Paginator = ({
       pageSelectionButtonSet.push(i);
     }
   }
-  const leapValue = 10;
+  // const leapValue = 10; // move it to props!
   return (
     <div>
       <button

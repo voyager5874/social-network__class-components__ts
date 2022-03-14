@@ -15,6 +15,8 @@ type UsersPureFuncPropsType = {
   getPage: (page: number) => void;
   follow: (id: number) => void;
   unfollow: (id: number) => void;
+  leapValue: number;
+  busyEntities: Array<number>;
 };
 
 export const UsersPureFunc = ({
@@ -24,6 +26,8 @@ export const UsersPureFunc = ({
   numberOfPages,
   follow,
   unfollow,
+  leapValue,
+  busyEntities,
 }: UsersPureFuncPropsType): ComponentReturnType => (
   <div className={styles.users}>
     <Paginator
@@ -31,6 +35,7 @@ export const UsersPureFunc = ({
       currentPage={currentPage}
       numberOfButtons={5}
       getPage={getPage}
+      leapValue={leapValue}
     />
     {users.map(
       ({ id, status, name, uniqueUrlName, followed, photos }: UserOnServerType) => (
@@ -44,6 +49,7 @@ export const UsersPureFunc = ({
           uniqueUrlName={uniqueUrlName || ''}
           follow={follow}
           unfollow={unfollow}
+          busyEntities={busyEntities}
         />
       ),
     )}

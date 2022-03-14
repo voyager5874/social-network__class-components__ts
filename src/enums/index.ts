@@ -1,1 +1,1 @@
-export { ResponseCode } from './ResponseCode';
+export { ResponseCodes } from 'enums/ResponseCodes';

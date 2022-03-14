@@ -27,6 +27,16 @@ class ProfileContainer extends Component<UserProfilePropsType> {
       .then(response => this.props.setUserProfile(response.data));
   }
 
+  // checkIfUserFollowed = (userID: number): boolean => {
+  //   usersAPI.checkIfUserFollowed(userID).then(response => {
+  //     if (response.data) {
+  //       this.props.setUserfollowedStatus(true);
+  //     } else {
+  //       this.props.setUserFollowedStatus(false);
+  //     }
+  //   });
+  // };
+
   render(): ComponentReturnType {
     const {
       contacts,

@@ -10,13 +10,16 @@ import { usersAPI } from 'api/usersAPI';
 import { Paginator } from 'components/paginator/Paginator';
 import { User } from 'components/users/user/User';
 import { DATA_PORTION_SIZE } from 'constants/base';
-import { followAC, setUsersAC, unfollowAC } from 'store/reducers/usersReducer';
+import { follow, setUsers, unfollow } from 'store/reducers/usersReducer';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
 
 export const Users = (): ComponentReturnType => {
   const users = useSelector<RootStateType, UserOnServerType[]>(
     state => state.users.users,
+  );
+  const busy = useSelector<RootStateType, Array<number>>(
+    state => state.users.busyEntities,
   );
   const page = useSelector<RootStateType, number>(state => state.users.currentPage);
   const totalNumberOfUsers = useSelector<RootStateType, number>(
@@ -30,21 +33,21 @@ export const Users = (): ComponentReturnType => {
     if (pageNumber < 1 || pageNumber > numberOfPages) return;
     usersAPI
       .getUsers(pageNumber, DATA_PORTION_SIZE)
-      .then(response => dispatch(setUsersAC(response.data.items)));
+      .then(response => dispatch(setUsers(response.data.items)));
   };
 
   useEffect(() => {
     usersAPI
       .getUsers(page, DATA_PORTION_SIZE)
-      .then(response => dispatch(setUsersAC(response.data.items)));
+      .then(response => dispatch(setUsers(response.data.items)));
   }, []);
 
   const handleFollow = (id: number) => {
-    dispatch(followAC(id));
+    dispatch(follow(id));
   };
 
   const handleUnfollow = (id: number) => {
-    dispatch(unfollowAC(id));
+    dispatch(unfollow(id));
   };
 
   return (
@@ -54,6 +57,7 @@ export const Users = (): ComponentReturnType => {
         currentPage={page}
         numberOfButtons={5}
         getPage={getPage}
+        leapValue={10}
       />
       {users.map(({ id, status, name, uniqueUrlName, followed, photos }) => (
         <User
@@ -66,6 +70,7 @@ export const Users = (): ComponentReturnType => {
           uniqueUrlName={uniqueUrlName || ''}
           follow={() => handleFollow(id)}
           unfollow={() => handleUnfollow(id)}
+          busyEntities={busy}
         />
       ))}
     </div>

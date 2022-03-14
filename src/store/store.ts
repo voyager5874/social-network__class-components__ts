@@ -1,5 +1,6 @@
 import { combineReducers, createStore } from 'redux';
 
+import { authReducer } from 'store/reducers/authReducer';
 import { interlocutorsReducer } from 'store/reducers/interlocutorsReducer';
 import { messagesReducer } from 'store/reducers/messagesReducer';
 import { postsReducer } from 'store/reducers/postsReducer';
@@ -12,6 +13,7 @@ export const rootReducer = combineReducers({
   messages: messagesReducer,
   users: usersReducer,
   userProfile: userProfileReducer,
+  authData: authReducer,
 });
 
 export const store = createStore(rootReducer);

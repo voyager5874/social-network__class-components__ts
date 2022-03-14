@@ -1,7 +1,10 @@
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import styles from './User.module.css';
 
+import { EntityStatus } from 'store/reducers/types';
+import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
 
 type UserPropsType = {
@@ -13,6 +16,7 @@ type UserPropsType = {
   uniqueUrlName: string;
   follow: (userID: number) => void;
   unfollow: (userID: number) => void;
+  busyEntities: Array<number>;
 };
 
 export const User = ({
@@ -24,30 +28,45 @@ export const User = ({
   uniqueUrlName,
   follow,
   unfollow,
-}: UserPropsType): ComponentReturnType => (
-  <div className={styles.userCard}>
-    <div className={styles.userPicture}>
-      <h3>{name}</h3>
-      <NavLink to={`/profile/${id}`}>
-        <img className={styles.userAvatar} src={photo} alt="avatar" />
-      </NavLink>
+  busyEntities,
+}: UserPropsType): ComponentReturnType => {
+  debugger;
+  const buttonDisabled = busyEntities.some(item => item === id);
+  return (
+    <div className={styles.userCard}>
+      <div className={styles.userPicture}>
+        <h3>{name}</h3>
+        <NavLink to={`/profile/${id}`}>
+          <img className={styles.userAvatar} src={photo} alt="avatar" />
+        </NavLink>
+      </div>
+      <div className={styles.userTextInfo}>
+        <div>{status}</div>
+        <div>{uniqueUrlName}</div>
+        <div>USA</div>
+        <div>New York</div>
+      </div>
+      <div className={styles.controls}>
+        {followed ? (
+          <button
+            disabled={buttonDisabled}
+            className={styles.button}
+            type="button"
+            onClick={() => unfollow(id)}
+          >
+            unfollow
+          </button>
+        ) : (
+          <button
+            disabled={buttonDisabled}
+            className={styles.button}
+            type="button"
+            onClick={() => follow(id)}
+          >
+            follow
+          </button>
+        )}
+      </div>
     </div>
-    <div className={styles.userTextInfo}>
-      <div>{status}</div>
-      <div>{uniqueUrlName}</div>
-      <div>USA</div>
-      <div>New York</div>
-    </div>
-    <div className={styles.controls}>
-      {followed ? (
-        <button className={styles.button} type="button" onClick={() => unfollow(id)}>
-          unfollow
-        </button>
-      ) : (
-        <button className={styles.button} type="button" onClick={() => follow(id)}>
-          follow
-        </button>
-      )}
-    </div>
-  </div>
-);
+  );
+};

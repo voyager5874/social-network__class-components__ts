@@ -1,4 +1,4 @@
-export type UserType = {
+type UserInAppType = {
   id: string;
   avatarURL: string;
   name: string;

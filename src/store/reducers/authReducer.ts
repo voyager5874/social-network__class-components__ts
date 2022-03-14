@@ -1,3 +1,4 @@
+import { AuthMeResponseDataType } from 'api/types';
 import { AuthReducerStateType } from 'store/reducers/types';
 
 const initialState: AuthReducerStateType = {
@@ -25,7 +26,7 @@ export const authReducer = (
   }
 };
 
-export const setAuthData = (data: AuthReducerStateType) =>
+export const setAuthData = (data: AuthMeResponseDataType) =>
   ({
     type: 'SET-AUTH-DATA',
     data,

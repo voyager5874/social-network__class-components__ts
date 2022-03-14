@@ -5,18 +5,22 @@ import { Dispatch } from 'redux';
 
 import { usersAPI } from 'api';
 import { UserOnServerType } from 'api/types';
-import loadingAnimation from 'components/common/loadingVisualizer/assets/loading.gif';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { UsersPureFunc } from 'components/users/UsersPureFunc';
 import { DATA_PORTION_SIZE } from 'constants/base';
+import { ResponseCodes } from 'enums';
+import { EntityStatus } from 'store/reducers/types';
 import {
-  followAC,
-  setCurrentPageAC,
-  setFetchingFalseAC,
-  setFetchingTrueAC,
-  setTotalUsersCountAC,
-  setUsersAC,
-  unfollowAC,
+  addToBusyEntities,
+  follow,
+  removeFromBusyEntities,
+  setCurrentPage,
+  setFetchingFalse,
+  setFetchingTrue,
+  setTotalUsersCount,
+  setUserEntityStatus,
+  setUsers,
+  unfollow,
 } from 'store/reducers/usersReducer';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
@@ -34,6 +38,7 @@ class UsersMiddleLayer extends Component<UsersPropsType> {
     } = this.props;
     setFetchingTrue();
     usersAPI.getUsers(page, usersPerPage).then(response => {
+      debugger;
       setUsers(response.data.items);
       setTotalUsersCount(response.data.totalCount);
       setFetchingFalse();
@@ -59,8 +64,40 @@ class UsersMiddleLayer extends Component<UsersPropsType> {
     });
   };
 
+  followUser = (userID: number): void => {
+    // eslint-disable-next-line react/destructuring-assignment
+    this.props.setUserEntityStatus(userID, EntityStatus.busy);
+    this.props.addToBusyEntities(userID);
+    usersAPI.followUser(userID).then(response => {
+      if (response.data.resultCode === ResponseCodes.Success) {
+        // eslint-disable-next-line react/destructuring-assignment
+        this.props.follow(userID);
+        // eslint-disable-next-line react/destructuring-assignment
+        this.props.setUserEntityStatus(userID, EntityStatus.idle);
+        this.props.removeFromBusyEntities(userID);
+      }
+    });
+  };
+
+  unfollowUser = (userID: number): void => {
+    // eslint-disable-next-line react/destructuring-assignment
+    this.props.setUserEntityStatus(userID, EntityStatus.busy);
+    // eslint-disable-next-line react/destructuring-assignment
+    this.props.addToBusyEntities(userID);
+    usersAPI.unfollowUser(userID).then(response => {
+      if (response.data.resultCode === ResponseCodes.Success) {
+        // eslint-disable-next-line react/destructuring-assignment
+        this.props.unfollow(userID);
+        // eslint-disable-next-line react/destructuring-assignment
+        this.props.setUserEntityStatus(userID, EntityStatus.idle);
+        // eslint-disable-next-line react/destructuring-assignment
+        this.props.removeFromBusyEntities(userID);
+      }
+    });
+  };
+
   render(): ComponentReturnType {
-    const { users, page, totalNumberOfPages, follow, unfollow, isFetching } = this.props;
+    const { users, page, totalNumberOfPages, isFetching, busyEntities } = this.props;
     return isFetching ? (
       <LoadingVisualizer />
     ) : (
@@ -69,8 +106,10 @@ class UsersMiddleLayer extends Component<UsersPropsType> {
         currentPage={page}
         getPage={this.getPage}
         numberOfPages={totalNumberOfPages}
-        follow={follow}
-        unfollow={unfollow}
+        follow={this.followUser}
+        unfollow={this.unfollowUser}
+        leapValue={10}
+        busyEntities={busyEntities}
       />
     );
   }
@@ -84,6 +123,9 @@ type MapDispatchToPropsType = {
   setTotalUsersCount: (count: number) => void;
   setFetchingTrue: () => void;
   setFetchingFalse: () => void;
+  setUserEntityStatus: (userID: number, status: EntityStatus) => void;
+  addToBusyEntities: (userID: number) => void;
+  removeFromBusyEntities: (userID: number) => void;
 };
 
 type MapStateToPropsType = {
@@ -93,6 +135,7 @@ type MapStateToPropsType = {
   usersPerPage: number;
   totalNumberOfPages: number;
   isFetching: boolean;
+  busyEntities: Array<number>;
 };
 
 const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
@@ -102,29 +145,39 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
   usersPerPage: DATA_PORTION_SIZE,
   totalNumberOfPages: Math.ceil(state.users.totalCount / DATA_PORTION_SIZE),
   isFetching: state.users.isFetching,
+  busyEntities: state.users.busyEntities,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => ({
   follow: (userId: number) => {
-    dispatch(followAC(userId));
+    dispatch(follow(userId));
   },
   unfollow: (userId: number) => {
-    dispatch(unfollowAC(userId));
+    dispatch(unfollow(userId));
   },
   setUsers: (users: UserOnServerType[]) => {
-    dispatch(setUsersAC(users));
+    dispatch(setUsers(users));
   },
   setTotalUsersCount: (count: number) => {
-    dispatch(setTotalUsersCountAC(count));
+    dispatch(setTotalUsersCount(count));
   },
   setCurrentPage: (page: number) => {
-    dispatch(setCurrentPageAC(page));
+    dispatch(setCurrentPage(page));
   },
   setFetchingTrue: () => {
-    dispatch(setFetchingTrueAC());
+    dispatch(setFetchingTrue());
   },
   setFetchingFalse: () => {
-    dispatch(setFetchingFalseAC());
+    dispatch(setFetchingFalse());
+  },
+  setUserEntityStatus: (userID: number, status: EntityStatus) => {
+    dispatch(setUserEntityStatus(userID, status));
+  },
+  addToBusyEntities: (userID: number) => {
+    dispatch(addToBusyEntities(userID));
+  },
+  removeFromBusyEntities: (userID: number) => {
+    dispatch(removeFromBusyEntities(userID));
   },
 });
 

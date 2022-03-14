@@ -1,5 +1,5 @@
 import { UserOnServerType } from 'api/types';
-import { usersReducerStateType } from 'store/reducers/types';
+import { EntityStatus, UsersReducerStateType } from 'store/reducers/types';
 // import { UserType } from 'components/users/types';
 // import { ChandlerID, MonicaID, PhoebeID, RossID } from 'store/stubData';
 
@@ -40,26 +40,31 @@ import { usersReducerStateType } from 'store/reducers/types';
 //   },
 // ];
 
-const initialState: usersReducerStateType = {
+const initialState: UsersReducerStateType = {
   users: [],
   totalCount: 0,
   currentPage: 1,
   isFetching: false,
+  busyEntities: [],
 };
 
 export type usersReducerActionsType =
-  | ReturnType<typeof followAC>
-  | ReturnType<typeof unfollowAC>
-  | ReturnType<typeof setUsersAC>
-  | ReturnType<typeof setTotalUsersCountAC>
-  | ReturnType<typeof setCurrentPageAC>
-  | ReturnType<typeof setFetchingTrueAC>
-  | ReturnType<typeof setFetchingFalseAC>;
+  | ReturnType<typeof follow>
+  | ReturnType<typeof unfollow>
+  | ReturnType<typeof setUsers>
+  | ReturnType<typeof setTotalUsersCount>
+  | ReturnType<typeof setCurrentPage>
+  | ReturnType<typeof setFetchingTrue>
+  | ReturnType<typeof setFetchingFalse>
+  | ReturnType<typeof setUserEntityStatus>
+  | ReturnType<typeof setUsersListEntityStatus>
+  | ReturnType<typeof addToBusyEntities>
+  | ReturnType<typeof removeFromBusyEntities>;
 
 export const usersReducer = (
-  state: usersReducerStateType = initialState,
+  state: UsersReducerStateType = initialState,
   action: usersReducerActionsType,
-): usersReducerStateType => {
+): UsersReducerStateType => {
   switch (action.type) {
     case 'FOLLOW':
       return {
@@ -85,47 +90,92 @@ export const usersReducer = (
       return { ...state, isFetching: true };
     case 'SET-FETCHING-FALSE':
       return { ...state, isFetching: false };
+    case 'SET-USER-ENTITY-STATUS':
+      return {
+        ...state,
+        users: state.users.map(user =>
+          user.id === action.userID ? { ...user, entityStatus: action.status } : user,
+        ),
+      };
+    case 'ADD-TO-BUSY-ENTITIES':
+      return { ...state, busyEntities: [...state.busyEntities, action.id] };
+    case 'REMOVE-FROM-BUSY-ENTITIES':
+      return {
+        ...state,
+        busyEntities: state.busyEntities.filter(id => id !== action.id),
+      };
     default:
       return state;
   }
 };
 
-export const followAC = (userID: number) =>
+export const follow = (userID: number) =>
   ({
     type: 'FOLLOW',
     userID,
   } as const);
 
-export const unfollowAC = (userID: number) =>
+export const unfollow = (userID: number) =>
   ({
     type: 'UNFOLLOW',
     userID,
   } as const);
 
-export const setUsersAC = (users: UserOnServerType[]) =>
+// export const setUsersAC = (users: UserOnServerType[]) =>
+//   ({
+//     type: 'SET-USERS',
+//     users,
+//   } as const);
+
+export const setUsers = (users: UserOnServerType[]) =>
   ({
     type: 'SET-USERS',
-    users,
+    users: users.map(user => ({ ...user, entityStatus: EntityStatus.idle })),
   } as const);
 
-export const setTotalUsersCountAC = (count: number) =>
+export const setTotalUsersCount = (count: number) =>
   ({
     type: 'SET-TOTAL-USERS-COUNT',
     count,
   } as const);
 
-export const setCurrentPageAC = (page: number) =>
+export const setCurrentPage = (page: number) =>
   ({
     type: 'SET-CURRENT-PAGE',
     page,
   } as const);
 
-export const setFetchingTrueAC = () =>
+export const setFetchingTrue = () =>
   ({
     type: 'SET-FETCHING-TRUE',
   } as const);
 
-export const setFetchingFalseAC = () =>
+export const setFetchingFalse = () =>
   ({
     type: 'SET-FETCHING-FALSE',
+  } as const);
+
+export const setUserEntityStatus = (userID: number, status: EntityStatus) =>
+  ({
+    type: 'SET-USER-ENTITY-STATUS',
+    userID,
+    status,
+  } as const);
+
+export const setUsersListEntityStatus = (status: EntityStatus) =>
+  ({
+    type: 'SET-USERS-LIST-ENTITY-STATUS',
+    status,
+  } as const);
+
+export const addToBusyEntities = (id: number) =>
+  ({
+    type: 'ADD-TO-BUSY-ENTITIES',
+    id,
+  } as const);
+
+export const removeFromBusyEntities = (id: number) =>
+  ({
+    type: 'REMOVE-FROM-BUSY-ENTITIES',
+    id,
   } as const);

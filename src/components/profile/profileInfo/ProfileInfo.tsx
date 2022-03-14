@@ -33,7 +33,7 @@ export const ProfileInfo = ({
         <div>
           {socialMediaList.map(media => (
             <div key={v1()}>
-              {contacts[media] && <a href="https://www.w3schools.com">{media}</a>}
+              {contacts[media] && <a href={`${contacts[media]}`}>{media}</a>}
             </div>
           ))}
         </div>

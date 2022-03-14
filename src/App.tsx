@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import { Conversations } from 'components/conversations/Conversations';
 import { Footer } from 'components/footer/Footer';
-import { Header } from 'components/header/Header';
+import HeaderContainer from 'components/header/HeaderContainer';
 import { LeftSideBar } from 'components/LeftSideBar';
 import { News } from 'components/news/News';
 import UserProfileContainer from 'components/profile/ProfileContainer';
@@ -13,7 +13,7 @@ import { ComponentReturnType } from 'types';
 
 const App = (): ComponentReturnType => (
   <div className="appWrapper">
-    <Header />
+    <HeaderContainer />
     <div className="pageCenter">
       <LeftSideBar />
       <Routes>

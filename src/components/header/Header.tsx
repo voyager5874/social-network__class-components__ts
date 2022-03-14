@@ -1,12 +1,21 @@
 import styles from './Header.module.css';
 
-import { ComponentReturnType } from 'types';
+import { ComponentReturnType, Nullable } from 'types';
 
-export const Header = (): ComponentReturnType => {
+type HeaderPropsType = {
+  isLoggedIn: boolean;
+  login: Nullable<string>;
+};
+
+export const Header = ({ isLoggedIn, login }: HeaderPropsType): ComponentReturnType => {
   const someContent = 'header';
   return (
-    <div>
-      <div className={styles.header}>{`${someContent}`}</div>;
+    <div className={styles.header}>
+      <div>{someContent}</div>
+      <div>
+        <div>{login}</div>
+        <div>{isLoggedIn ? 'Logout' : 'Login'}</div>
+      </div>
     </div>
   );
 };
