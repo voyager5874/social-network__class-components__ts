@@ -49,8 +49,8 @@ const initialState: UsersReducerStateType = {
 };
 
 export type usersReducerActionsType =
-  | ReturnType<typeof follow>
-  | ReturnType<typeof unfollow>
+  | ReturnType<typeof setUserAsFollowed>
+  | ReturnType<typeof setUserAsUnfollowed>
   | ReturnType<typeof setUsers>
   | ReturnType<typeof setTotalUsersCount>
   | ReturnType<typeof setCurrentPage>
@@ -109,13 +109,13 @@ export const usersReducer = (
   }
 };
 
-export const follow = (userID: number) =>
+export const setUserAsFollowed = (userID: number) =>
   ({
     type: 'FOLLOW',
     userID,
   } as const);
 
-export const unfollow = (userID: number) =>
+export const setUserAsUnfollowed = (userID: number) =>
   ({
     type: 'UNFOLLOW',
     userID,

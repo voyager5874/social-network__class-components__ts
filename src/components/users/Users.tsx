@@ -10,7 +10,7 @@ import { usersAPI } from 'api/usersAPI';
 import { Paginator } from 'components/paginator/Paginator';
 import { User } from 'components/users/user/User';
 import { DATA_PORTION_SIZE } from 'constants/base';
-import { follow, setUsers, unfollow } from 'store/reducers/usersReducer';
+import { setUserAsFollowed, setUsers, setUserAsUnfollowed } from 'store/reducers/usersReducer';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
 
@@ -43,11 +43,11 @@ export const Users = (): ComponentReturnType => {
   }, []);
 
   const handleFollow = (id: number) => {
-    dispatch(follow(id));
+    dispatch(setUserAsFollowed(id));
   };
 
   const handleUnfollow = (id: number) => {
-    dispatch(unfollow(id));
+    dispatch(setUserAsUnfollowed(id));
   };
 
   return (

@@ -2,42 +2,39 @@ import { Component } from 'react';
 
 import { connect } from 'react-redux';
 
-import { usersAPI } from 'api';
 import { GetUserProfileResponseType } from 'api/types';
 import { withRouter } from 'components/common';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { Profile } from 'components/profile/Profile';
-import { setUserProfile } from 'store/reducers/userProfileReducer';
+import { getUserProfile } from 'store/middlewares/userProfile';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType, Nullable } from 'types';
 
 class ProfileContainer extends Component<UserProfilePropsType> {
   componentDidMount(): void {
-    debugger;
     // eslint-disable-next-line react/destructuring-assignment
-    let userID = this.props.router.params.id;
+    let userID = +this.props.router.params.id;
     if (!userID) {
-      userID = '21647'; // check nested routes
+      userID = 21647; // check nested routes
       // eslint-disable-next-line react/destructuring-assignment
       this.props.router.navigate(`/profile/${userID}`);
     }
-    usersAPI
-      .getUserProfile(userID)
-      // eslint-disable-next-line react/destructuring-assignment
-      .then(response => this.props.setUserProfile(response.data));
+    this.props.getUserProfile(userID);
   }
 
   // checkIfUserFollowed = (userID: number): boolean => {
   //   usersAPI.checkIfUserFollowed(userID).then(response => {
   //     if (response.data) {
-  //       this.props.setUserfollowedStatus(true);
+  //       this.props.setUserIsFollowed(true);
   //     } else {
-  //       this.props.setUserFollowedStatus(false);
+  //       this.props.setUserIsFollowed(false);
   //     }
   //   });
   // };
 
   render(): ComponentReturnType {
+    debugger;
+
     const {
       contacts,
       lookingForAJobDescription,
@@ -48,8 +45,7 @@ class ProfileContainer extends Component<UserProfilePropsType> {
       userId,
       // eslint-disable-next-line react/destructuring-assignment
     } = this.props.profile;
-
-    return userId === null ? (
+    return userId !== +this.props.router.params.id ? (
       <LoadingVisualizer />
     ) : (
       <Profile
@@ -66,14 +62,8 @@ class ProfileContainer extends Component<UserProfilePropsType> {
 }
 
 type MapDispatchToPropsType = {
-  setUserProfile: (userProfileData: GetUserProfileResponseType) => void;
+  getUserProfile: (userID: number) => void;
 };
-
-// const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => ({
-//   setUserProfile: data => {
-//     dispatch(setUserProfile(data));
-//   },
-// });
 
 type MapStateToPropsType = {
   profile: GetUserProfileResponseType;
@@ -99,11 +89,11 @@ type WithRouterPropsType = {
   };
 };
 
-type WithParamsPropsType = {
-  params: {
-    id: string;
-  };
-};
+// type WithParamsPropsType = {
+//   params: {
+//     id: string;
+//   };
+// };
 
 const WithRouterWrapper = withRouter(ProfileContainer);
 
@@ -112,4 +102,4 @@ export type UserProfilePropsType = MapStateToPropsType &
   WithRouterPropsType;
 
 // export default connect(mapStateToProps, mapDispatchToProps)(WithRouterWrapper);
-export default connect(mapStateToProps, { setUserProfile })(WithRouterWrapper);
+export default connect(mapStateToProps, { getUserProfile })(WithRouterWrapper);

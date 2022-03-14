@@ -1,10 +1,7 @@
-import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import styles from './User.module.css';
 
-import { EntityStatus } from 'store/reducers/types';
-import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
 
 type UserPropsType = {
@@ -31,7 +28,7 @@ export const User = ({
   busyEntities,
 }: UserPropsType): ComponentReturnType => {
   debugger;
-  const buttonDisabled = busyEntities.some(item => item === id);
+  const buttonDisabled = busyEntities.includes(id);
   return (
     <div className={styles.userCard}>
       <div className={styles.userPicture}>

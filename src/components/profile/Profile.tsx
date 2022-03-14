@@ -1,5 +1,4 @@
 import { GetUserProfileResponseType } from 'api/types';
-import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { MyPosts } from 'components/profile/MyPosts/MyPosts';
 import styles from 'components/profile/Profile.module.css';
 import { ProfileInfo } from 'components/profile/profileInfo/ProfileInfo';

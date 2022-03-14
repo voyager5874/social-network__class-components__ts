@@ -27,7 +27,7 @@
     "no-shadow": "off",
     "no-alert": "error",
     "no-debugger": "warn",
-    "no-plusplus": "error",
+    "no-plusplus": "warn",
     "no-unused-vars": "off",
     "no-magic-numbers": "off",
     "default-param-last": "off",
@@ -64,7 +64,7 @@
     "react/prop-types": 0,
     "react/display-name": "off",
     "react/react-in-jsx-scope": "off",
-    "react/destructuring-assignment": "error",
+    "react/destructuring-assignment": "warn",
     "react/jsx-filename-extension": [
       1,
       {

@@ -9,7 +9,6 @@ import {
   MessageType,
 } from 'components/dialogs/types';
 import { PostType } from 'components/profile/types';
-import { Nullable } from 'types';
 
 export enum EntityStatus {
   idle,
