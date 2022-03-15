@@ -11,6 +11,8 @@ import { ComponentReturnType } from 'types';
 export const MyPosts: FC<MyPostsPropsType> = ({
   posts,
   addPost,
+  updateNewPostText,
+  newPostText,
 }): ComponentReturnType => {
   const content = posts
     .reverse()
@@ -18,14 +20,14 @@ export const MyPosts: FC<MyPostsPropsType> = ({
       <Post key={id} postText={postText} likesCount={likesCount} id={id} />
     ));
 
-  const onAddPost = (): void => {
-    addPost();
-  };
-
   return (
     <div className={styles.postsBlock}>
       <h3>My posts</h3>
-      <AddPostForm onSubmit={onAddPost} />
+      <AddPostForm
+        onSubmit={addPost}
+        onChange={updateNewPostText}
+        newPostText={newPostText}
+      />
       <div className={styles.posts}>{content}</div>
     </div>
   );

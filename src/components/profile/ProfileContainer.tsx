@@ -6,10 +6,12 @@ import { GetUserProfileResponseType } from 'api/types';
 import { withRouter } from 'components/common';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { Profile } from 'components/profile/Profile';
+import { PostType } from 'components/profile/types';
 import { getUserProfile } from 'store/middlewares/userProfile';
 import { EntityStatus } from 'store/reducers/types';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType, Nullable } from 'types';
+import { addPost, updateNewPostText } from 'store/reducers/postsReducer';
 
 class ProfileContainer extends Component<UserProfilePropsType> {
   componentDidMount(): void {
@@ -46,7 +48,7 @@ class ProfileContainer extends Component<UserProfilePropsType> {
       userId,
       // eslint-disable-next-line react/destructuring-assignment
     } = this.props.profile;
-    return this.props.entityStatus === EntityStatus.busy ? (
+    return this.props.profileEntityStatus === EntityStatus.busy ? (
       <LoadingVisualizer />
     ) : (
       <Profile
@@ -57,6 +59,10 @@ class ProfileContainer extends Component<UserProfilePropsType> {
         aboutMe={aboutMe}
         lookingForAJob={lookingForAJob}
         photos={photos}
+        posts={this.props.posts}
+        newPostText={this.props.newPostText}
+        addPost={this.props.addPost}
+        updateNewPostText={this.props.updateNewPostText}
       />
     );
   }
@@ -64,16 +70,22 @@ class ProfileContainer extends Component<UserProfilePropsType> {
 
 type MapDispatchToPropsType = {
   getUserProfile: (userID: number) => void;
+  addPost: () => void;
+  updateNewPostText: (text: string) => void;
 };
 
 type MapStateToPropsType = {
+  posts: Array<PostType>;
+  newPostText: string;
   profile: GetUserProfileResponseType;
-  entityStatus: EntityStatus;
+  profileEntityStatus: EntityStatus;
 };
 
 const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
+  posts: state.posts.posts,
+  newPostText: state.posts.newPostText,
   profile: state.userProfile.profileData,
-  entityStatus: state.userProfile.entityStatus,
+  profileEntityStatus: state.userProfile.entityStatus,
 });
 
 type WithRouterPropsType = {
@@ -105,4 +117,6 @@ export type UserProfilePropsType = MapStateToPropsType &
   WithRouterPropsType;
 
 // export default connect(mapStateToProps, mapDispatchToProps)(WithRouterWrapper);
-export default connect(mapStateToProps, { getUserProfile })(WithRouterWrapper);
+export default connect(mapStateToProps, { getUserProfile, addPost, updateNewPostText })(
+  WithRouterWrapper,
+);

@@ -12,24 +12,27 @@ export type PostType = {
 
 export type MapPropsType = {
   posts: Array<PostType>;
-  addPost: (postText: string) => void;
+  addPost: () => void;
 };
 
 export type MyPostsPropsType = {
   posts: Array<PostType>;
   addPost: () => void;
+  updateNewPostText: (text: string) => void;
+  newPostText: string;
 };
 
 export type DispatchPropsType = {
-  addPost: (newPostText: string) => void;
+  addPost: () => void;
 };
 
 export type AddPostFormValuesType = {
   newPostText: string;
 };
 export type AddPostFormPropsType = {
-  onSubmit: Function;
+  onSubmit: () => void;
+  onChange: (text: string) => void;
+  newPostText: string;
 };
 
 // export type SocialMediaListType = keyof typeof state.profileData.contacts;
-

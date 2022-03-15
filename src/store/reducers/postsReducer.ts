@@ -33,14 +33,15 @@ export const postsReducer = (
 };
 
 export type postsReducerActionsType =
-  | ReturnType<typeof addPostAC>
-  | ReturnType<typeof updateNewPostTextAC>;
-export const addPostAC = () =>
+  | ReturnType<typeof addPost>
+  | ReturnType<typeof updateNewPostText>;
+
+export const addPost = () =>
   ({
     type: 'ADD-POST',
   } as const);
 
-export const updateNewPostTextAC = (content: string) =>
+export const updateNewPostText = (content: string) =>
   ({
     type: 'UPDATE-NEW-POST-TEXT',
     content,

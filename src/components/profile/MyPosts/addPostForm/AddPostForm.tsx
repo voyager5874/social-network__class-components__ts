@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { ChangeEvent, FC } from 'react';
 
 import styles from './AddPostForm.module.css';
 
@@ -7,13 +7,22 @@ import { ComponentReturnType } from 'types';
 
 export const AddPostForm: FC<AddPostFormPropsType> = ({
   onSubmit,
+  onChange,
+  newPostText,
 }): ComponentReturnType => {
   const handleAddPost = (): void => {
-    onSubmit('new post');
+    onSubmit();
+  };
+  const handleTextareaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    onChange(event.currentTarget.value);
   };
   return (
     <div className={styles.addPostForm}>
-      <textarea placeholder="new post" />
+      <textarea
+        placeholder="new post"
+        onChange={handleTextareaChange}
+        value={newPostText}
+      />
       <button type="button" onClick={handleAddPost}>
         add post
       </button>
