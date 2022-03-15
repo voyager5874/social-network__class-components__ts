@@ -3,16 +3,17 @@ import './App.css';
 import { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
+import { Login } from 'components';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { Conversations } from 'components/conversations/Conversations';
 import { Footer } from 'components/footer/Footer';
 import HeaderContainer from 'components/header/HeaderContainer';
-import { LeftSideBar } from 'components/LeftSideBar';
+import { LeftSideBar } from 'components/leftSideBar/LeftSideBar';
 import { News } from 'components/news/News';
 import UserProfileContainer from 'components/profile/ProfileContainer';
-import { UsersContainer } from 'components/users/UsersContainer';
+import UsersContainer from 'components/users/UsersContainer';
 import { authCurrentUser } from 'store/middlewares/app';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
@@ -43,6 +44,7 @@ const App = (): ComponentReturnType => {
           <Route path="/dialogs" element={<Conversations />} />
           <Route path="/users" element={<UsersContainer />} />
           <Route path="/news" element={<News />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
       <Footer />

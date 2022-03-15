@@ -1,9 +1,11 @@
-import { Component } from 'react';
+import { Component, ComponentType } from 'react';
 
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 import { GetUserProfileResponseType } from 'api/types';
 import { withRouter } from 'components/common';
+import { withAuthRedirect } from 'components/common/HOC/withAuthRedirect';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { Profile } from 'components/profile/Profile';
 import { PostType } from 'components/profile/types';
@@ -25,16 +27,6 @@ class ProfileContainer extends Component<UserProfilePropsType> {
     this.props.getUserProfile(userID);
   }
 
-  // checkIfUserFollowed = (userID: number): boolean => {
-  //   usersAPI.checkIfUserFollowed(userID).then(response => {
-  //     if (response.data) {
-  //       this.props.setUserIsFollowed(true);
-  //     } else {
-  //       this.props.setUserIsFollowed(false);
-  //     }
-  //   });
-  // };
-
   render(): ComponentReturnType {
     const {
       contacts,
@@ -46,7 +38,8 @@ class ProfileContainer extends Component<UserProfilePropsType> {
       userId,
       // eslint-disable-next-line react/destructuring-assignment
     } = this.props.profile;
-    return this.props.profileEntityStatus === EntityStatus.busy ? (
+    return this.props.profileEntityStatus === EntityStatus.busy ||
+      this.props.loggedInUserID === null ? (
       <LoadingVisualizer />
     ) : (
       <Profile
@@ -110,16 +103,30 @@ type WithRouterPropsType = {
 //   };
 // };
 
-const WithRouterWrapper = withRouter(ProfileContainer);
-
 export type UserProfilePropsType = MapStateToPropsType &
   MapDispatchToPropsType &
   WithRouterPropsType;
 
+// const WithRouterWrapper = withRouter(ProfileContainer);
+
 // export default connect(mapStateToProps, mapDispatchToProps)(WithRouterWrapper);
-export default connect(mapStateToProps, {
-  getUserProfile,
-  addPost,
-  updateNewPostText,
-  authCurrentUser,
-})(WithRouterWrapper);
+
+// export default withAuthRedirect(
+//   connect(mapStateToProps, {
+//     getUserProfile,
+//     addPost,
+//     updateNewPostText,
+//     authCurrentUser,
+//   })(WithRouterWrapper),
+// );
+
+export default compose<ComponentType>(
+  withAuthRedirect,
+  withRouter,
+  connect(mapStateToProps, {
+    getUserProfile,
+    addPost,
+    updateNewPostText,
+    authCurrentUser,
+  }),
+)(ProfileContainer);

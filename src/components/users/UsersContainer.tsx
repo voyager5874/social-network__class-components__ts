@@ -1,8 +1,10 @@
-import { Component } from 'react';
+import { Component, ComponentType } from 'react';
 
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 import { UserOnServerType } from 'api/types';
+import { withAuthRedirect } from 'components/common/HOC/withAuthRedirect';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { UsersPureFunc } from 'components/users/UsersPureFunc';
 import { DATA_PORTION_SIZE } from 'constants/base';
@@ -12,13 +14,14 @@ import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
 import 'react-circular-progressbar/dist/styles.css';
 
-class UsersMiddleLayer extends Component<UsersPropsType> {
+class UsersContainer extends Component<UsersPropsType> {
   componentDidMount(): void {
     // const { page, usersPerPage, getUsers } = this.props;
     this.props.getUsers(this.props.page, this.props.usersPerPage);
   }
 
   getPage = (pageNumber: number): void => {
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     const { setCurrentPage, usersPerPage, totalNumberOfPages, page, getUsers } =
       this.props;
     if (pageNumber > totalNumberOfPages || pageNumber < 1 || pageNumber === page) return;
@@ -82,33 +85,21 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
   busyEntities: state.users.busyEntities,
 });
 
-// const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => ({
-//   follow: (userId: number) => {
-//     dispatch(follow(userId));
-//   },
-//   unfollow: (userId: number) => {
-//     dispatch(unfollow(userId));
-//   },
-//   setUsers: (users: UserOnServerType[]) => {
-//     dispatch(setUsers(users));
-//   },
-//   setTotalUsersCount: (count: number) => {
-//     dispatch(setTotalUsersCount(count));
-//   },
-//   setCurrentPage: (page: number) => {
-//     dispatch(setCurrentPage(page));
-//   },
-//   setUserEntityStatus: (userID: number, status: EntityStatus) => {
-//     dispatch(setUserEntityStatus(userID, status));
-//   },
-//
-// });
-
-export const UsersContainer = connect(mapStateToProps, {
-  follow,
-  unfollow,
-  getUsers,
-  setCurrentPage,
-})(UsersMiddleLayer);
+// export const UsersContainer = connect(mapStateToProps, {
+//   follow,
+//   unfollow,
+//   getUsers,
+//   setCurrentPage,
+// })(UsersMiddleLayer);
 
 export type UsersPropsType = MapDispatchToPropsType & MapStateToPropsType;
+
+export default compose<ComponentType>(
+  withAuthRedirect,
+  connect(mapStateToProps, {
+    follow,
+    unfollow,
+    getUsers,
+    setCurrentPage,
+  }),
+)(UsersContainer);

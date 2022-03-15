@@ -1,9 +1,6 @@
-import React from 'react';
-
 import { useNavigate, NavLink } from 'react-router-dom';
 
-import styles from './LeftSideBar.module.css';
-
+import styles from 'components/leftSideBar/LeftSideBar.module.css';
 import { ComponentReturnType } from 'types';
 
 export const LeftSideBar = (): ComponentReturnType => {
