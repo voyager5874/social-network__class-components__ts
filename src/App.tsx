@@ -1,7 +1,11 @@
 import './App.css';
 
-import { Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { Navigate, Route, Routes } from 'react-router-dom';
+
+import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { Conversations } from 'components/conversations/Conversations';
 import { Footer } from 'components/footer/Footer';
 import HeaderContainer from 'components/header/HeaderContainer';
@@ -9,23 +13,41 @@ import { LeftSideBar } from 'components/LeftSideBar';
 import { News } from 'components/news/News';
 import UserProfileContainer from 'components/profile/ProfileContainer';
 import { UsersContainer } from 'components/users/UsersContainer';
+import { authCurrentUser } from 'store/middlewares/app';
+import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
 
-const App = (): ComponentReturnType => (
-  <div className="appWrapper">
-    <HeaderContainer />
-    <div className="pageCenter">
-      <LeftSideBar />
-      <Routes>
-        <Route path="/profile/:id" element={<UserProfileContainer />} />
-        <Route path="/" element={<UserProfileContainer />} />
-        <Route path="/dialogs" element={<Conversations />} />
-        <Route path="/users" element={<UsersContainer />} />
-        <Route path="/news" element={<News />} />
-      </Routes>
+const App = (): ComponentReturnType => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(authCurrentUser());
+  }, []);
+
+  const userLoggedIn = useSelector<RootStateType, boolean>(
+    state => state.authData.isLoggedIn,
+  );
+  if (!userLoggedIn) return <LoadingVisualizer />;
+
+  return (
+    <div className="appWrapper">
+      <HeaderContainer />
+      <div className="pageCenter">
+        <LeftSideBar />
+        <Routes>
+          <Route path="/profile" element={<UserProfileContainer />}>
+            <Route path=":id" element={<UserProfileContainer />} />
+          </Route>
+          {/* <Route path="/profile/:id" element={<UserProfileContainer />} /> */}
+          <Route path="/" element={<UserProfileContainer />} />
+          <Route path="/dialogs" element={<Conversations />} />
+          <Route path="/users" element={<UsersContainer />} />
+          <Route path="/news" element={<News />} />
+        </Routes>
+      </div>
+      <Footer />
     </div>
-    <Footer />
-  </div>
-);
+  );
+};
 
 export default App;

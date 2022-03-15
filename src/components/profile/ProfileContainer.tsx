@@ -7,20 +7,20 @@ import { withRouter } from 'components/common';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { Profile } from 'components/profile/Profile';
 import { PostType } from 'components/profile/types';
+import { DIMYCH_ID } from 'constants/base';
+import { authCurrentUser } from 'store/middlewares/app';
 import { getUserProfile } from 'store/middlewares/userProfile';
+import { addPost, updateNewPostText } from 'store/reducers/postsReducer';
 import { EntityStatus } from 'store/reducers/types';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType, Nullable } from 'types';
-import { addPost, updateNewPostText } from 'store/reducers/postsReducer';
 
 class ProfileContainer extends Component<UserProfilePropsType> {
   componentDidMount(): void {
-    // eslint-disable-next-line react/destructuring-assignment
-    let userID = +this.props.router.params.id;
+    debugger;
+    let userID = +this.props.router.params.id || 0;
     if (!userID) {
-      userID = 21647; // check nested routes
-      // eslint-disable-next-line react/destructuring-assignment
-      this.props.router.navigate(`/profile/${userID}`);
+      userID = this.props.loggedInUserID || DIMYCH_ID;
     }
     this.props.getUserProfile(userID);
   }
@@ -36,8 +36,6 @@ class ProfileContainer extends Component<UserProfilePropsType> {
   // };
 
   render(): ComponentReturnType {
-    debugger;
-
     const {
       contacts,
       lookingForAJobDescription,
@@ -79,6 +77,7 @@ type MapStateToPropsType = {
   newPostText: string;
   profile: GetUserProfileResponseType;
   profileEntityStatus: EntityStatus;
+  loggedInUserID: Nullable<number>;
 };
 
 const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
@@ -86,6 +85,7 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
   newPostText: state.posts.newPostText,
   profile: state.userProfile.profileData,
   profileEntityStatus: state.userProfile.entityStatus,
+  loggedInUserID: state.authData.id,
 });
 
 type WithRouterPropsType = {
@@ -117,6 +117,9 @@ export type UserProfilePropsType = MapStateToPropsType &
   WithRouterPropsType;
 
 // export default connect(mapStateToProps, mapDispatchToProps)(WithRouterWrapper);
-export default connect(mapStateToProps, { getUserProfile, addPost, updateNewPostText })(
-  WithRouterWrapper,
-);
+export default connect(mapStateToProps, {
+  getUserProfile,
+  addPost,
+  updateNewPostText,
+  authCurrentUser,
+})(WithRouterWrapper);

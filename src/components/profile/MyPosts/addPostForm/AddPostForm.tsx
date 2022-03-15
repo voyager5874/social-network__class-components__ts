@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from 'react';
+import { ChangeEvent, FC, KeyboardEvent } from 'react';
 
 import styles from './AddPostForm.module.css';
 
@@ -13,15 +13,22 @@ export const AddPostForm: FC<AddPostFormPropsType> = ({
   const handleAddPost = (): void => {
     onSubmit();
   };
-  const handleTextareaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+
+  const handleEnterPress = (event: KeyboardEvent<HTMLTextAreaElement>): void => {
+    if (event.key === 'Enter') {
+      handleAddPost();
+    }
+  };
+  const handleTextareaChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
     onChange(event.currentTarget.value);
   };
   return (
     <div className={styles.addPostForm}>
       <textarea
-        placeholder="new post"
+        placeholder="Nulla dies sine linea"
         onChange={handleTextareaChange}
         value={newPostText}
+        onKeyPress={handleEnterPress}
       />
       <button type="button" onClick={handleAddPost}>
         add post

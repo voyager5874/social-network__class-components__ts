@@ -1,3 +1,5 @@
+import { NavLink } from 'react-router-dom';
+
 import styles from './Header.module.css';
 
 import { ComponentReturnType, Nullable } from 'types';
@@ -14,7 +16,13 @@ export const Header = ({ isLoggedIn, login }: HeaderPropsType): ComponentReturnT
       <div>{someContent}</div>
       <div>
         <div>{login}</div>
-        <div>{isLoggedIn ? 'Logout' : 'Login'}</div>
+        <div>
+          {isLoggedIn ? (
+            <NavLink to="/login">Logut</NavLink>
+          ) : (
+            <NavLink to="/login">Login</NavLink>
+          )}
+        </div>
       </div>
     </div>
   );

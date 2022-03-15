@@ -10,7 +10,7 @@ const initialState: PostsStateType = {
     { id: v1(), postText: 'Blabla', likesCount: 11 },
     { id: v1(), postText: 'Dada', likesCount: 11 },
   ],
-  newPostText: 'it-kamasutra.com',
+  newPostText: '',
 };
 
 export const postsReducer = (
@@ -20,7 +20,11 @@ export const postsReducer = (
   switch (action.type) {
     case 'ADD-POST': {
       const newPost: PostType = { id: v1(), postText: state.newPostText, likesCount: 0 };
-      const stateCopy = { ...state, posts: [...state.posts] };
+      const stateCopy = {
+        ...state,
+        posts: [...state.posts],
+        newPostText: '',
+      };
       stateCopy.posts.unshift(newPost);
       return stateCopy;
     }

@@ -6,20 +6,14 @@ import { authAPI } from 'api/authAPI';
 import { AuthMeResponseDataType } from 'api/types';
 import { Header } from 'components/header/Header';
 import { ResponseCodes } from 'enums';
+import { authCurrentUser } from 'store/middlewares/app';
 import { setAuthData, setLoginStatus } from 'store/reducers/authReducer';
 import { RootStateType } from 'store/types';
 import { Nullable } from 'types';
 
 class HeaderContainer extends Component<HeaderPropsType> {
   componentDidMount() {
-    authAPI.authMe().then(response => {
-      if (response.data.resultCode === ResponseCodes.Success) {
-        // eslint-disable-next-line react/destructuring-assignment
-        this.props.setAuthData(response.data.data);
-        // eslint-disable-next-line react/destructuring-assignment
-        this.props.setLoginStatus(true);
-      }
-    });
+    // this.props.authCurrentUser(); // useEffect in App.tsx ?
   }
 
   render() {
@@ -39,10 +33,10 @@ const mapStateToProps = (state: RootStateType): mapStateToPropsType => ({
 });
 
 type MapDispatchToPropsType = {
-  setAuthData: (data: AuthMeResponseDataType) => void;
-  setLoginStatus: (newStatus: boolean) => void;
+  // eslint-disable-next-line react/no-unused-prop-types
+  // authCurrentUser: () => void;
 };
 
 type HeaderPropsType = mapStateToPropsType & MapDispatchToPropsType;
 
-export default connect(mapStateToProps, { setAuthData, setLoginStatus })(HeaderContainer);
+export default connect(mapStateToProps, { authCurrentUser })(HeaderContainer);
