@@ -4,6 +4,7 @@ import styles from './ProfileInfo.module.css';
 
 import { GetUserProfileResponseType } from 'api/types';
 import userWithoutPhoto from 'components/common/assets/userWithoutPhoto.png';
+import { UserStatus } from 'components/profile/profileInfo/UserStatus';
 import { ComponentReturnType } from 'types';
 
 type ProfileInfoPropsType = GetUserProfileResponseType;
@@ -29,7 +30,8 @@ export const ProfileInfo = ({
         />
       </div>
       <div className={styles.profileTextInfo}>
-        <h3>{fullName}</h3>
+        <h2>{fullName}</h2>
+        <UserStatus statusText="a clever thought" />
         <div>
           {socialMediaList.map(media => (
             <div key={v1()}>
