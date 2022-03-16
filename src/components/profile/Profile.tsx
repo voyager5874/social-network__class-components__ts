@@ -3,13 +3,14 @@ import { MyPosts } from 'components/profile/MyPosts/MyPosts';
 import styles from 'components/profile/Profile.module.css';
 import { ProfileInfo } from 'components/profile/profileInfo/ProfileInfo';
 import { PostType } from 'components/profile/types';
-import { ComponentReturnType } from 'types';
+import { ComponentReturnType, Nullable } from 'types';
 
 type ProfilePropsType = GetUserProfileResponseType & {
   posts: Array<PostType>;
   newPostText: string;
   addPost: () => void;
   updateNewPostText: (text: string) => void;
+  userStatus: Nullable<string>;
 };
 
 export const Profile = ({
@@ -24,6 +25,7 @@ export const Profile = ({
   newPostText,
   addPost,
   updateNewPostText,
+  userStatus,
 }: ProfilePropsType): ComponentReturnType => {
   const someContent = 'Profile';
   return (
@@ -36,6 +38,7 @@ export const Profile = ({
         lookingForAJob={lookingForAJob}
         lookingForAJobDescription={lookingForAJobDescription}
         userId={userId}
+        userStatus={userStatus}
       />
       <MyPosts
         posts={posts}

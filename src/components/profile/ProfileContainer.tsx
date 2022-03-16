@@ -11,7 +11,7 @@ import { Profile } from 'components/profile/Profile';
 import { PostType } from 'components/profile/types';
 import { DIMYCH_ID } from 'constants/base';
 import { authCurrentUser } from 'store/middlewares/app';
-import { getUserProfile } from 'store/middlewares/userProfile';
+import { getUserProfile, getUserStatus } from 'store/middlewares/userProfile';
 import { addPost, updateNewPostText } from 'store/reducers/postsReducer';
 import { EntityStatus } from 'store/reducers/types';
 import { RootStateType } from 'store/types';
@@ -25,6 +25,7 @@ class ProfileContainer extends Component<UserProfilePropsType> {
       userID = this.props.loggedInUserID || DIMYCH_ID;
     }
     this.props.getUserProfile(userID);
+    this.props.getUserStatus(userID);
   }
 
   render(): ComponentReturnType {
@@ -54,6 +55,7 @@ class ProfileContainer extends Component<UserProfilePropsType> {
         newPostText={this.props.newPostText}
         addPost={this.props.addPost}
         updateNewPostText={this.props.updateNewPostText}
+        userStatus={this.props.userStatus}
       />
     );
   }
@@ -61,6 +63,7 @@ class ProfileContainer extends Component<UserProfilePropsType> {
 
 type MapDispatchToPropsType = {
   getUserProfile: (userID: number) => void;
+  getUserStatus: (userID: number) => void;
   addPost: () => void;
   updateNewPostText: (text: string) => void;
 };
@@ -71,6 +74,7 @@ type MapStateToPropsType = {
   profile: GetUserProfileResponseType;
   profileEntityStatus: EntityStatus;
   loggedInUserID: Nullable<number>;
+  userStatus: Nullable<string>;
 };
 
 const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
@@ -79,6 +83,7 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
   profile: state.userProfile.profileData,
   profileEntityStatus: state.userProfile.entityStatus,
   loggedInUserID: state.authData.id,
+  userStatus: state.userProfile.status,
 });
 
 type WithRouterPropsType = {
@@ -97,34 +102,16 @@ type WithRouterPropsType = {
   };
 };
 
-// type WithParamsPropsType = {
-//   params: {
-//     id: string;
-//   };
-// };
-
 export type UserProfilePropsType = MapStateToPropsType &
   MapDispatchToPropsType &
   WithRouterPropsType;
-
-// const WithRouterWrapper = withRouter(ProfileContainer);
-
-// export default connect(mapStateToProps, mapDispatchToProps)(WithRouterWrapper);
-
-// export default withAuthRedirect(
-//   connect(mapStateToProps, {
-//     getUserProfile,
-//     addPost,
-//     updateNewPostText,
-//     authCurrentUser,
-//   })(WithRouterWrapper),
-// );
 
 export default compose<ComponentType>(
   withAuthRedirect,
   withRouter,
   connect(mapStateToProps, {
     getUserProfile,
+    getUserStatus,
     addPost,
     updateNewPostText,
     authCurrentUser,

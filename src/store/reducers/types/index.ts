@@ -9,6 +9,7 @@ import {
   MessageType,
 } from 'components/dialogs/types';
 import { PostType } from 'components/profile/types';
+import { Nullable } from 'types';
 
 export enum EntityStatus {
   idle,
@@ -57,6 +58,7 @@ export type UsersReducerStateType = {
 export type UserProfileReducerStateType = {
   profileData: GetUserProfileResponseType;
   entityStatus: EntityStatus;
+  status: Nullable<string>;
 };
 
 export type ProfilePageStateType = {

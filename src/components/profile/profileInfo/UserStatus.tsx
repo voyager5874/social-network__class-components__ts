@@ -1,12 +1,14 @@
 import { ChangeEvent, Component } from 'react';
 
+import { Nullable } from 'types';
+
 type UserStatusPropsType = {
-  statusText: string;
+  statusText: Nullable<string>;
 };
 
 type UserStatusStateType = {
   editMode: boolean;
-  status: string;
+  status: Nullable<string>;
 };
 
 export class UserStatus extends Component<UserStatusPropsType, UserStatusStateType> {
@@ -38,9 +40,10 @@ export class UserStatus extends Component<UserStatusPropsType, UserStatusStateTy
     return this.state.editMode ? (
       <div>
         <input
+          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
           onBlur={this.deactivateEditMode}
-          value={this.state.status}
+          value={this.state.status || 'nothing shared yet'}
           onChange={this.handleInputTextChange}
         />
       </div>

@@ -5,9 +5,9 @@ import styles from './ProfileInfo.module.css';
 import { GetUserProfileResponseType } from 'api/types';
 import userWithoutPhoto from 'components/common/assets/userWithoutPhoto.png';
 import { UserStatus } from 'components/profile/profileInfo/UserStatus';
-import { ComponentReturnType } from 'types';
+import { ComponentReturnType, Nullable } from 'types';
 
-type ProfileInfoPropsType = GetUserProfileResponseType;
+type ProfileInfoPropsType = GetUserProfileResponseType & { userStatus: Nullable<string> };
 
 export const ProfileInfo = ({
   contacts,
@@ -17,6 +17,7 @@ export const ProfileInfo = ({
   aboutMe,
   fullName,
   userId,
+  userStatus,
 }: ProfileInfoPropsType): ComponentReturnType => {
   // type SocialMediaListType = keyof typeof contacts;
   const socialMediaList = Object.keys(contacts) as Array<keyof typeof contacts>;
@@ -31,7 +32,7 @@ export const ProfileInfo = ({
       </div>
       <div className={styles.profileTextInfo}>
         <h2>{fullName}</h2>
-        <UserStatus statusText="a clever thought" />
+        <UserStatus statusText={userStatus} />
         <div>
           {socialMediaList.map(media => (
             <div key={v1()}>

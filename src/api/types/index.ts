@@ -30,6 +30,14 @@ export type UserProfileContactsType = {
   mainLink: Nullable<string>;
 };
 
+export type UpdateUserProfileRequestDataType = {
+  userId: number;
+  lookingForAJob: boolean;
+  lookingForAJobDescription: string;
+  fullName: string;
+  contacts: UserProfileContactsType;
+};
+
 export type GetUserProfileResponseType = {
   aboutMe: Nullable<string>;
   contacts: UserProfileContactsType;
@@ -68,7 +76,7 @@ export type UnfollowUserResponseType = {
   data: {};
 };
 
-export type GenericResponseType<T = {}> = {
+export type BasicResponseType<T = {}> = {
   data: T;
   resultCode: ResponseCodes;
   messages: Array<string>;

@@ -24,11 +24,13 @@ const initialState: UserProfileReducerStateType = {
     },
   },
   entityStatus: EntityStatus.idle,
+  status: null,
 };
 
 export type UserProfileReducerActionsType =
   | ReturnType<typeof setUserProfile>
-  | ReturnType<typeof setUserProfileEntityStatus>;
+  | ReturnType<typeof setUserProfileEntityStatus>
+  | ReturnType<typeof setUserStatus>;
 
 export const userProfileReducer = (
   state: UserProfileReducerStateType = initialState,
@@ -36,9 +38,14 @@ export const userProfileReducer = (
 ): UserProfileReducerStateType => {
   switch (action.type) {
     case 'SET-USER-PROFILE':
-      return { profileData: { ...action.profileData }, entityStatus: EntityStatus.idle };
+      return {
+        ...state,
+        profileData: { ...action.profileData },
+      };
     case 'SET-USER-PROFILE-ENTITY-STATUS':
       return { ...state, entityStatus: action.status };
+    case 'SET-USER-STATUS':
+      return { ...state, status: action.statusText };
     default:
       return state;
   }
@@ -54,4 +61,10 @@ export const setUserProfileEntityStatus = (status: EntityStatus) =>
   ({
     type: 'SET-USER-PROFILE-ENTITY-STATUS',
     status,
+  } as const);
+
+export const setUserStatus = (statusText: string) =>
+  ({
+    type: 'SET-USER-STATUS',
+    statusText,
   } as const);
