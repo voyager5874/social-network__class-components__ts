@@ -1,6 +1,7 @@
 import { Dispatch } from 'redux';
 
 import { usersAPI } from 'api';
+import { ResponseCodes } from 'enums';
 import { EntityStatus } from 'store/reducers/types';
 import {
   setUserProfile,
@@ -24,7 +25,21 @@ export const getUserStatus = (userID: number) => (dispatch: Dispatch) => {
     if (response.data) {
       dispatch(setUserStatus(response.data));
     } else {
-      dispatch(setUserStatus('-'));
+      dispatch(setUserStatus('status not set or network error'));
+    }
+    dispatch(setUserProfileEntityStatus(EntityStatus.idle));
+  });
+};
+
+export const updateCurrentUserStatus = (statusText: string) => (dispatch: Dispatch) => {
+  dispatch(setUserProfileEntityStatus(EntityStatus.busy));
+  usersAPI.updateCurrentUserStatus(statusText).then(response => {
+    if (response.data.resultCode === ResponseCodes.Success) {
+      dispatch(setUserStatus(statusText));
+    }
+    if (response.data.resultCode === ResponseCodes.Error) {
+      // eslint-disable-next-line no-alert
+      alert('error updating user status');
     }
     dispatch(setUserProfileEntityStatus(EntityStatus.idle));
   });

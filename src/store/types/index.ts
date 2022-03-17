@@ -7,6 +7,4 @@ import {
 import { PostType } from 'components/profile/types';
 import { rootReducer } from 'store/store';
 
-
-
 export type RootStateType = ReturnType<typeof rootReducer>;

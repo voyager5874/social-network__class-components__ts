@@ -17,7 +17,6 @@ export function withAuthRedirect<T>(Component: ComponentType<T>): ComponentType 
   const RedirectingComponent = (props: mapStateToPropsType) => {
     const { isAuth, ...restProps } = props;
     if (!isAuth) return <Navigate to="/login" />;
-    debugger;
     // eslint-disable-next-line react/jsx-props-no-spreading
     return <Component {...(restProps as T)} />;
   };

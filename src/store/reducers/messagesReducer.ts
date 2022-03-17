@@ -2,8 +2,8 @@ import { v1 } from 'uuid';
 
 import { MessageType } from 'components/dialogs/types';
 import { InterlocutorsReducerActionsType } from 'store/reducers/interlocutorsReducer';
-import { ChandlerID, JoeyID, MonicaID, PhoebeID, RachelID, RossID } from 'store/stubData';
 import { MessagesStateType } from 'store/reducers/types';
+import { ChandlerID, JoeyID, MonicaID, PhoebeID, RachelID, RossID } from 'store/stubData';
 
 const initialState: MessagesStateType = {
   messages: {

@@ -29,7 +29,6 @@ export const usersAPI = {
     return axiosInstance.get<boolean>(`follow/${userID}`);
   },
   getUserStatus(userID: number | string) {
-    debugger;
     return axiosInstance.get<Nullable<string>>(`profile/status/${userID}`);
   },
   updateCurrentUserStatus(statusText: string) {

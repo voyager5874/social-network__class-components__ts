@@ -22,7 +22,6 @@ export const Dialogs = (): ComponentReturnType => {
   );
   const dispatch = useDispatch();
   const { interlocutorID } = useParams();
-  debugger;
   const handleNewMessageChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
     const action = updateNewMessageTextAC(event.currentTarget.value);
     dispatch(action);

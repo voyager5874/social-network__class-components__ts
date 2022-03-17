@@ -27,7 +27,6 @@ export const User = ({
   unfollow,
   busyEntities,
 }: UserPropsType): ComponentReturnType => {
-  debugger;
   const buttonDisabled = busyEntities.includes(id);
   return (
     <div className={styles.userCard}>

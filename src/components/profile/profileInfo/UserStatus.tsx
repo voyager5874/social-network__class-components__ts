@@ -1,9 +1,11 @@
-import { ChangeEvent, Component } from 'react';
+import { ChangeEvent, Component, KeyboardEvent } from 'react';
 
 import { Nullable } from 'types';
+import { getTrimmedValue } from 'utils';
 
 type UserStatusPropsType = {
   statusText: Nullable<string>;
+  updateCurrentUserStatus: (status: string) => void;
 };
 
 type UserStatusStateType = {
@@ -20,6 +22,21 @@ export class UserStatus extends Component<UserStatusPropsType, UserStatusStateTy
     };
   }
 
+  handleStatusUpdate = () => {
+    if (this.state.status === null || this.state.status === this.props.statusText) return;
+    if (this.state.status !== null) {
+      const trimmedString = getTrimmedValue(this.state.status);
+      if (trimmedString) this.props.updateCurrentUserStatus(this.state.status);
+      if (!trimmedString) this.setState({ status: this.props.statusText });
+    }
+  };
+
+  handleEnterKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      this.handleStatusUpdate();
+    }
+  };
+
   activateEditMode = () => {
     this.setState({
       editMode: true,
@@ -30,9 +47,11 @@ export class UserStatus extends Component<UserStatusPropsType, UserStatusStateTy
     this.setState({
       editMode: false,
     });
+    this.handleStatusUpdate();
   };
 
   handleInputTextChange = (event: ChangeEvent<HTMLInputElement>) => {
+    // this.props.updateCurrentUserStatus(event.currentTarget.value);
     this.setState({ status: event.currentTarget.value });
   };
 
@@ -40,16 +59,17 @@ export class UserStatus extends Component<UserStatusPropsType, UserStatusStateTy
     return this.state.editMode ? (
       <div>
         <input
+          onKeyPress={this.handleEnterKeyPress}
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
           onBlur={this.deactivateEditMode}
-          value={this.state.status || 'nothing shared yet'}
+          value={this.state.status || 'status not set'}
           onChange={this.handleInputTextChange}
         />
       </div>
     ) : (
       <div onDoubleClick={this.activateEditMode}>
-        <h3>{this.state.status}</h3>
+        <h3>{this.props.statusText}</h3>
       </div>
     );
   }

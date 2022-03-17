@@ -10,7 +10,11 @@ import { usersAPI } from 'api/usersAPI';
 import { Paginator } from 'components/paginator/Paginator';
 import { User } from 'components/users/user/User';
 import { DATA_PORTION_SIZE } from 'constants/base';
-import { setUserAsFollowed, setUsers, setUserAsUnfollowed } from 'store/reducers/usersReducer';
+import {
+  setUserAsFollowed,
+  setUsers,
+  setUserAsUnfollowed,
+} from 'store/reducers/usersReducer';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
 

@@ -7,7 +7,10 @@ import userWithoutPhoto from 'components/common/assets/userWithoutPhoto.png';
 import { UserStatus } from 'components/profile/profileInfo/UserStatus';
 import { ComponentReturnType, Nullable } from 'types';
 
-type ProfileInfoPropsType = GetUserProfileResponseType & { userStatus: Nullable<string> };
+type ProfileInfoPropsType = GetUserProfileResponseType & {
+  userStatus: Nullable<string>;
+  updateCurrentUserStatus: (status: string) => void;
+};
 
 export const ProfileInfo = ({
   contacts,
@@ -18,6 +21,7 @@ export const ProfileInfo = ({
   fullName,
   userId,
   userStatus,
+  updateCurrentUserStatus,
 }: ProfileInfoPropsType): ComponentReturnType => {
   // type SocialMediaListType = keyof typeof contacts;
   const socialMediaList = Object.keys(contacts) as Array<keyof typeof contacts>;
@@ -32,7 +36,10 @@ export const ProfileInfo = ({
       </div>
       <div className={styles.profileTextInfo}>
         <h2>{fullName}</h2>
-        <UserStatus statusText={userStatus} />
+        <UserStatus
+          statusText={userStatus}
+          updateCurrentUserStatus={updateCurrentUserStatus}
+        />
         <div>
           {socialMediaList.map(media => (
             <div key={v1()}>
