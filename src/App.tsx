@@ -3,7 +3,7 @@ import './App.css';
 import { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { Login } from 'components';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
@@ -21,14 +21,15 @@ import { ComponentReturnType } from 'types';
 const App = (): ComponentReturnType => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(authCurrentUser());
-  }, []);
-
   const userLoggedIn = useSelector<RootStateType, boolean>(
     state => state.authData.isLoggedIn,
   );
-  if (!userLoggedIn) return <LoadingVisualizer />;
+
+  useEffect(() => {
+    dispatch(authCurrentUser());
+  }, [userLoggedIn]);
+
+  // if (!userLoggedIn) return <Navigate to="/login" />;
 
   return (
     <div className="appWrapper">

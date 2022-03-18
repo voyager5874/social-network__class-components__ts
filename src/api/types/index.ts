@@ -81,3 +81,10 @@ export type BasicResponseType<T = {}> = {
   resultCode: ResponseCodes;
   messages: Array<string>;
 };
+
+export type LoginDataType = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+  captcha?: boolean;
+};

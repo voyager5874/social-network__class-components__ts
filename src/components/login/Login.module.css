@@ -1,4 +1,40 @@
-.loginForm{
-    background-color: palevioletred;
+.loginFormContainer{
     width: 100%;
+    background-color: #006699;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginForm{
+    background-color: rgba(217, 231, 156, 0.65);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /*width: 100%;*/
+    border: 3px solid brown;
+    border-radius: 10px;
+    width: 360px;
+    padding: 20px;
+}
+
+.inputContainer{
+    height: 50px;
+}
+
+.inputLabel {
+    display: flex;
+    /*background-color: rgba(155, 86, 135, 0.56);*/
+    justify-content: space-between;
+    width: 300px;
+}
+
+.errorText{
+    color:red;
+    font-size: 12px;
+}
+
+.checkboxContainer{
+    height: 30px;
 }

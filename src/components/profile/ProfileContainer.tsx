@@ -23,12 +23,19 @@ import { ComponentReturnType, Nullable } from 'types';
 
 class ProfileContainer extends Component<UserProfilePropsType> {
   componentDidMount(): void {
-    let userID = +this.props.router.params.id || 0;
-    if (!userID) {
-      userID = this.props.loggedInUserID || DIMYCH_ID;
+    if (!this.props.router.params.id && !this.props.loggedInUserID) {
+      console.warn("can't make profile and status request: no user id provided");
+      return;
     }
-    this.props.getUserProfile(userID);
-    this.props.getUserStatus(userID);
+    if (this.props.router.params.id) {
+      const userID = +this.props.router.params.id;
+      this.props.getUserProfile(userID);
+      this.props.getUserStatus(userID);
+    } else if (this.props.loggedInUserID) {
+      const userID = this.props.loggedInUserID;
+      this.props.getUserProfile(userID);
+      this.props.getUserStatus(userID);
+    }
   }
 
   render(): ComponentReturnType {

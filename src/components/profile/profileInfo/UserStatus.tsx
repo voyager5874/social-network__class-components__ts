@@ -22,6 +22,17 @@ export class UserStatus extends Component<UserStatusPropsType, UserStatusStateTy
     };
   }
 
+  componentDidUpdate(
+    previousProps: UserStatusPropsType,
+    previousState: UserStatusStateType,
+  ) {
+    if (previousProps.statusText !== this.props.statusText) {
+      this.setState({
+        status: this.props.statusText,
+      });
+    }
+  }
+
   handleStatusUpdate = () => {
     if (this.state.status === null || this.state.status === this.props.statusText) return;
     if (this.state.status !== null) {
@@ -63,7 +74,7 @@ export class UserStatus extends Component<UserStatusPropsType, UserStatusStateTy
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
           onBlur={this.deactivateEditMode}
-          value={this.state.status || 'status not set'}
+          value={this.state.status || ''}
           onChange={this.handleInputTextChange}
         />
       </div>

@@ -7,9 +7,14 @@ import { ComponentReturnType, Nullable } from 'types';
 type HeaderPropsType = {
   isLoggedIn: boolean;
   login: Nullable<string>;
+  logout: () => void;
 };
 
-export const Header = ({ isLoggedIn, login }: HeaderPropsType): ComponentReturnType => {
+export const Header = ({
+  isLoggedIn,
+  login,
+  logout,
+}: HeaderPropsType): ComponentReturnType => {
   const someContent = 'header';
   return (
     <div className={styles.header}>
@@ -18,7 +23,9 @@ export const Header = ({ isLoggedIn, login }: HeaderPropsType): ComponentReturnT
         <div>{login}</div>
         <div>
           {isLoggedIn ? (
-            <NavLink to="/login">Logut</NavLink>
+            <button type="button" onClick={logout}>
+              Logout
+            </button>
           ) : (
             <NavLink to="/login">Login</NavLink>
           )}

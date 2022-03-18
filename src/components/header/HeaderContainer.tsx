@@ -7,6 +7,7 @@ import { AuthMeResponseDataType } from 'api/types';
 import { Header } from 'components/header/Header';
 import { ResponseCodes } from 'enums';
 import { authCurrentUser } from 'store/middlewares/app';
+import { logout } from 'store/middlewares/login';
 import { setAuthData, setLoginStatus } from 'store/reducers/authReducer';
 import { RootStateType } from 'store/types';
 import { Nullable } from 'types';
@@ -18,7 +19,7 @@ class HeaderContainer extends Component<HeaderPropsType> {
 
   render() {
     const { isLoggedIn, login } = this.props;
-    return <Header isLoggedIn={isLoggedIn} login={login} />;
+    return <Header isLoggedIn={isLoggedIn} login={login} logout={this.props.logout} />;
   }
 }
 
@@ -34,9 +35,10 @@ const mapStateToProps = (state: RootStateType): mapStateToPropsType => ({
 
 type MapDispatchToPropsType = {
   // eslint-disable-next-line react/no-unused-prop-types
-  // authCurrentUser: () => void;
+  authCurrentUser: () => void;
+  logout: () => void;
 };
 
 type HeaderPropsType = mapStateToPropsType & MapDispatchToPropsType;
 
-export default connect(mapStateToProps, { authCurrentUser })(HeaderContainer);
+export default connect(mapStateToProps, { authCurrentUser, logout })(HeaderContainer);
