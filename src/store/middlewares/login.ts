@@ -4,7 +4,8 @@ import { Dispatch } from 'redux';
 import { authAPI } from 'api/authAPI';
 import { LoginDataType } from 'api/types';
 import { ResponseCodes } from 'enums';
-import { authCurrentUser } from 'store/middlewares/app';
+// import { authCurrentUser } from 'store/middlewares/app';
+import { getUserProfile, getUserStatus } from 'store/middlewares/userProfile';
 import { setAuthData, setLoginStatus } from 'store/reducers/authReducer';
 import { EntityStatus } from 'store/reducers/types';
 import { setUserProfileEntityStatus } from 'store/reducers/userProfileReducer';
@@ -16,16 +17,20 @@ export const login = (data: LoginDataType) => (dispatch: any) => {
     .then(response => {
       if (response.data.resultCode === ResponseCodes.Success) {
         dispatch(setLoginStatus(true));
-        dispatch(authCurrentUser());
+        dispatch(getUserProfile(response.data.data.userId));
+        dispatch(getUserStatus(response.data.data.userId));
+        // dispatch(authCurrentUser()); // there is two authMe request after login (useEffect -> App or this one ?)
       }
       if (response.data.resultCode === ResponseCodes.Error) {
         // eslint-disable-next-line no-alert
-        alert(response.data.messages[0]);
+        alert(
+          `loginTC resultCode is error, the server said: ${response.data.messages[0]}`,
+        );
       }
     })
     .catch((error: AxiosError) => {
       // eslint-disable-next-line no-alert
-      alert(error.message);
+      alert(`loginTC catch, axios says: ${error.message}`);
     });
   dispatch(setUserProfileEntityStatus(EntityStatus.idle));
 };
@@ -40,11 +45,11 @@ export const logout = () => (dispatch: Dispatch) => {
       }
       if (response.data.resultCode === ResponseCodes.Error) {
         // eslint-disable-next-line no-alert
-        alert(response.data.messages[0]);
+        alert(`logoutTC result code is error, server says: ${response.data.messages[0]}`);
       }
     })
     .catch((error: AxiosError) => {
       // eslint-disable-next-line no-alert
-      alert(error.message);
+      alert(`logoutTC catch, axios said: ${error.message}`);
     });
 };

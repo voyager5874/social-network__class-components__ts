@@ -9,7 +9,6 @@ import { withAuthRedirect } from 'components/common/HOC/withAuthRedirect';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { Profile } from 'components/profile/Profile';
 import { PostType } from 'components/profile/types';
-import { DIMYCH_ID } from 'constants/base';
 import { authCurrentUser } from 'store/middlewares/app';
 import {
   getUserProfile,
@@ -47,10 +46,10 @@ class ProfileContainer extends Component<UserProfilePropsType> {
       aboutMe,
       fullName,
       userId,
-      // eslint-disable-next-line react/destructuring-assignment
     } = this.props.profile;
     return this.props.profileEntityStatus === EntityStatus.busy ||
-      this.props.loggedInUserID === null ? (
+      // !this.props.loggedInUserID ||
+      !userId ? (
       <LoadingVisualizer />
     ) : (
       <Profile

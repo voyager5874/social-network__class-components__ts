@@ -9,6 +9,11 @@ import { login } from 'store/middlewares/login';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
 
+type FormikErrorsObjectType = {
+  email?: string;
+  password?: string;
+};
+
 export const Login = (): ComponentReturnType => {
   const dispatch = useDispatch();
   const userIsLoggedIn = useSelector<RootStateType, boolean>(
@@ -17,30 +22,28 @@ export const Login = (): ComponentReturnType => {
   const MIN_PASSWORD_LENGTH = 4;
 
   const formik = useFormik({
-    // eslint-disable-next-line consistent-return
     validate: values => {
+      const errors: FormikErrorsObjectType = {};
       if (!values.email) {
-        return { email: 'email required' };
+        errors.email = 'email required';
       }
       if (values.password.length < MIN_PASSWORD_LENGTH) {
-        return { password: 'password is too short' };
+        errors.password = 'password is too short';
       }
-      // return {};
+      return errors;
     },
     initialValues: {
-      email: '',
-      password: '',
+      email: process.env.REACT_APP_LOGIN || '',
+      password: process.env.REACT_APP_PASSWORD || '',
       rememberMe: false,
     },
     onSubmit: values => {
-      // eslint-disable-next-line no-alert
-      alert(JSON.stringify(values, null, 2));
       dispatch(login(values));
-      dispatch(authCurrentUser());
+      // dispatch(authCurrentUser());
     },
   });
 
-  if (userIsLoggedIn) return <Navigate replace to="/profile" />;
+  if (userIsLoggedIn) return <Navigate replace to="/" />; // replace is to delete from history so "back" won't bring to login page
 
   return (
     <div className={styles.loginFormContainer}>
@@ -59,9 +62,7 @@ export const Login = (): ComponentReturnType => {
           </label>
 
           <div className={styles.errorText}>
-            {formik.touched.email && Boolean(formik.errors.email)
-              ? formik.errors.email
-              : ''}
+            {formik.touched.email && formik.errors.email && formik.errors.email}
           </div>
         </div>
         <div className={styles.inputContainer}>
@@ -78,9 +79,7 @@ export const Login = (): ComponentReturnType => {
           </label>
 
           <div className={styles.errorText}>
-            {formik.touched.password && Boolean(formik.errors.password)
-              ? formik.errors.password
-              : ''}
+            {formik.touched.password && formik.errors.password && formik.errors.password}
           </div>
         </div>
         <div className={styles.checkboxContainer}>

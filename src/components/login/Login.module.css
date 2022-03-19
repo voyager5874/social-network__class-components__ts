@@ -1,6 +1,6 @@
 .loginFormContainer{
     width: 100%;
-    background-color: #006699;
+    background-color: rgba(0, 102, 153, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;

@@ -18,12 +18,14 @@ export const authCurrentUser = () => (dispatch: Dispatch) => {
       }
       if (response.data.resultCode === ResponseCodes.Error) {
         // eslint-disable-next-line no-alert
-        alert(response.data.messages[0]);
+        alert(
+          `result code in authCurrentUser(TC) is error, the server said: ${response.data.messages[0]}`,
+        );
       }
     })
     .catch((error: AxiosError) => {
       // eslint-disable-next-line no-alert
-      alert(error.message);
+      alert(`this is catch of authCurrentUser(TC) speaking: ${error.message}`);
     });
   dispatch(setUserProfileEntityStatus(EntityStatus.idle));
 };
