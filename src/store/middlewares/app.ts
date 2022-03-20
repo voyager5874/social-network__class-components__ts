@@ -3,11 +3,16 @@ import { Dispatch } from 'redux';
 
 import { authAPI } from 'api/authAPI';
 import { ResponseCodes } from 'enums';
+import {
+  processNetworkError,
+  processServerError,
+} from 'store/middlewares/utils/processRequestErrors';
+import { setAppInitialized } from 'store/reducers/app';
 import { setAuthData, setLoginStatus } from 'store/reducers/authReducer';
 import { EntityStatus } from 'store/reducers/types';
 import { setUserProfileEntityStatus } from 'store/reducers/userProfileReducer';
 
-export const authCurrentUser = () => (dispatch: Dispatch) => {
+export const initializeApp = () => (dispatch: Dispatch) => {
   dispatch(setUserProfileEntityStatus(EntityStatus.busy));
   authAPI
     .authMe()
@@ -15,17 +20,14 @@ export const authCurrentUser = () => (dispatch: Dispatch) => {
       if (response.data.resultCode === ResponseCodes.Success) {
         dispatch(setAuthData(response.data.data));
         dispatch(setLoginStatus(true));
+      } else {
+        processServerError('initializeApp(TC) authMe', response.data, dispatch);
       }
-      if (response.data.resultCode === ResponseCodes.Error) {
-        // eslint-disable-next-line no-alert
-        alert(
-          `result code in authCurrentUser(TC) is error, the server said: ${response.data.messages[0]}`,
-        );
-      }
+      dispatch(setUserProfileEntityStatus(EntityStatus.idle));
+      dispatch(setAppInitialized());
     })
     .catch((error: AxiosError) => {
-      // eslint-disable-next-line no-alert
-      alert(`this is catch of authCurrentUser(TC) speaking: ${error.message}`);
+      processNetworkError('initializeApp(TC) authMe request', error, dispatch);
     });
-  dispatch(setUserProfileEntityStatus(EntityStatus.idle));
+  // dispatch(setUserProfileEntityStatus(EntityStatus.idle));
 };

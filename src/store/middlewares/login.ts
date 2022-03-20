@@ -4,8 +4,12 @@ import { Dispatch } from 'redux';
 import { authAPI } from 'api/authAPI';
 import { LoginDataType } from 'api/types';
 import { ResponseCodes } from 'enums';
-// import { authCurrentUser } from 'store/middlewares/app';
+import { initializeApp } from 'store/middlewares/app';
 import { getUserProfile, getUserStatus } from 'store/middlewares/userProfile';
+import {
+  processNetworkError,
+  processServerError,
+} from 'store/middlewares/utils/processRequestErrors';
 import { setAuthData, setLoginStatus } from 'store/reducers/authReducer';
 import { EntityStatus } from 'store/reducers/types';
 import { setUserProfileEntityStatus } from 'store/reducers/userProfileReducer';
@@ -19,20 +23,15 @@ export const login = (data: LoginDataType) => (dispatch: any) => {
         dispatch(setLoginStatus(true));
         dispatch(getUserProfile(response.data.data.userId));
         dispatch(getUserStatus(response.data.data.userId));
-        // dispatch(authCurrentUser()); // there is two authMe request after login (useEffect -> App or this one ?)
-      }
-      if (response.data.resultCode === ResponseCodes.Error) {
-        // eslint-disable-next-line no-alert
-        alert(
-          `loginTC resultCode is error, the server said: ${response.data.messages[0]}`,
-        );
+        dispatch(initializeApp()); //  App -> useEffect or this one ?
+      } else {
+        processServerError('login(TC)', response.data, dispatch);
       }
     })
     .catch((error: AxiosError) => {
-      // eslint-disable-next-line no-alert
-      alert(`loginTC catch, axios says: ${error.message}`);
+      processNetworkError('login(TC)', error, dispatch);
     });
-  dispatch(setUserProfileEntityStatus(EntityStatus.idle));
+  dispatch(setUserProfileEntityStatus(EntityStatus.idle)); // move to process RequestErrors ?
 };
 
 export const logout = () => (dispatch: Dispatch) => {
@@ -42,14 +41,11 @@ export const logout = () => (dispatch: Dispatch) => {
       if (response.data.resultCode === ResponseCodes.Success) {
         dispatch(setLoginStatus(false));
         dispatch(setAuthData({ id: null, login: null, email: null }));
-      }
-      if (response.data.resultCode === ResponseCodes.Error) {
-        // eslint-disable-next-line no-alert
-        alert(`logoutTC result code is error, server says: ${response.data.messages[0]}`);
+      } else {
+        processServerError('logout(TC)', response.data, dispatch);
       }
     })
     .catch((error: AxiosError) => {
-      // eslint-disable-next-line no-alert
-      alert(`logoutTC catch, axios said: ${error.message}`);
+      processNetworkError('logout(TC)', error, dispatch);
     });
 };

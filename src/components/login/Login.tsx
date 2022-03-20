@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 
 import styles from './Login.module.css';
 
-import { authCurrentUser } from 'store/middlewares/app';
+import { initializeApp } from 'store/middlewares/app';
 import { login } from 'store/middlewares/login';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';

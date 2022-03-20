@@ -85,6 +85,6 @@ export type BasicResponseType<T = {}> = {
 export type LoginDataType = {
   email: string;
   password: string;
-  rememberMe: boolean;
-  captcha?: boolean;
+  rememberMe?: boolean;
+  captcha?: string;
 };

@@ -3,6 +3,7 @@ import { AuthMeResponseType, BasicResponseType, LoginDataType } from 'api/types'
 
 export const authAPI = {
   authMe() {
+    // return axiosInstance.get<AuthMeResponseType>('auth/me');
     return axiosInstance.get<AuthMeResponseType>('auth/me');
   },
   login(data: LoginDataType) {

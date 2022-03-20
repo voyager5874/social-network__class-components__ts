@@ -6,7 +6,7 @@ import { authAPI } from 'api/authAPI';
 import { AuthMeResponseDataType } from 'api/types';
 import { Header } from 'components/header/Header';
 import { ResponseCodes } from 'enums';
-import { authCurrentUser } from 'store/middlewares/app';
+import { initializeApp } from 'store/middlewares/app';
 import { logout } from 'store/middlewares/login';
 import { setAuthData, setLoginStatus } from 'store/reducers/authReducer';
 import { RootStateType } from 'store/types';
@@ -41,4 +41,6 @@ type MapDispatchToPropsType = {
 
 type HeaderPropsType = mapStateToPropsType & MapDispatchToPropsType;
 
-export default connect(mapStateToProps, { authCurrentUser, logout })(HeaderContainer);
+export default connect(mapStateToProps, { authCurrentUser: initializeApp, logout })(
+  HeaderContainer,
+);

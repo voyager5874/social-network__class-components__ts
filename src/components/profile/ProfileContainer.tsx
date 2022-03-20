@@ -9,7 +9,7 @@ import { withAuthRedirect } from 'components/common/HOC/withAuthRedirect';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { Profile } from 'components/profile/Profile';
 import { PostType } from 'components/profile/types';
-import { authCurrentUser } from 'store/middlewares/app';
+import { initializeApp } from 'store/middlewares/app';
 import {
   getUserProfile,
   getUserStatus,
@@ -125,7 +125,7 @@ export default compose<ComponentType>(
     getUserStatus,
     addPost,
     updateNewPostText,
-    authCurrentUser,
+    authCurrentUser: initializeApp,
     updateCurrentUserStatus,
   }),
 )(ProfileContainer);
