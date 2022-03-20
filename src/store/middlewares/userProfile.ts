@@ -1,7 +1,12 @@
+import { AxiosError } from 'axios';
 import { Dispatch } from 'redux';
 
 import { usersAPI } from 'api';
 import { ResponseCodes } from 'enums';
+import {
+  processNetworkError,
+  processServerError,
+} from 'store/middlewares/utils/processRequestErrors';
 import { EntityStatus } from 'store/reducers/types';
 import {
   setUserProfile,
@@ -11,36 +16,56 @@ import {
 
 export const getUserProfile = (userID: number) => (dispatch: Dispatch) => {
   dispatch(setUserProfileEntityStatus(EntityStatus.busy));
-  usersAPI.getUserProfile(userID).then(response => {
-    if (response.data.userId) {
-      dispatch(setUserProfile(response.data));
-    }
-    dispatch(setUserProfileEntityStatus(EntityStatus.idle));
-  });
+  usersAPI
+    .getUserProfile(userID)
+    .then(response => {
+      if (response.data.userId) {
+        dispatch(setUserProfile(response.data));
+      } else {
+        processServerError(
+          'getUserProfile(TC)',
+          "server reached but hasn't respond with data",
+          dispatch,
+        );
+      }
+    })
+    .catch((error: AxiosError) => {
+      processNetworkError('getUsers(TC)', error, dispatch);
+    });
+  dispatch(setUserProfileEntityStatus(EntityStatus.idle));
 };
 
 export const getUserStatus = (userID: number) => (dispatch: Dispatch) => {
   dispatch(setUserProfileEntityStatus(EntityStatus.busy));
-  usersAPI.getUserStatus(userID).then(response => {
-    if (response.data) {
-      dispatch(setUserStatus(response.data));
-    } else {
-      dispatch(setUserStatus('status not set or network error'));
-    }
-    dispatch(setUserProfileEntityStatus(EntityStatus.idle));
-  });
+  usersAPI
+    .getUserStatus(userID)
+    .then(response => {
+      if (response.data) {
+        dispatch(setUserStatus(response.data));
+      } else {
+        processServerError('getUserStatus(TC)', 'server returned no data', dispatch);
+        dispatch(setUserStatus('status not set'));
+      }
+    })
+    .catch((error: AxiosError) => {
+      processNetworkError('getUserStatus', error, dispatch);
+    });
+  dispatch(setUserProfileEntityStatus(EntityStatus.idle));
 };
 
 export const updateCurrentUserStatus = (statusText: string) => (dispatch: Dispatch) => {
   dispatch(setUserProfileEntityStatus(EntityStatus.busy));
-  usersAPI.updateCurrentUserStatus(statusText).then(response => {
-    if (response.data.resultCode === ResponseCodes.Success) {
-      dispatch(setUserStatus(statusText));
-    }
-    if (response.data.resultCode === ResponseCodes.Error) {
-      // eslint-disable-next-line no-alert
-      alert('error updating user status');
-    }
-    dispatch(setUserProfileEntityStatus(EntityStatus.idle));
-  });
+  usersAPI
+    .updateCurrentUserStatus(statusText)
+    .then(response => {
+      if (response.data.resultCode === ResponseCodes.Success) {
+        dispatch(setUserStatus(statusText));
+      } else {
+        processServerError('updateCurrentStatus(TC)', response.data, dispatch);
+      }
+    })
+    .catch((error: AxiosError) => {
+      processNetworkError('updateCurrentStatus(TC)', error, dispatch);
+    });
+  dispatch(setUserProfileEntityStatus(EntityStatus.idle));
 };
