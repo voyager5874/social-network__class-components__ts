@@ -1,50 +1,12 @@
 import { UserOnServerType } from 'api/types';
 import { EntityStatus, UsersReducerStateType } from 'store/reducers/types';
-// import { UserType } from 'components/users/types';
-// import { ChandlerID, MonicaID, PhoebeID, RossID } from 'store/stubData';
-
-// const initialState: UserType[] = [
-//   {
-//     id: MonicaID,
-//     name: 'Monica',
-//     status: 'working',
-//     followed: true,
-//     avatarURL:
-//       'https://cdn.cliqueinc.com/posts/286494/best-friends-outfits-286494-1585661072244-square.700x0c.jpg',
-//     location: { country: 'USA', city: 'Boston' },
-//   },
-//   {
-//     id: RossID,
-//     name: 'Ross',
-//     status: 'reading',
-//     followed: false,
-//     avatarURL: 'https://i1.sndcdn.com/artworks-000340376244-z775pl-t500x500.jpg',
-//     location: { country: 'USA', city: 'New York' },
-//   },
-//   {
-//     id: ChandlerID,
-//     name: 'Chandler',
-//     status: 'joking',
-//     followed: true,
-//     avatarURL:
-//       'https://www.pinkvilla.com/imageresize/a4a47d837726daa86ece52c8dc5b812a.jpg?width=752&format=webp&t=pvorg',
-//     location: { country: 'USA', city: 'LA' },
-//   },
-//   {
-//     id: PhoebeID,
-//     name: 'Phoebe',
-//     status: 'doing strange things',
-//     followed: true,
-//     avatarURL: 'https://upload.wikimedia.org/wikipedia/ru/b/b1/Phoebe_buffay.jpg',
-//     location: { country: 'USA', city: 'Shamble' },
-//   },
-// ];
 
 const initialState: UsersReducerStateType = {
   users: [],
   totalCount: 0,
   currentPage: 1,
-  isFetching: false,
+  // isFetching: false, // I'll replace it with entityStatus
+  entityStatus: EntityStatus.idle,
   busyEntities: [],
 };
 
@@ -54,8 +16,8 @@ export type usersReducerActionsType =
   | ReturnType<typeof setUsers>
   | ReturnType<typeof setTotalUsersCount>
   | ReturnType<typeof setCurrentPage>
-  | ReturnType<typeof setFetchingTrue>
-  | ReturnType<typeof setFetchingFalse>
+  // | ReturnType<typeof setFetchingTrue>
+  // | ReturnType<typeof setFetchingFalse>
   | ReturnType<typeof setUserEntityStatus>
   | ReturnType<typeof setUsersListEntityStatus>
   | ReturnType<typeof addToBusyEntities>
@@ -86,10 +48,10 @@ export const usersReducer = (
       return { ...state, totalCount: action.count };
     case 'SET-CURRENT-PAGE':
       return { ...state, currentPage: action.page };
-    case 'SET-FETCHING-TRUE':
-      return { ...state, isFetching: true };
-    case 'SET-FETCHING-FALSE':
-      return { ...state, isFetching: false };
+    // case 'SET-FETCHING-TRUE':
+    //   return { ...state, isFetching: true };
+    // case 'SET-FETCHING-FALSE':
+    //   return { ...state, isFetching: false };
     case 'SET-USER-ENTITY-STATUS':
       return {
         ...state,
@@ -97,6 +59,8 @@ export const usersReducer = (
           user.id === action.userID ? { ...user, entityStatus: action.status } : user,
         ),
       };
+    case 'SET-USERS-LIST-ENTITY-STATUS':
+      return { ...state, entityStatus: action.status };
     case 'ADD-TO-BUSY-ENTITIES':
       return { ...state, busyEntities: [...state.busyEntities, action.id] };
     case 'REMOVE-FROM-BUSY-ENTITIES':
@@ -145,15 +109,15 @@ export const setCurrentPage = (page: number) =>
     page,
   } as const);
 
-export const setFetchingTrue = () =>
-  ({
-    type: 'SET-FETCHING-TRUE',
-  } as const);
-
-export const setFetchingFalse = () =>
-  ({
-    type: 'SET-FETCHING-FALSE',
-  } as const);
+// export const setFetchingTrue = () =>
+//   ({
+//     type: 'SET-FETCHING-TRUE',
+//   } as const);
+//
+// export const setFetchingFalse = () =>
+//   ({
+//     type: 'SET-FETCHING-FALSE',
+//   } as const);
 
 export const setUserEntityStatus = (userID: number, status: EntityStatus) =>
   ({

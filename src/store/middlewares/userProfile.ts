@@ -31,8 +31,10 @@ export const getUserProfile = (userID: number) => (dispatch: Dispatch) => {
     })
     .catch((error: AxiosError) => {
       processNetworkError('getUsers(TC)', error, dispatch);
+    })
+    .finally(() => {
+      dispatch(setUserProfileEntityStatus(EntityStatus.idle));
     });
-  dispatch(setUserProfileEntityStatus(EntityStatus.idle));
 };
 
 export const getUserStatus = (userID: number) => (dispatch: Dispatch) => {
@@ -49,8 +51,10 @@ export const getUserStatus = (userID: number) => (dispatch: Dispatch) => {
     })
     .catch((error: AxiosError) => {
       processNetworkError('getUserStatus', error, dispatch);
+    })
+    .finally(() => {
+      dispatch(setUserProfileEntityStatus(EntityStatus.idle));
     });
-  dispatch(setUserProfileEntityStatus(EntityStatus.idle));
 };
 
 export const updateCurrentUserStatus = (statusText: string) => (dispatch: Dispatch) => {
@@ -66,6 +70,8 @@ export const updateCurrentUserStatus = (statusText: string) => (dispatch: Dispat
     })
     .catch((error: AxiosError) => {
       processNetworkError('updateCurrentStatus(TC)', error, dispatch);
+    })
+    .finally(() => {
+      dispatch(setUserProfileEntityStatus(EntityStatus.idle));
     });
-  dispatch(setUserProfileEntityStatus(EntityStatus.idle));
 };

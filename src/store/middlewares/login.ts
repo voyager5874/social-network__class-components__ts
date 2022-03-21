@@ -10,7 +10,7 @@ import {
   processNetworkError,
   processServerError,
 } from 'store/middlewares/utils/processRequestErrors';
-import { setAuthData, setLoginStatus } from 'store/reducers/authReducer';
+import { resetAuthState, setAuthData, setLoginStatus } from 'store/reducers/authReducer';
 import { EntityStatus } from 'store/reducers/types';
 import { setUserProfileEntityStatus } from 'store/reducers/userProfileReducer';
 
@@ -23,15 +23,17 @@ export const login = (data: LoginDataType) => (dispatch: any) => {
         dispatch(setLoginStatus(true));
         dispatch(getUserProfile(response.data.data.userId));
         dispatch(getUserStatus(response.data.data.userId));
-        dispatch(initializeApp()); //  App -> useEffect or this one ?
+        dispatch(initializeApp()); //  App -> useEffect or this one ? use authMe instead ?
       } else {
         processServerError('login(TC)', response.data, dispatch);
       }
     })
     .catch((error: AxiosError) => {
       processNetworkError('login(TC)', error, dispatch);
+    })
+    .finally(() => {
+      dispatch(setUserProfileEntityStatus(EntityStatus.idle)); // move to process RequestErrors ?
     });
-  dispatch(setUserProfileEntityStatus(EntityStatus.idle)); // move to process RequestErrors ?
 };
 
 export const logout = () => (dispatch: Dispatch) => {
@@ -39,8 +41,8 @@ export const logout = () => (dispatch: Dispatch) => {
     .logout()
     .then(response => {
       if (response.data.resultCode === ResponseCodes.Success) {
-        dispatch(setLoginStatus(false));
-        dispatch(setAuthData({ id: null, login: null, email: null }));
+        // dispatch(setLoginStatus(false));
+        dispatch(resetAuthState());
       } else {
         processServerError('logout(TC)', response.data, dispatch);
       }
@@ -49,3 +51,18 @@ export const logout = () => (dispatch: Dispatch) => {
       processNetworkError('logout(TC)', error, dispatch);
     });
 };
+
+export const authMe = () => (dispatch: Dispatch) =>
+  authAPI
+    .authMe()
+    .then(response => {
+      if (response.data.resultCode === ResponseCodes.Success) {
+        dispatch(setAuthData(response.data.data));
+        dispatch(setLoginStatus(true));
+      } else {
+        processServerError('authMe(TC)', response.data, dispatch);
+      }
+    })
+    .catch(error => {
+      processNetworkError('auth(TC)', error, dispatch);
+    });

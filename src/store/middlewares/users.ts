@@ -7,20 +7,21 @@ import {
   processNetworkError,
   processServerError,
 } from 'store/middlewares/utils/processRequestErrors';
+import { EntityStatus } from 'store/reducers/types';
 import {
   addToBusyEntities,
   removeFromBusyEntities,
-  setFetchingFalse,
-  setFetchingTrue,
   setTotalUsersCount,
   setUserAsFollowed,
   setUserAsUnfollowed,
   setUsers,
+  setUsersListEntityStatus,
 } from 'store/reducers/usersReducer';
 
 export const getUsers =
   (pageNumber: number, usersPerPage: number) => (dispatch: Dispatch) => {
-    dispatch(setFetchingTrue());
+    // dispatch(setFetchingTrue());
+    dispatch(setUsersListEntityStatus(EntityStatus.busy));
     usersAPI
       .getUsers(pageNumber, usersPerPage)
       .then(response => {
@@ -33,8 +34,11 @@ export const getUsers =
       })
       .catch((error: AxiosError) => {
         processNetworkError('getUsers(TC)', error, dispatch);
+      })
+      .finally(() => {
+        // dispatch(setFetchingFalse());
+        dispatch(setUsersListEntityStatus(EntityStatus.idle));
       });
-    dispatch(setFetchingFalse());
   };
 
 export const follow = (userID: number) => (dispatch: Dispatch) => {
@@ -50,8 +54,10 @@ export const follow = (userID: number) => (dispatch: Dispatch) => {
     })
     .catch((error: AxiosError) => {
       processNetworkError('follow(TC)', error, dispatch);
+    })
+    .finally(() => {
+      dispatch(removeFromBusyEntities(userID));
     });
-  dispatch(removeFromBusyEntities(userID));
 };
 
 export const unfollow = (userID: number) => (dispatch: Dispatch) => {
@@ -67,6 +73,8 @@ export const unfollow = (userID: number) => (dispatch: Dispatch) => {
     })
     .catch((error: AxiosError) => {
       processNetworkError('unfollow(TC)', error, dispatch);
+    })
+    .finally(() => {
+      dispatch(removeFromBusyEntities(userID));
     });
-  dispatch(removeFromBusyEntities(userID));
 };

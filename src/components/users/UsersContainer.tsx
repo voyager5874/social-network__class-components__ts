@@ -9,6 +9,7 @@ import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVi
 import { UsersPureFunc } from 'components/users/UsersPureFunc';
 import { DATA_PORTION_SIZE } from 'constants/base';
 import { follow, getUsers, unfollow } from 'store/middlewares/users';
+import { EntityStatus } from 'store/reducers/types';
 import { setCurrentPage } from 'store/reducers/usersReducer';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
@@ -40,8 +41,9 @@ class UsersContainer extends Component<UsersPropsType> {
   };
 
   render(): ComponentReturnType {
-    const { users, page, totalNumberOfPages, isFetching, busyEntities } = this.props;
-    return isFetching ? (
+    const { users, page, totalNumberOfPages, entityStatus, busyUserEntities } =
+      this.props;
+    return entityStatus === EntityStatus.busy ? (
       <LoadingVisualizer />
     ) : (
       <UsersPureFunc
@@ -52,7 +54,7 @@ class UsersContainer extends Component<UsersPropsType> {
         follow={this.followUser}
         unfollow={this.unfollowUser}
         leapValue={10}
-        busyEntities={busyEntities}
+        busyEntities={busyUserEntities}
       />
     );
   }
@@ -71,8 +73,8 @@ type MapStateToPropsType = {
   page: number;
   usersPerPage: number;
   totalNumberOfPages: number;
-  isFetching: boolean;
-  busyEntities: Array<number>;
+  entityStatus: EntityStatus;
+  busyUserEntities: Array<number>;
 };
 
 const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
@@ -81,8 +83,8 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
   page: state.users.currentPage,
   usersPerPage: DATA_PORTION_SIZE,
   totalNumberOfPages: Math.ceil(state.users.totalCount / DATA_PORTION_SIZE),
-  isFetching: state.users.isFetching,
-  busyEntities: state.users.busyEntities,
+  entityStatus: state.users.entityStatus,
+  busyUserEntities: state.users.busyEntities,
 });
 
 // export const UsersContainer = connect(mapStateToProps, {

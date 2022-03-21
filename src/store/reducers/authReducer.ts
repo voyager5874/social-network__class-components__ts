@@ -10,7 +10,8 @@ const initialState: AuthReducerStateType = {
 
 export type AuthReducerActionType =
   | ReturnType<typeof setAuthData>
-  | ReturnType<typeof setLoginStatus>;
+  | ReturnType<typeof setLoginStatus>
+  | ReturnType<typeof resetAuthState>;
 
 export const authReducer = (
   state: AuthReducerStateType = initialState,
@@ -21,6 +22,8 @@ export const authReducer = (
       return { ...state, ...action.data };
     case 'SET-LOGIN-STATE':
       return { ...state, isLoggedIn: action.loginStatus };
+    case 'RESET-AUTH-STATE':
+      return { isLoggedIn: false, login: null, email: null, id: null };
     default:
       return state;
   }
@@ -30,6 +33,11 @@ export const setAuthData = (data: AuthMeResponseDataType) =>
   ({
     type: 'SET-AUTH-DATA',
     data,
+  } as const);
+
+export const resetAuthState = () =>
+  ({
+    type: 'RESET-AUTH-STATE',
   } as const);
 
 export const setLoginStatus = (loginStatus: boolean) =>

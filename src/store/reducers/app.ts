@@ -22,7 +22,7 @@ export const appReducer = (
       return { ...state, isInitialized: true };
     case 'SET-APP-ERROR':
       return { ...state, error: action.error };
-    case 'SET-APP-STATUS':
+    case 'SET-APP-ENTITY-STATUS':
       return { ...state, entityStatus: action.status };
     default:
       return state;
@@ -40,13 +40,13 @@ export const setAppError = (error: string) =>
     error,
   } as const);
 
-export const setAppStatus = (status: EntityStatus) =>
+export const setAppEntityStatus = (status: EntityStatus) =>
   ({
-    type: 'SET-APP-STATUS',
+    type: 'SET-APP-ENTITY-STATUS',
     status,
   } as const);
 
 export type AppReducerActionsType =
   | ReturnType<typeof setAppInitialized>
   | ReturnType<typeof setAppError>
-  | ReturnType<typeof setAppStatus>;
+  | ReturnType<typeof setAppEntityStatus>;
