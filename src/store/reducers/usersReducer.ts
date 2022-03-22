@@ -11,8 +11,8 @@ const initialState: UsersReducerStateType = {
 };
 
 export type usersReducerActionsType =
-  | ReturnType<typeof setUserAsFollowed>
-  | ReturnType<typeof setUserAsUnfollowed>
+  // | ReturnType<typeof setUserAsFollowed>
+  // | ReturnType<typeof setUserAsUnfollowed>
   | ReturnType<typeof setUsers>
   | ReturnType<typeof setTotalUsersCount>
   | ReturnType<typeof setCurrentPage>
@@ -21,25 +21,33 @@ export type usersReducerActionsType =
   | ReturnType<typeof setUserEntityStatus>
   | ReturnType<typeof setUsersListEntityStatus>
   | ReturnType<typeof addToBusyEntities>
-  | ReturnType<typeof removeFromBusyEntities>;
+  | ReturnType<typeof removeFromBusyEntities>
+  | ReturnType<typeof setFollowedByCurrentUserState>;
 
 export const usersReducer = (
   state: UsersReducerStateType = initialState,
   action: usersReducerActionsType,
 ): UsersReducerStateType => {
   switch (action.type) {
-    case 'FOLLOW':
+    // case 'FOLLOW':
+    //   return {
+    //     ...state,
+    //     users: state.users.map(user =>
+    //       user.id === action.userID ? { ...user, followed: true } : user,
+    //     ),
+    //   };
+    // case 'UNFOLLOW':
+    //   return {
+    //     ...state,
+    //     users: state.users.map(user =>
+    //       user.id === action.userID ? { ...user, followed: false } : user,
+    //     ),
+    //   };
+    case 'SET-FOLLOWED-STATE':
       return {
         ...state,
         users: state.users.map(user =>
-          user.id === action.userID ? { ...user, followed: true } : user,
-        ),
-      };
-    case 'UNFOLLOW':
-      return {
-        ...state,
-        users: state.users.map(user =>
-          user.id === action.userID ? { ...user, followed: false } : user,
+          user.id === action.userID ? { ...user, followed: action.followedState } : user,
         ),
       };
     case 'SET-USERS':
@@ -73,16 +81,23 @@ export const usersReducer = (
   }
 };
 
-export const setUserAsFollowed = (userID: number) =>
-  ({
-    type: 'FOLLOW',
-    userID,
-  } as const);
+// export const setUserAsFollowed = (userID: number) =>
+//   ({
+//     type: 'FOLLOW',
+//     userID,
+//   } as const);
+//
+// export const setUserAsUnfollowed = (userID: number) =>
+//   ({
+//     type: 'UNFOLLOW',
+//     userID,
+//   } as const);
 
-export const setUserAsUnfollowed = (userID: number) =>
+export const setFollowedByCurrentUserState = (userID: number, followedState: boolean) =>
   ({
-    type: 'UNFOLLOW',
+    type: 'SET-FOLLOWED-STATE',
     userID,
+    followedState,
   } as const);
 
 // export const setUsersAC = (users: UserOnServerType[]) =>

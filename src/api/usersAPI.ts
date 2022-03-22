@@ -11,32 +11,25 @@ import {
 import { Nullable } from 'types';
 
 export const usersAPI = {
-  getUsers(pageNumber: number, usersPerPage: number) {
-    return axiosInstance.get<GetUsersResponseType>(
+  getUsers: (pageNumber: number, usersPerPage: number) =>
+    axiosInstance.get<GetUsersResponseType>(
       `users?page=${pageNumber}&count=${usersPerPage}`,
-    );
-  },
-  getUserProfile(userID: number | string) {
-    return axiosInstance.get<GetUserProfileResponseType>(`profile/${userID}`);
-  },
-  followUser(userID: number | string) {
-    return axiosInstance.post<FollowUserResponseType>(`follow/${userID}`);
-  },
-  unfollowUser(userID: number | string) {
-    return axiosInstance.delete<UnfollowUserResponseType>(`follow/${userID}`);
-  },
+    ),
+  getUserProfile: (userID: number | string) =>
+    axiosInstance.get<GetUserProfileResponseType>(`profile/${userID}`),
+  followUser: (userID: number | string) =>
+    axiosInstance.post<FollowUserResponseType>(`follow/${userID}`),
+  unfollowUser: (userID: number | string) =>
+    axiosInstance.delete<UnfollowUserResponseType>(`follow/${userID}`),
   checkIfUserFollowedByCurrentUser(userID: number | string) {
     return axiosInstance.get<boolean>(`follow/${userID}`);
   },
-  getUserStatus(userID: number | string) {
-    return axiosInstance.get<Nullable<string>>(`profile/status/${userID}`);
-  },
-  updateCurrentUserStatus(statusText: string) {
-    return axiosInstance.put<BasicResponseType>('profile/status', {
+  getUserStatus: (userID: number | string) =>
+    axiosInstance.get<Nullable<string>>(`profile/status/${userID}`),
+  updateCurrentUserStatus: (statusText: string) =>
+    axiosInstance.put<BasicResponseType>('profile/status', {
       status: `${statusText}`,
-    });
-  },
-  updateCurrentUserProfileData(data: UpdateUserProfileRequestDataType) {
-    return axiosInstance.put<BasicResponseType>('profile', data);
-  },
+    }),
+  updateCurrentUserProfileData: (data: UpdateUserProfileRequestDataType) =>
+    axiosInstance.put<BasicResponseType>('profile', data),
 };

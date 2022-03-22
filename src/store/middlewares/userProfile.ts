@@ -57,21 +57,37 @@ export const getUserStatus = (userID: number) => (dispatch: Dispatch) => {
     });
 };
 
-export const updateCurrentUserStatus = (statusText: string) => (dispatch: Dispatch) => {
-  dispatch(setUserProfileEntityStatus(EntityStatus.busy));
-  usersAPI
-    .updateCurrentUserStatus(statusText)
-    .then(response => {
+// export const updateCurrentUserStatus = (statusText: string) => (dispatch: Dispatch) => {
+//   dispatch(setUserProfileEntityStatus(EntityStatus.busy));
+//   usersAPI
+//     .updateCurrentUserStatus(statusText)
+//     .then(response => {
+//       if (response.data.resultCode === ResponseCodes.Success) {
+//         dispatch(setUserStatus(statusText));
+//       } else {
+//         processServerError('updateCurrentStatus(TC)', response.data, dispatch);
+//       }
+//     })
+//     .catch((error: AxiosError) => {
+//       processNetworkError('updateCurrentStatus(TC)', error, dispatch);
+//     })
+//     .finally(() => {
+//       dispatch(setUserProfileEntityStatus(EntityStatus.idle));
+//     });
+// };
+
+export const updateCurrentUserStatus =
+  (statusText: string) => async (dispatch: Dispatch) => {
+    dispatch(setUserProfileEntityStatus(EntityStatus.busy));
+    try {
+      const response = await usersAPI.updateCurrentUserStatus(statusText);
       if (response.data.resultCode === ResponseCodes.Success) {
         dispatch(setUserStatus(statusText));
       } else {
         processServerError('updateCurrentStatus(TC)', response.data, dispatch);
       }
-    })
-    .catch((error: AxiosError) => {
-      processNetworkError('updateCurrentStatus(TC)', error, dispatch);
-    })
-    .finally(() => {
-      dispatch(setUserProfileEntityStatus(EntityStatus.idle));
-    });
-};
+    } catch (error) {
+      processNetworkError('updateCurrentStatus(TC)', error as AxiosError, dispatch);
+    }
+    dispatch(setUserProfileEntityStatus(EntityStatus.idle));
+  };

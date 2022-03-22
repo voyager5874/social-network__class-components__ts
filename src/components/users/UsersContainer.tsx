@@ -8,7 +8,7 @@ import { withAuthRedirect } from 'components/common/HOC/withAuthRedirect';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { UsersPureFunc } from 'components/users/UsersPureFunc';
 import { DATA_PORTION_SIZE } from 'constants/base';
-import { follow, getUsers, unfollow } from 'store/middlewares/users';
+import { changeFollowedByCurrentUserState, getUsers } from 'store/middlewares/users';
 import { EntityStatus } from 'store/reducers/types';
 import { setCurrentPage } from 'store/reducers/usersReducer';
 import { RootStateType } from 'store/types';
@@ -32,12 +32,12 @@ class UsersContainer extends Component<UsersPropsType> {
 
   followUser = (userID: number): void => {
     // eslint-disable-next-line react/destructuring-assignment
-    this.props.follow(userID);
+    this.props.changeFollowedByCurrentUserState(userID, true);
   };
 
   unfollowUser = (userID: number): void => {
     // eslint-disable-next-line react/destructuring-assignment
-    this.props.unfollow(userID);
+    this.props.changeFollowedByCurrentUserState(userID, false);
   };
 
   render(): ComponentReturnType {
@@ -61,8 +61,9 @@ class UsersContainer extends Component<UsersPropsType> {
 }
 
 type MapDispatchToPropsType = {
-  follow: (userID: number) => void;
-  unfollow: (userID: number) => void;
+  // follow: (userID: number) => void;
+  // unfollow: (userID: number) => void;
+  changeFollowedByCurrentUserState: (userID: number, newFollowedState: boolean) => void;
   setCurrentPage: (page: number) => void;
   getUsers: (pageNumber: number, usersPerPage: number) => void;
 };
@@ -99,8 +100,9 @@ export type UsersPropsType = MapDispatchToPropsType & MapStateToPropsType;
 export default compose<ComponentType>(
   withAuthRedirect,
   connect(mapStateToProps, {
-    follow,
-    unfollow,
+    // follow,
+    // unfollow,
+    changeFollowedByCurrentUserState,
     getUsers,
     setCurrentPage,
   }),
