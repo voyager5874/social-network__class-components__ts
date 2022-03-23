@@ -88,3 +88,10 @@ export type LoginDataType = {
   rememberMe?: boolean;
   captcha?: string;
 };
+
+export type PutProfilePhotoResponseDataType = {
+  photos: {
+    small: string;
+    large: string;
+  };
+};

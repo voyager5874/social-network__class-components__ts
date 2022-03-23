@@ -79,3 +79,8 @@ export type DialogPageStateType = {
 };
 
 export type AuthReducerStateType = AuthMeResponseDataType & { isLoggedIn: boolean };
+
+export type AvatarImageDataType = {
+  large: string;
+  small: string;
+};

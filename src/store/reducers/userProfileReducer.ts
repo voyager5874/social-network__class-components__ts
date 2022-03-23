@@ -1,5 +1,9 @@
 import { GetUserProfileResponseType } from 'api/types';
-import { EntityStatus, UserProfileReducerStateType } from 'store/reducers/types';
+import {
+  AvatarImageDataType,
+  EntityStatus,
+  UserProfileReducerStateType,
+} from 'store/reducers/types';
 
 const initialState: UserProfileReducerStateType = {
   profileData: {
@@ -30,7 +34,8 @@ const initialState: UserProfileReducerStateType = {
 export type UserProfileReducerActionsType =
   | ReturnType<typeof setUserProfile>
   | ReturnType<typeof setUserProfileEntityStatus>
-  | ReturnType<typeof setUserStatus>;
+  | ReturnType<typeof setUserStatus>
+  | ReturnType<typeof setCurrentUserAvatar>;
 
 export const userProfileReducer = (
   state: UserProfileReducerStateType = initialState,
@@ -46,6 +51,11 @@ export const userProfileReducer = (
       return { ...state, entityStatus: action.status };
     case 'SET-USER-STATUS':
       return { ...state, status: action.statusText };
+    case 'SET-AVATAR':
+      return {
+        ...state,
+        profileData: { ...state.profileData, photos: action.imageData },
+      };
     default:
       return state;
   }
@@ -67,4 +77,10 @@ export const setUserStatus = (statusText: string) =>
   ({
     type: 'SET-USER-STATUS',
     statusText,
+  } as const);
+
+export const setCurrentUserAvatar = (imageData: AvatarImageDataType) =>
+  ({
+    type: 'SET-AVATAR',
+    imageData,
   } as const);

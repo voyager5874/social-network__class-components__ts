@@ -13,6 +13,7 @@ import { initializeApp } from 'store/middlewares/app';
 import {
   getUserProfile,
   getUserStatus,
+  updateCurrentUserAvatar,
   updateCurrentUserStatus,
 } from 'store/middlewares/userProfile';
 import { addPost, updateNewPostText } from 'store/reducers/postsReducer';
@@ -22,6 +23,15 @@ import { ComponentReturnType, Nullable } from 'types';
 
 class ProfileContainer extends Component<UserProfilePropsType> {
   componentDidMount(): void {
+    this.collectProfilePageData();
+  }
+
+  componentDidUpdate(prevProps: UserProfilePropsType) {
+    if (prevProps.router.params.id === this.props.router.params.id) return;
+    this.collectProfilePageData();
+  }
+
+  collectProfilePageData(): void {
     if (!this.props.router.params.id && !this.props.loggedInUserID) {
       console.warn("can't make profile and status request: no user id provided");
       return;
@@ -66,6 +76,8 @@ class ProfileContainer extends Component<UserProfilePropsType> {
         updateNewPostText={this.props.updateNewPostText}
         userStatus={this.props.userStatus}
         updateCurrentUserStatus={this.props.updateCurrentUserStatus}
+        updateCurrentUserAvatar={this.props.updateCurrentUserAvatar}
+        showAvatarButton={userId === this.props.loggedInUserID}
       />
     );
   }
@@ -77,6 +89,7 @@ type MapDispatchToPropsType = {
   addPost: () => void;
   updateNewPostText: (text: string) => void;
   updateCurrentUserStatus: (status: string) => void;
+  updateCurrentUserAvatar: (image: File) => void;
 };
 
 type MapStateToPropsType = {
@@ -127,5 +140,6 @@ export default compose<ComponentType>(
     updateNewPostText,
     authCurrentUser: initializeApp,
     updateCurrentUserStatus,
+    updateCurrentUserAvatar,
   }),
 )(ProfileContainer);

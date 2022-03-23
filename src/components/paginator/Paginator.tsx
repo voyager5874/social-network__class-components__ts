@@ -12,8 +12,8 @@ export type PaginatorPropsType = {
 
 export const Paginator = ({
   currentPage,
-  totalNumberOfPages,
-  numberOfButtons,
+  totalNumberOfPages = 10,
+  numberOfButtons = 5,
   getPage,
   leapValue,
 }: PaginatorPropsType): ComponentReturnType => {

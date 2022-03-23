@@ -12,6 +12,8 @@ type ProfilePropsType = GetUserProfileResponseType & {
   updateNewPostText: (text: string) => void;
   userStatus: Nullable<string>;
   updateCurrentUserStatus: (status: string) => void;
+  updateCurrentUserAvatar: (image: File) => void;
+  showAvatarButton: boolean;
 };
 
 export const Profile = ({
@@ -28,6 +30,8 @@ export const Profile = ({
   updateNewPostText,
   userStatus,
   updateCurrentUserStatus,
+  updateCurrentUserAvatar,
+  showAvatarButton,
 }: ProfilePropsType): ComponentReturnType => {
   const someContent = 'Profile';
   return (
@@ -42,6 +46,8 @@ export const Profile = ({
         userId={userId}
         userStatus={userStatus}
         updateCurrentUserStatus={updateCurrentUserStatus}
+        updateCurrentUserAvatar={updateCurrentUserAvatar}
+        showAvatarButton={showAvatarButton}
       />
       <MyPosts
         posts={posts}

@@ -1,3 +1,5 @@
+import { ChangeEvent } from 'react';
+
 import { v1 } from 'uuid';
 
 import styles from './ProfileInfo.module.css';
@@ -10,6 +12,8 @@ import { ComponentReturnType, Nullable } from 'types';
 type ProfileInfoPropsType = GetUserProfileResponseType & {
   userStatus: Nullable<string>;
   updateCurrentUserStatus: (status: string) => void;
+  updateCurrentUserAvatar: (img: File) => void;
+  showAvatarButton: boolean;
 };
 
 export const ProfileInfo = ({
@@ -22,9 +26,18 @@ export const ProfileInfo = ({
   userId,
   userStatus,
   updateCurrentUserStatus,
+  updateCurrentUserAvatar,
+  showAvatarButton,
 }: ProfileInfoPropsType): ComponentReturnType => {
   // type SocialMediaListType = keyof typeof contacts;
   const socialMediaList = Object.keys(contacts) as Array<keyof typeof contacts>;
+
+  const onImageSelect = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      updateCurrentUserAvatar(event.target.files[0]);
+    }
+  };
+
   return (
     <div className={styles.profileInfoContainer}>
       <div>
@@ -33,6 +46,7 @@ export const ProfileInfo = ({
           src={photos.large ? photos.large : userWithoutPhoto}
           alt="profile"
         />
+        <div>{showAvatarButton && <input type="file" onChange={onImageSelect} />}</div>
       </div>
       <div className={styles.profileTextInfo}>
         <h2>{fullName}</h2>

@@ -9,6 +9,7 @@ import {
 } from 'store/middlewares/utils/processRequestErrors';
 import { EntityStatus } from 'store/reducers/types';
 import {
+  setCurrentUserAvatar,
   setUserProfile,
   setUserProfileEntityStatus,
   setUserStatus,
@@ -91,3 +92,19 @@ export const updateCurrentUserStatus =
     }
     dispatch(setUserProfileEntityStatus(EntityStatus.idle));
   };
+
+export const updateCurrentUserAvatar = (image: File) => async (dispatch: Dispatch) => {
+  dispatch(setUserProfileEntityStatus(EntityStatus.busy));
+  try {
+    const response = await usersAPI.putProfilePhoto(image);
+    if (response.data.resultCode === ResponseCodes.Success) {
+      debugger;
+      dispatch(setCurrentUserAvatar(response.data.data.photos));
+    } else {
+      processServerError('updateAvatarTC', response.data, dispatch);
+    }
+  } catch (error) {
+    processNetworkError('updateAvatarTC', error as AxiosError, dispatch);
+  }
+  dispatch(setUserProfileEntityStatus(EntityStatus.idle));
+};

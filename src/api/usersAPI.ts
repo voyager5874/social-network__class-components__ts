@@ -4,6 +4,7 @@ import {
   FollowUserResponseType,
   GetUserProfileResponseType,
   GetUsersResponseType,
+  PutProfilePhotoResponseDataType,
   UnfollowUserResponseType,
   UpdateUserProfileRequestDataType,
   UserOnServerType,
@@ -32,4 +33,13 @@ export const usersAPI = {
     }),
   updateCurrentUserProfileData: (data: UpdateUserProfileRequestDataType) =>
     axiosInstance.put<BasicResponseType>('profile', data),
+  putProfilePhoto: (imgFile: File) => {
+    const formData = new FormData();
+    formData.append('image', imgFile);
+    return axiosInstance.put<
+      BasicResponseType<{ photos: PutProfilePhotoResponseDataType }>
+    >('/profile/photo', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
 };
