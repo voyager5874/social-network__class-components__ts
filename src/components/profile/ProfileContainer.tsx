@@ -77,7 +77,7 @@ class ProfileContainer extends Component<UserProfilePropsType> {
         userStatus={this.props.userStatus}
         updateCurrentUserStatus={this.props.updateCurrentUserStatus}
         updateCurrentUserAvatar={this.props.updateCurrentUserAvatar}
-        showAvatarButton={userId === this.props.loggedInUserID}
+        isProfileOwner={this.props.profile.userId === this.props.loggedInUserID}
       />
     );
   }

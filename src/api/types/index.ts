@@ -31,6 +31,7 @@ export type UserProfileContactsType = {
 };
 
 export type UpdateUserProfileRequestDataType = {
+  aboutMe: string;
   userId: number;
   lookingForAJob: boolean;
   lookingForAJobDescription: string;

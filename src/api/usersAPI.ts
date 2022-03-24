@@ -31,15 +31,17 @@ export const usersAPI = {
     axiosInstance.put<BasicResponseType>('profile/status', {
       status: `${statusText}`,
     }),
-  updateCurrentUserProfileData: (data: UpdateUserProfileRequestDataType) =>
+  putNewCurrentUserProfileData: (data: Partial<UpdateUserProfileRequestDataType>) =>
     axiosInstance.put<BasicResponseType>('profile', data),
   putProfilePhoto: (imgFile: File) => {
     const formData = new FormData();
     formData.append('image', imgFile);
-    return axiosInstance.put<
-      BasicResponseType<{ photos: PutProfilePhotoResponseDataType }>
-    >('/profile/photo', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    return axiosInstance.put<BasicResponseType<PutProfilePhotoResponseDataType>>(
+      '/profile/photo',
+      formData,
+      {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      },
+    );
   },
 };

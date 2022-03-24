@@ -1,7 +1,7 @@
 import { GetUserProfileResponseType } from 'api/types';
 import { MyPosts } from 'components/profile/MyPosts/MyPosts';
 import styles from 'components/profile/Profile.module.css';
-import { ProfileInfo } from 'components/profile/profileInfo/ProfileInfo';
+import { ProfileCard } from 'components/profile/profileCard/ProfileCard';
 import { PostType } from 'components/profile/types';
 import { ComponentReturnType, Nullable } from 'types';
 
@@ -13,7 +13,7 @@ type ProfilePropsType = GetUserProfileResponseType & {
   userStatus: Nullable<string>;
   updateCurrentUserStatus: (status: string) => void;
   updateCurrentUserAvatar: (image: File) => void;
-  showAvatarButton: boolean;
+  isProfileOwner: boolean;
 };
 
 export const Profile = ({
@@ -31,12 +31,12 @@ export const Profile = ({
   userStatus,
   updateCurrentUserStatus,
   updateCurrentUserAvatar,
-  showAvatarButton,
+  isProfileOwner,
 }: ProfilePropsType): ComponentReturnType => {
   const someContent = 'Profile';
   return (
     <div className={styles.profile}>
-      <ProfileInfo
+      <ProfileCard
         aboutMe={aboutMe}
         photos={photos}
         contacts={contacts}
@@ -47,7 +47,7 @@ export const Profile = ({
         userStatus={userStatus}
         updateCurrentUserStatus={updateCurrentUserStatus}
         updateCurrentUserAvatar={updateCurrentUserAvatar}
-        showAvatarButton={showAvatarButton}
+        isProfileOwner={isProfileOwner}
       />
       <MyPosts
         posts={posts}

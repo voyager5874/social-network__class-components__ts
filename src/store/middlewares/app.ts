@@ -26,6 +26,7 @@ import { EntityStatus } from 'store/reducers/types';
 // thunk type! this is thunk creator dispatch inside thunk creator
 
 export const initializeApp = () => (dispatch: any) => {
+  debugger;
   dispatch(setAppEntityStatus(EntityStatus.busy));
   const promisesList = [dispatch(authMe())];
   Promise.all(promisesList)

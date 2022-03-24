@@ -2,6 +2,7 @@ import { AxiosError } from 'axios';
 import { Dispatch } from 'redux';
 
 import { usersAPI } from 'api';
+import { UpdateUserProfileRequestDataType } from 'api/types';
 import { ResponseCodes } from 'enums';
 import {
   processNetworkError,
@@ -58,25 +59,6 @@ export const getUserStatus = (userID: number) => (dispatch: Dispatch) => {
     });
 };
 
-// export const updateCurrentUserStatus = (statusText: string) => (dispatch: Dispatch) => {
-//   dispatch(setUserProfileEntityStatus(EntityStatus.busy));
-//   usersAPI
-//     .updateCurrentUserStatus(statusText)
-//     .then(response => {
-//       if (response.data.resultCode === ResponseCodes.Success) {
-//         dispatch(setUserStatus(statusText));
-//       } else {
-//         processServerError('updateCurrentStatus(TC)', response.data, dispatch);
-//       }
-//     })
-//     .catch((error: AxiosError) => {
-//       processNetworkError('updateCurrentStatus(TC)', error, dispatch);
-//     })
-//     .finally(() => {
-//       dispatch(setUserProfileEntityStatus(EntityStatus.idle));
-//     });
-// };
-
 export const updateCurrentUserStatus =
   (statusText: string) => async (dispatch: Dispatch) => {
     dispatch(setUserProfileEntityStatus(EntityStatus.busy));
@@ -98,7 +80,6 @@ export const updateCurrentUserAvatar = (image: File) => async (dispatch: Dispatc
   try {
     const response = await usersAPI.putProfilePhoto(image);
     if (response.data.resultCode === ResponseCodes.Success) {
-      debugger;
       dispatch(setCurrentUserAvatar(response.data.data.photos));
     } else {
       processServerError('updateAvatarTC', response.data, dispatch);
@@ -108,3 +89,22 @@ export const updateCurrentUserAvatar = (image: File) => async (dispatch: Dispatc
   }
   dispatch(setUserProfileEntityStatus(EntityStatus.idle));
 };
+
+export const updateCurrentUserProfile =
+  (data: Partial<UpdateUserProfileRequestDataType>) =>
+  async (dispatch: any, getState: any) => {
+    debugger;
+    dispatch(setUserProfileEntityStatus(EntityStatus.busy));
+    const currentUserID = getState().authData.id;
+    try {
+      const response = await usersAPI.putNewCurrentUserProfileData(data);
+      if (response.data.resultCode === ResponseCodes.Success) {
+        dispatch(getUserProfile(currentUserID));
+      } else {
+        processServerError('updateProfile(TC)', response.data, dispatch);
+      }
+    } catch (error) {
+      processNetworkError('updateProfile(TC)', error as AxiosError, dispatch);
+    }
+    dispatch(setUserProfileEntityStatus(EntityStatus.idle));
+  };

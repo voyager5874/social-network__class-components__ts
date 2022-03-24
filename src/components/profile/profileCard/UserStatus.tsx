@@ -6,6 +6,7 @@ import { getTrimmedValue } from 'utils';
 type UserStatusPropsType = {
   statusText: Nullable<string>;
   updateCurrentUserStatus: (status: string) => void;
+  isProfileOwner: boolean;
 };
 
 type UserStatusStateType = {
@@ -49,6 +50,7 @@ export class UserStatus extends Component<UserStatusPropsType, UserStatusStateTy
   };
 
   activateEditMode = () => {
+    if (!this.props.isProfileOwner) return;
     this.setState({
       editMode: true,
     });
