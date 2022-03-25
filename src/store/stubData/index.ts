@@ -8,32 +8,32 @@ export const postsElements = [
   {
     id: v1(),
     postText: STRING_STUB_SHORT,
-    likesCount: getRandomInteger(MAX_LIKES_COUNT),
+    likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
   },
   {
     id: v1(),
     postText: STRING_STUB_SHORT,
-    likesCount: getRandomInteger(MAX_LIKES_COUNT),
+    likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
   },
   {
     id: v1(),
     postText: STRING_STUB_SHORT,
-    likesCount: getRandomInteger(MAX_LIKES_COUNT),
+    likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
   },
   {
     id: v1(),
     postText: STRING_STUB_SHORT,
-    likesCount: getRandomInteger(MAX_LIKES_COUNT),
+    likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
   },
   {
     id: v1(),
     postText: STRING_STUB_SHORT,
-    likesCount: getRandomInteger(MAX_LIKES_COUNT),
+    likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
   },
   {
     id: v1(),
     postText: STRING_STUB_SHORT,
-    likesCount: getRandomInteger(MAX_LIKES_COUNT),
+    likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
   },
 ];
 

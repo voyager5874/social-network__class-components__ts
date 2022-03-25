@@ -23,3 +23,8 @@
     display: flex;
     flex-direction: column;
 }
+
+.submitButton{
+    min-height: 20px;
+    padding: 5px;
+}

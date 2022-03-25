@@ -67,7 +67,7 @@ export const ProfileCard = ({
             userId={userId}
           />
         )}
-        {isProfileOwner && (
+        {isProfileOwner && !editMode && (
           <button type="button" onClick={() => setEditMode(true)}>
             edit profile
           </button>

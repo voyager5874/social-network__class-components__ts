@@ -78,9 +78,7 @@ export const ProfileInfoEditForm = () => {
     state => state.userProfile.profileData,
   );
 
-  const socialMediaList = Object.keys(profileInfo.contacts) as Array<
-    keyof typeof profileInfo.contacts
-  >;
+  const socialMediaList = Object.keys(profileInfo.contacts);
 
   const FormikInitialValues: FormikInitialValuesType = {
     fullName: profileInfo.fullName || '',
@@ -132,18 +130,6 @@ export const ProfileInfoEditForm = () => {
         />
         <ErrorMessage name="lookingForAJobDescription" className={styles.error} />
 
-        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-        {/* <label htmlFor="contacts.facebook">Face book page</label> */}
-        {/* <Field name="contacts.facebook" type="text" /> */}
-        {/* <ErrorMessage name="contacts.facebook" className={styles.error} /> */}
-
-        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-        {/* <label htmlFor="contacts.twitter">twitter</label> */}
-        {/* <Field name="contacts.twitter" type="text" /> */}
-        {/* <ErrorMessage name="contacts.twitter" className={styles.error} /> */}
-
-        {/* <SocialMediaField name="contacts.vk">vkontakte</SocialMediaField> */}
-
         <div className={styles.socialMediaBlock}>
           <b>My social media:</b>
           {socialMediaList.map(media => (
@@ -153,7 +139,9 @@ export const ProfileInfoEditForm = () => {
           ))}
         </div>
 
-        <button type="submit">Submit</button>
+        <button type="submit" className={styles.submitButton}>
+          Submit
+        </button>
       </Form>
     </Formik>
   );

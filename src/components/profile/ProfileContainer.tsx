@@ -3,6 +3,7 @@ import { Component, ComponentType } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
+import { usersAPI } from 'api';
 import { GetUserProfileResponseType } from 'api/types';
 import { withRouter } from 'components/common';
 import { withAuthRedirect } from 'components/common/HOC/withAuthRedirect';
@@ -20,6 +21,7 @@ import { addPost, updateNewPostText } from 'store/reducers/postsReducer';
 import { EntityStatus } from 'store/reducers/types';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType, Nullable } from 'types';
+import { getRandomInteger } from 'utils';
 
 class ProfileContainer extends Component<UserProfilePropsType> {
   componentDidMount(): void {
@@ -30,6 +32,26 @@ class ProfileContainer extends Component<UserProfilePropsType> {
     if (prevProps.router.params.id === this.props.router.params.id) return;
     this.collectProfilePageData();
   }
+
+  showRandomProfile = (): void => {
+    if (!this.props.usersCount) return;
+
+    const findSamurai = async () => {
+      const userID: number = getRandomInteger(3, this.props.usersCount);
+      try {
+        const response = await usersAPI.getUserProfile(userID);
+        if (response.data.photos.small) {
+          this.props.router.navigate(`/profile/${userID}`);
+        } else {
+          await findSamurai();
+        }
+      } catch (error) {
+        console.warn(`there is no user with id ${userID}?`);
+        await findSamurai();
+      }
+    };
+    findSamurai();
+  };
 
   collectProfilePageData(): void {
     if (!this.props.router.params.id && !this.props.loggedInUserID) {
@@ -78,6 +100,7 @@ class ProfileContainer extends Component<UserProfilePropsType> {
         updateCurrentUserStatus={this.props.updateCurrentUserStatus}
         updateCurrentUserAvatar={this.props.updateCurrentUserAvatar}
         isProfileOwner={this.props.profile.userId === this.props.loggedInUserID}
+        showRandomProfile={this.showRandomProfile}
       />
     );
   }
@@ -99,6 +122,7 @@ type MapStateToPropsType = {
   profileEntityStatus: EntityStatus;
   loggedInUserID: Nullable<number>;
   userStatus: Nullable<string>;
+  usersCount: number;
 };
 
 const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
@@ -108,6 +132,7 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
   profileEntityStatus: state.userProfile.entityStatus,
   loggedInUserID: state.authData.id,
   userStatus: state.userProfile.status,
+  usersCount: state.users.totalCount,
 });
 
 type WithRouterPropsType = {

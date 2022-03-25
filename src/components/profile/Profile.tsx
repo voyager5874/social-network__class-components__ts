@@ -14,6 +14,7 @@ type ProfilePropsType = GetUserProfileResponseType & {
   updateCurrentUserStatus: (status: string) => void;
   updateCurrentUserAvatar: (image: File) => void;
   isProfileOwner: boolean;
+  showRandomProfile: () => void;
 };
 
 export const Profile = ({
@@ -32,10 +33,14 @@ export const Profile = ({
   updateCurrentUserStatus,
   updateCurrentUserAvatar,
   isProfileOwner,
+  showRandomProfile,
 }: ProfilePropsType): ComponentReturnType => {
   const someContent = 'Profile';
   return (
     <div className={styles.profile}>
+      <button type="button" onClick={showRandomProfile}>
+        showRandomProfile
+      </button>
       <ProfileCard
         aboutMe={aboutMe}
         photos={photos}
