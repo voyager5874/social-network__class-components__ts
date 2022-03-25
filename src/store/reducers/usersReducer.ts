@@ -5,19 +5,14 @@ const initialState: UsersReducerStateType = {
   users: [],
   totalCount: 0,
   currentPage: 1,
-  // isFetching: false, // I'll replace it with entityStatus
   entityStatus: EntityStatus.idle,
   busyEntities: [],
 };
 
 export type usersReducerActionsType =
-  // | ReturnType<typeof setUserAsFollowed>
-  // | ReturnType<typeof setUserAsUnfollowed>
   | ReturnType<typeof setUsers>
   | ReturnType<typeof setTotalUsersCount>
   | ReturnType<typeof setCurrentPage>
-  // | ReturnType<typeof setFetchingTrue>
-  // | ReturnType<typeof setFetchingFalse>
   | ReturnType<typeof setUserEntityStatus>
   | ReturnType<typeof setUsersListEntityStatus>
   | ReturnType<typeof addToBusyEntities>
@@ -29,20 +24,6 @@ export const usersReducer = (
   action: usersReducerActionsType,
 ): UsersReducerStateType => {
   switch (action.type) {
-    // case 'FOLLOW':
-    //   return {
-    //     ...state,
-    //     users: state.users.map(user =>
-    //       user.id === action.userID ? { ...user, followed: true } : user,
-    //     ),
-    //   };
-    // case 'UNFOLLOW':
-    //   return {
-    //     ...state,
-    //     users: state.users.map(user =>
-    //       user.id === action.userID ? { ...user, followed: false } : user,
-    //     ),
-    //   };
     case 'SET-FOLLOWED-STATE':
       return {
         ...state,
@@ -56,10 +37,6 @@ export const usersReducer = (
       return { ...state, totalCount: action.count };
     case 'SET-CURRENT-PAGE':
       return { ...state, currentPage: action.page };
-    // case 'SET-FETCHING-TRUE':
-    //   return { ...state, isFetching: true };
-    // case 'SET-FETCHING-FALSE':
-    //   return { ...state, isFetching: false };
     case 'SET-USER-ENTITY-STATUS':
       return {
         ...state,
@@ -81,30 +58,12 @@ export const usersReducer = (
   }
 };
 
-// export const setUserAsFollowed = (userID: number) =>
-//   ({
-//     type: 'FOLLOW',
-//     userID,
-//   } as const);
-//
-// export const setUserAsUnfollowed = (userID: number) =>
-//   ({
-//     type: 'UNFOLLOW',
-//     userID,
-//   } as const);
-
 export const setFollowedByCurrentUserState = (userID: number, followedState: boolean) =>
   ({
     type: 'SET-FOLLOWED-STATE',
     userID,
     followedState,
   } as const);
-
-// export const setUsersAC = (users: UserOnServerType[]) =>
-//   ({
-//     type: 'SET-USERS',
-//     users,
-//   } as const);
 
 export const setUsers = (users: UserOnServerType[]) =>
   ({
@@ -123,16 +82,6 @@ export const setCurrentPage = (page: number) =>
     type: 'SET-CURRENT-PAGE',
     page,
   } as const);
-
-// export const setFetchingTrue = () =>
-//   ({
-//     type: 'SET-FETCHING-TRUE',
-//   } as const);
-//
-// export const setFetchingFalse = () =>
-//   ({
-//     type: 'SET-FETCHING-FALSE',
-//   } as const);
 
 export const setUserEntityStatus = (userID: number, status: EntityStatus) =>
   ({

@@ -15,6 +15,8 @@ import {
   setUserProfileEntityStatus,
   setUserStatus,
 } from 'store/reducers/userProfileReducer';
+import { RootStateType } from 'store/types';
+import { getRandomInteger } from 'utils';
 
 export const getUserProfile = (userID: number) => (dispatch: Dispatch) => {
   dispatch(setUserProfileEntityStatus(EntityStatus.busy));
@@ -107,4 +109,26 @@ export const updateCurrentUserProfile =
       processNetworkError('updateProfile(TC)', error as AxiosError, dispatch);
     }
     dispatch(setUserProfileEntityStatus(EntityStatus.idle));
+  };
+
+export const findRealSamurai =
+  (navigate: any) => async (dispatch: any, getState: any) => {
+    const usersCount = getState().users.totalCount;
+
+    const findSamurai = async () => {
+      const userID: number = getRandomInteger(3, usersCount);
+      try {
+        const response = await usersAPI.getUserProfile(userID);
+        if (response.data.photos.small) {
+          // dispatch(getUserProfile(userID))
+          navigate(`${userID}`);
+        } else {
+          await findSamurai();
+        }
+      } catch (error) {
+        console.warn(`there is no user with id ${userID}?`);
+        await findSamurai();
+      }
+    };
+    await findSamurai();
   };
