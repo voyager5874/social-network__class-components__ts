@@ -4,11 +4,11 @@ import * as Yup from 'yup';
 
 import styles from './ProfileInfoEditForm.module.css';
 
-import { GetUserProfileResponseType } from 'api/types';
+import { GetUserProfileResponseType, UserProfileContactsType } from 'api/types';
 import { updateCurrentUserProfile } from 'store/middlewares/userProfile';
 import { RootStateType } from 'store/types';
 
-const LookingForJob = ({ children, ...props }: any) => {
+const YesNoField = ({ children, ...props }: any) => {
   const [field, meta] = useField({ ...props, type: 'checkbox' });
   return (
     <div>
@@ -17,6 +17,23 @@ const LookingForJob = ({ children, ...props }: any) => {
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <input type="checkbox" {...field} {...props} />
         {children}
+      </label>
+      {meta.touched && meta.error ? (
+        <div className={styles.error}>{meta.error}</div>
+      ) : null}
+    </div>
+  );
+};
+
+const SocialMediaField = ({ children, ...props }: any) => {
+  const [field, meta] = useField({ ...props, type: 'text' });
+  return (
+    <div className={styles.socialMediaFieldContainer}>
+      {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+      <label className={styles.socialMediaFieldLabel}>
+        {children}
+        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+        <input type="text" {...field} {...props} />
       </label>
       {meta.touched && meta.error ? (
         <div className={styles.error}>{meta.error}</div>
@@ -48,6 +65,7 @@ type FormikInitialValuesType = {
   aboutMe: string;
   lookingForAJob: boolean;
   lookingForAJobDescription: string;
+  contacts: UserProfileContactsType;
 };
 
 // type FormikErrorsObjectType = Partial<FormikInitialValuesType>;
@@ -59,12 +77,18 @@ export const ProfileInfoEditForm = () => {
   const profileInfo = useSelector<RootStateType, GetUserProfileResponseType>(
     state => state.userProfile.profileData,
   );
+
+  const socialMediaList = Object.keys(profileInfo.contacts) as Array<
+    keyof typeof profileInfo.contacts
+  >;
+
   const FormikInitialValues: FormikInitialValuesType = {
     fullName: profileInfo.fullName || '',
     aboutMe: profileInfo.aboutMe || '',
     lookingForAJob:
       profileInfo.lookingForAJob !== null ? profileInfo.lookingForAJob : false,
     lookingForAJobDescription: profileInfo.lookingForAJobDescription || '',
+    contacts: profileInfo.contacts,
   };
   return (
     <Formik
@@ -93,22 +117,41 @@ export const ProfileInfoEditForm = () => {
 
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label htmlFor="aboutMe">About me</label>
-        <Field name="aboutMe" type="text" />
+        <Field as="textarea" name="aboutMe" type="text" className={styles.textarea} />
         <ErrorMessage name="aboutMe" className={styles.error} />
 
-        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-        {/* <label htmlFor="lookingForAJob">Job description</label> */}
-        {/* <Field name="lookingForAJob" type="text" /> */}
-        {/* <ErrorMessage name="lookingForAJob" /> */}
-
-        <LookingForJob name="lookingForAJob">
-          I am currently looking for a job
-        </LookingForJob>
+        <YesNoField name="lookingForAJob">I am currently looking for a job</YesNoField>
 
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label htmlFor="lookingForAJobDescription">Job description</label>
-        <Field name="lookingForAJobDescription" type="text" />
+        <Field
+          as="textarea"
+          name="lookingForAJobDescription"
+          type="text"
+          className={styles.textarea}
+        />
         <ErrorMessage name="lookingForAJobDescription" className={styles.error} />
+
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+        {/* <label htmlFor="contacts.facebook">Face book page</label> */}
+        {/* <Field name="contacts.facebook" type="text" /> */}
+        {/* <ErrorMessage name="contacts.facebook" className={styles.error} /> */}
+
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+        {/* <label htmlFor="contacts.twitter">twitter</label> */}
+        {/* <Field name="contacts.twitter" type="text" /> */}
+        {/* <ErrorMessage name="contacts.twitter" className={styles.error} /> */}
+
+        {/* <SocialMediaField name="contacts.vk">vkontakte</SocialMediaField> */}
+
+        <div className={styles.socialMediaBlock}>
+          <b>My social media:</b>
+          {socialMediaList.map(media => (
+            <SocialMediaField key={media} name={`contacts.${media}`}>
+              {media}
+            </SocialMediaField>
+          ))}
+        </div>
 
         <button type="submit">Submit</button>
       </Form>

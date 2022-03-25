@@ -1,11 +1,9 @@
 import { axiosInstance } from 'api/config';
 import {
   BasicResponseType,
-  FollowUserResponseType,
   GetUserProfileResponseType,
   GetUsersResponseType,
   PutProfilePhotoResponseDataType,
-  UnfollowUserResponseType,
   UpdateUserProfileRequestDataType,
   UserOnServerType,
 } from 'api/types';
@@ -19,9 +17,9 @@ export const usersAPI = {
   getUserProfile: (userID: number | string) =>
     axiosInstance.get<GetUserProfileResponseType>(`profile/${userID}`),
   followUser: (userID: number | string) =>
-    axiosInstance.post<FollowUserResponseType>(`follow/${userID}`),
+    axiosInstance.post<BasicResponseType>(`follow/${userID}`),
   unfollowUser: (userID: number | string) =>
-    axiosInstance.delete<UnfollowUserResponseType>(`follow/${userID}`),
+    axiosInstance.delete<BasicResponseType>(`follow/${userID}`),
   checkIfUserFollowedByCurrentUser(userID: number | string) {
     return axiosInstance.get<boolean>(`follow/${userID}`);
   },

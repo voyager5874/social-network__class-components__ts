@@ -58,24 +58,25 @@ export type AuthMeResponseDataType = {
   email: Nullable<string>;
 };
 
-export type AuthMeResponseType = {
-  data: AuthMeResponseDataType;
-  messages: Array<string>;
-  fieldsErrors: Array<string>;
-  resultCode: ResponseCodes;
-};
+// fieldsErrors is not really used anywhere so it's possible to just use BasicResponseType
+// export type AuthMeResponseType = {
+//   data: AuthMeResponseDataType;
+//   messages: Array<string>;
+//   fieldsErrors: Array<string>;
+//   resultCode: ResponseCodes;
+// };
 
-export type FollowUserResponseType = {
-  resultCode: ResponseCodes;
-  messages: Array<string>;
-  data: {};
-};
+// export type FollowUserResponseType = {
+//   resultCode: ResponseCodes;
+//   messages: Array<string>;
+//   data: {};
+// };
 
-export type UnfollowUserResponseType = {
-  resultCode: ResponseCodes;
-  messages: Array<string>;
-  data: {};
-};
+// export type UnfollowUserResponseType = {
+//   resultCode: ResponseCodes;
+//   messages: Array<string>;
+//   data: {};
+// };
 
 export type BasicResponseType<T = {}> = {
   data: T;

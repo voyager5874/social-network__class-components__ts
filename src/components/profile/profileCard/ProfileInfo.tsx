@@ -1,5 +1,6 @@
+import styles from './ProfileInfo.module.css';
+
 import { UserProfileContactsType } from 'api/types';
-import styles from 'components/profile/profileCard/ProfileCard.module.css';
 import { Nullable } from 'types';
 
 type ProfileInfoPropsType = {
@@ -27,17 +28,25 @@ const ProfileInfo = ({
       {/*  statusText={userStatus} */}
       {/*  updateCurrentUserStatus={updateCurrentUserStatus} */}
       {/* /> */}
-      <div>{`About me: ${aboutMe || 'no info'}`}</div>
+      <div>
+        <b>About me:</b>
+        {` ${aboutMe || 'no info'}`}
+      </div>
       <div>{`ID: ${userId || 'no info'}`}</div>
       <div>
+        <b>My social media:</b>
         {socialMediaList.map(media => (
           <div key={media}>
             {contacts[media] && <a href={`//${contacts[media]}`}>{media}</a>}
           </div>
         ))}
       </div>
-      <div>{`Looking for a dev job - ${lookingForAJob ? 'Hire me please' : 'No'}`}</div>
-      <div>{`Desired position - ${lookingForAJobDescription || 'no info'}`}</div>
+      <b>My dev dreams</b>
+      <div>{`${lookingForAJob ? 'Hire me please' : "I'm not looking for a job"}`}</div>
+      <div>
+        <b>Expertise:</b>
+        {` ${lookingForAJobDescription || 'no info'}`}
+      </div>
     </div>
   );
 };
