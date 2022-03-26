@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import styles from './ProfileInfo.module.css';
 
 import { UserProfileContactsType } from 'api/types';
@@ -37,7 +39,11 @@ const ProfileInfo = ({
         <b>My social media:</b>
         {socialMediaList.map(media => (
           <div key={media}>
-            {contacts[media] && <a href={`//${contacts[media]}`}>{media}</a>}
+            {contacts[media] && (
+              <Link target="_blank" to={`//${contacts[media]!.replace('https://', '')}`}>
+                {media}
+              </Link>
+            )}
           </div>
         ))}
       </div>

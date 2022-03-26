@@ -33,8 +33,10 @@ class ProfileContainer extends Component<UserProfilePropsType> {
   }
 
   showRandomProfile = async () => {
-    if (!this.props.usersCount) return;
     this.props.findRealSamurai(this.props.router.navigate);
+    //   this.props
+    //     .findRealSamurai(this.props.router.navigate)
+    //     .then(response => this.props.router.navigate(`/profile/${response}`));
   };
 
   collectProfilePageData(): void {
@@ -97,7 +99,7 @@ type MapDispatchToPropsType = {
   updateNewPostText: (text: string) => void;
   updateCurrentUserStatus: (status: string) => void;
   updateCurrentUserAvatar: (image: File) => void;
-  findRealSamurai: (navigate: any) => void;
+  findRealSamurai: (navigate: any) => any;
 };
 
 type MapStateToPropsType = {
@@ -107,7 +109,7 @@ type MapStateToPropsType = {
   profileEntityStatus: EntityStatus;
   loggedInUserID: Nullable<number>;
   userStatus: Nullable<string>;
-  usersCount: number;
+  // usersCount: number;
 };
 
 const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
@@ -117,7 +119,7 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
   profileEntityStatus: state.userProfile.entityStatus,
   loggedInUserID: state.authData.id,
   userStatus: state.userProfile.status,
-  usersCount: state.users.totalCount,
+  // usersCount: state.users.totalCount,
 });
 
 type WithRouterPropsType = {

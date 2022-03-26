@@ -15,7 +15,7 @@ import {
   setUserProfileEntityStatus,
   setUserStatus,
 } from 'store/reducers/userProfileReducer';
-import { RootStateType } from 'store/types';
+import { setTotalUsersCount } from 'store/reducers/usersReducer';
 import { getRandomInteger } from 'utils';
 
 export const getUserProfile = (userID: number) => (dispatch: Dispatch) => {
@@ -113,14 +113,36 @@ export const updateCurrentUserProfile =
 
 export const findRealSamurai =
   (navigate: any) => async (dispatch: any, getState: any) => {
-    const usersCount = getState().users.totalCount;
+    dispatch(setUserProfileEntityStatus(EntityStatus.busy));
+    let usersCount = getState().users.totalCount;
+    if (!usersCount) {
+      try {
+        const response = await usersAPI.getUsers(1, 10);
+        if (response.data.totalCount) {
+          dispatch(setTotalUsersCount(response.data.totalCount));
+          usersCount = response.data.totalCount;
+        } else {
+          processServerError('findRealSamurai', 'no data received', dispatch);
+        }
+      } catch (error) {
+        console.warn(error);
+      }
+    }
 
+    // if (!usersCount) {
+    //   debugger;
+    //   const getUsersResponse = await getUsers(1, 10);
+    //   console.log(getUsersResponse);
+    //   usersCount = getState().users.totalCount;
+    // }
     const findSamurai = async () => {
       const userID: number = getRandomInteger(3, usersCount);
       try {
         const response = await usersAPI.getUserProfile(userID);
-        if (response.data.photos.small) {
+        // if (response.data.photos.small && response.data.contacts.github) {
+        if (response.data.contacts.github) {
           // dispatch(getUserProfile(userID))
+          // return Promise.resolve(userID);
           navigate(`${userID}`);
         } else {
           await findSamurai();
@@ -131,4 +153,5 @@ export const findRealSamurai =
       }
     };
     await findSamurai();
+    dispatch(setUserProfileEntityStatus(EntityStatus.idle));
   };
