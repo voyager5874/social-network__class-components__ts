@@ -50,6 +50,16 @@ export const LeftSideBar = (): ComponentReturnType => {
             Users
           </NavLink>
         </li>
+        <li>
+          <NavLink
+            style={({ isActive }) => ({ color: isActive ? 'yellow' : 'blue' })}
+            className={styles.link}
+            // className={({ isActive }) => `nav_link${isActive ? ' active' : ''}`}
+            to="/friends"
+          >
+            Friends
+          </NavLink>
+        </li>
         <li>Music</li>
         <li>Settings</li>
       </ul>

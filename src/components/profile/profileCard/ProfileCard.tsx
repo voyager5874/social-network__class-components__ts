@@ -65,6 +65,8 @@ export const ProfileCard = ({
           {fullName}{' '}
           {!isProfileOwner && (
             <ToggleButton
+              labelForFalseValue="follow"
+              labelForTrueValue="unfollow"
               currentToggledValue={followed}
               changeValueCallback={handleFollowedStatusChange}
             />

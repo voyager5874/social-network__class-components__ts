@@ -74,9 +74,9 @@ export const Login = (): ComponentReturnType => {
           <button
             type="submit"
             // disabled={
+            //   formik.isSubmitting
             //   Boolean(Formik.errors.password) ||
             //   Boolean(formik.errors.email) ||
-            //   formik.isSubmitting
             // }
           >
             Submit

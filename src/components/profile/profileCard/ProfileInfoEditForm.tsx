@@ -92,6 +92,7 @@ export const ProfileInfoEditForm = () => {
   };
   return (
     <Formik
+      validateOnChange={false}
       initialValues={FormikInitialValues}
       validationSchema={Yup.object({
         fullName: Yup.string().min(6, 'Must be at least 10 chars').required('Required'),

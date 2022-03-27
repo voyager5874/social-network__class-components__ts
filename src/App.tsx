@@ -9,6 +9,7 @@ import { Login } from 'components';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { Conversations } from 'components/conversations/Conversations';
 import { Footer } from 'components/footer/Footer';
+import { Friends } from 'components/friends/Friends';
 import HeaderContainer from 'components/header/HeaderContainer';
 import { LeftSideBar } from 'components/leftSideBar/LeftSideBar';
 import { News } from 'components/news/News';
@@ -58,6 +59,7 @@ const App = (): ComponentReturnType => {
             <Route path=":id" element={<UserProfileContainer />} />
           </Route>
           {/* <Route path="/profile/:id" element={<UserProfileContainer />} /> */}
+          <Route path="/friends" element={<Friends />} />
           <Route path="/" element={<Navigate to="/profile" />} />
           <Route path="/dialogs" element={<Conversations />} />
           <Route path="/users" element={<UsersContainer />} />

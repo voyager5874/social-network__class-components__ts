@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 
 import { appReducer } from 'store/reducers/app';
 import { authReducer } from 'store/reducers/authReducer';
+import { friendsReducer } from 'store/reducers/friends';
 import { interlocutorsReducer } from 'store/reducers/interlocutorsReducer';
 import { messagesReducer } from 'store/reducers/messagesReducer';
 import { postsReducer } from 'store/reducers/postsReducer';
@@ -17,6 +18,7 @@ export const rootReducer = combineReducers({
   userProfile: userProfileReducer,
   authData: authReducer,
   app: appReducer,
+  friends: friendsReducer,
 });
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));

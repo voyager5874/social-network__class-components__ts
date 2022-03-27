@@ -35,6 +35,14 @@ export type UsersReducerStateType = {
   busyEntities: Array<number>;
 };
 
+export type FriendsReducerStateType = {
+  users: UserOnServerType[]; // haven't used possibility to set user entity status
+  totalCount: Nullable<number>;
+  currentPage: number;
+  entityStatus: EntityStatus;
+  busyEntities: Array<number>;
+};
+
 // export type UserProfileReducerStateType = {
 //   aboutMe: Nullable<string>;
 //   contacts: {

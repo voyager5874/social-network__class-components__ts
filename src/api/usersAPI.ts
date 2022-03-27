@@ -42,4 +42,5 @@ export const usersAPI = {
       },
     );
   },
+  getFriendsList: () => axiosInstance.get<GetUsersResponseType>(`users?friend=true`),
 };
