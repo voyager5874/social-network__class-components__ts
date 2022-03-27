@@ -8,6 +8,7 @@ import {
   processServerError,
 } from 'store/middlewares/utils/processRequestErrors';
 import { EntityStatus } from 'store/reducers/types';
+import { setFollowedStatus } from 'store/reducers/userProfileReducer';
 import {
   addToBusyEntities,
   removeFromBusyEntities,
@@ -16,6 +17,7 @@ import {
   setUsers,
   setUsersListEntityStatus,
 } from 'store/reducers/usersReducer';
+import { RootStateType } from 'store/types';
 
 export const getUsers =
   (pageNumber: number, usersPerPage: number) => async (dispatch: Dispatch) => {
@@ -35,14 +37,19 @@ export const getUsers =
   };
 
 export const changeFollowedByCurrentUserState =
-  // eslint-disable-next-line @typescript-eslint/no-shadow
-  (userID: number, follow: boolean) => async (dispatch: Dispatch) => {
+  (userID: number, follow: boolean) =>
+  async (dispatch: Dispatch, getState: () => RootStateType) => {
     dispatch(addToBusyEntities(userID));
+    // const currentUserID = getState().authData.id;
+    const loadedProfileID = getState().userProfile.profileData.userId;
     const apiCall = follow ? usersAPI.followUser : usersAPI.unfollowUser;
     try {
       const response = await apiCall(userID);
       if (response.data.resultCode === ResponseCodes.Success) {
         dispatch(setFollowedByCurrentUserState(userID, follow));
+        if (userID === loadedProfileID) {
+          dispatch(setFollowedStatus(follow));
+        }
       } else {
         processServerError('unfollow(TC)', response.data, dispatch);
       }

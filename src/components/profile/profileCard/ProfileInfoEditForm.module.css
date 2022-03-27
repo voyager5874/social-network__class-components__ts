@@ -3,8 +3,10 @@
     flex-direction: column;
 }
 .error{
-    /*color: red;*/
-    background-color: rgba(255, 0, 0, 0.55);
+    color: red;
+    font-size: 12px;
+    max-width: 600px;
+    /*background-color: rgba(255, 0, 0, 0.55);*/
 }
 
 .textarea{
@@ -16,7 +18,7 @@
 .socialMediaFieldContainer{
     display: flex;
     flex-direction: column;
-    height: 50px;
+    height: 60px;
 }
 
 .socialMediaFieldLabel{

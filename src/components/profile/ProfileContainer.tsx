@@ -12,11 +12,12 @@ import { PostType } from 'components/profile/types';
 import { initializeApp } from 'store/middlewares/app';
 import {
   findRealSamurai,
-  getUserProfile,
+  getProfile,
   getUserStatus,
   updateCurrentUserAvatar,
   updateCurrentUserStatus,
 } from 'store/middlewares/userProfile';
+import { changeFollowedByCurrentUserState } from 'store/middlewares/users';
 import { addPost, updateNewPostText } from 'store/reducers/postsReducer';
 import { EntityStatus } from 'store/reducers/types';
 import { RootStateType } from 'store/types';
@@ -46,11 +47,11 @@ class ProfileContainer extends Component<UserProfilePropsType> {
     }
     if (this.props.router.params.id) {
       const userID = +this.props.router.params.id;
-      this.props.getUserProfile(userID);
+      this.props.getProfile(userID);
       this.props.getUserStatus(userID);
     } else if (this.props.loggedInUserID) {
       const userID = this.props.loggedInUserID;
-      this.props.getUserProfile(userID);
+      this.props.getProfile(userID);
       this.props.getUserStatus(userID);
     }
   }
@@ -72,6 +73,8 @@ class ProfileContainer extends Component<UserProfilePropsType> {
     ) : (
       <Profile
         contacts={contacts}
+        followed={this.props.followed}
+        changeFollowed={this.props.changeFollowedByCurrentUserState}
         userId={userId}
         fullName={fullName}
         lookingForAJobDescription={lookingForAJobDescription}
@@ -93,7 +96,9 @@ class ProfileContainer extends Component<UserProfilePropsType> {
 }
 
 type MapDispatchToPropsType = {
-  getUserProfile: (userID: number) => void;
+  // getUserProfile: (userID: number) => void;
+  getProfile: (userID: number) => void;
+  changeFollowedByCurrentUserState: (userID: number, newFollowedState: boolean) => void;
   getUserStatus: (userID: number) => void;
   addPost: () => void;
   updateNewPostText: (text: string) => void;
@@ -109,6 +114,7 @@ type MapStateToPropsType = {
   profileEntityStatus: EntityStatus;
   loggedInUserID: Nullable<number>;
   userStatus: Nullable<string>;
+  followed: Nullable<boolean>;
   // usersCount: number;
 };
 
@@ -119,6 +125,7 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
   profileEntityStatus: state.userProfile.entityStatus,
   loggedInUserID: state.authData.id,
   userStatus: state.userProfile.status,
+  followed: state.userProfile.followed,
   // usersCount: state.users.totalCount,
 });
 
@@ -146,7 +153,7 @@ export default compose<ComponentType>(
   withAuthRedirect,
   withRouter,
   connect(mapStateToProps, {
-    getUserProfile,
+    getProfile,
     getUserStatus,
     addPost,
     updateNewPostText,
@@ -154,5 +161,6 @@ export default compose<ComponentType>(
     updateCurrentUserStatus,
     updateCurrentUserAvatar,
     findRealSamurai,
+    changeFollowedByCurrentUserState,
   }),
 )(ProfileContainer);

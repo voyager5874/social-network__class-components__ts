@@ -15,6 +15,8 @@ type ProfilePropsType = GetUserProfileResponseType & {
   updateCurrentUserAvatar: (image: File) => void;
   isProfileOwner: boolean;
   showRandomProfile: () => void;
+  followed: Nullable<boolean>;
+  changeFollowed: (userID: number, newFollowedState: boolean) => void;
 };
 
 export const Profile = ({
@@ -34,6 +36,8 @@ export const Profile = ({
   updateCurrentUserAvatar,
   isProfileOwner,
   showRandomProfile,
+  followed,
+  changeFollowed,
 }: ProfilePropsType): ComponentReturnType => {
   const someContent = 'Profile';
   return (
@@ -42,6 +46,8 @@ export const Profile = ({
         showRandomProfile
       </button>
       <ProfileCard
+        changeFollowed={changeFollowed}
+        followed={followed}
         aboutMe={aboutMe}
         photos={photos}
         contacts={contacts}

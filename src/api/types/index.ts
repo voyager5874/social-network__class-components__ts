@@ -97,3 +97,7 @@ export type PutProfilePhotoResponseDataType = {
     large: string;
   };
 };
+
+export type GetCaptchaResponseType = {
+  url: string;
+};

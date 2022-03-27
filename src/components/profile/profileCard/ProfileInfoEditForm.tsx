@@ -5,6 +5,8 @@ import * as Yup from 'yup';
 import styles from './ProfileInfoEditForm.module.css';
 
 import { GetUserProfileResponseType, UserProfileContactsType } from 'api/types';
+import { ErrorTag } from 'components/common';
+import { correctUrlRe } from 'constants/regExp';
 import { updateCurrentUserProfile } from 'store/middlewares/userProfile';
 import { RootStateType } from 'store/types';
 
@@ -94,13 +96,18 @@ export const ProfileInfoEditForm = () => {
       validationSchema={Yup.object({
         fullName: Yup.string().min(6, 'Must be at least 10 chars').required('Required'),
         aboutMe: Yup.string().max(200, 'Must be 200 characters or less'),
-        lookingForAJob: Yup.boolean()
-          .required('Required')
-          .oneOf([true, false], 'You must accept the terms and conditions.'),
-        lookingForAJobDescription: Yup.string().max(
-          200,
-          'Must be 200 characters or less',
+        lookingForAJob: Yup.boolean().oneOf(
+          [true, false],
+          'You must accept the terms and conditions.',
         ),
+        lookingForAJobDescription: Yup.string()
+          .max(200, 'Must be 200 characters or less')
+          .min(20, 'Must be at least 20 chars long'),
+        contacts: Yup.object().shape({
+          github: Yup.string()
+            .matches(correctUrlRe, 'Website should be a valid URL')
+            .nullable(),
+        }),
       })}
       onSubmit={(values, { setSubmitting }) => {
         dispatch(updateCurrentUserProfile(values));
@@ -109,14 +116,16 @@ export const ProfileInfoEditForm = () => {
     >
       <Form className={styles.form}>
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-        <label htmlFor="fullName">Full name</label>
-        <Field name="fullName" type="text" />
-        <ErrorMessage name="fullName" className={styles.error} />
+        <label htmlFor="fullName">
+          Full name
+          <Field name="fullName" type="text" id="fullName" />
+        </label>
+        <ErrorMessage name="fullName" component={ErrorTag} />
 
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label htmlFor="aboutMe">About me</label>
         <Field as="textarea" name="aboutMe" type="text" className={styles.textarea} />
-        <ErrorMessage name="aboutMe" className={styles.error} />
+        <ErrorMessage name="aboutMe" component={ErrorTag} />
 
         <YesNoField name="lookingForAJob">I am currently looking for a job</YesNoField>
 
@@ -128,7 +137,7 @@ export const ProfileInfoEditForm = () => {
           type="text"
           className={styles.textarea}
         />
-        <ErrorMessage name="lookingForAJobDescription" className={styles.error} />
+        <ErrorMessage name="lookingForAJobDescription" component={ErrorTag} />
 
         <div className={styles.socialMediaBlock}>
           <b>My social media:</b>

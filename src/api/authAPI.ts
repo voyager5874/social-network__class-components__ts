@@ -1,5 +1,10 @@
 import { axiosInstance } from 'api/config';
-import { AuthMeResponseDataType, BasicResponseType, LoginDataType } from 'api/types';
+import {
+  GetCaptchaResponseType,
+  AuthMeResponseDataType,
+  BasicResponseType,
+  LoginDataType,
+} from 'api/types';
 
 export const authAPI = {
   authMe() {
@@ -10,5 +15,10 @@ export const authAPI = {
   },
   logout() {
     return axiosInstance.delete<BasicResponseType>('auth/login');
+  },
+  getCaptcha() {
+    return axiosInstance
+      .get<GetCaptchaResponseType>('security/get-captcha-url')
+      .then(response => response.data);
   },
 };

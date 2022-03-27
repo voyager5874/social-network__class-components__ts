@@ -3,7 +3,7 @@ import './App.css';
 import { useEffect, useLayoutEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { Login } from 'components';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
@@ -58,7 +58,7 @@ const App = (): ComponentReturnType => {
             <Route path=":id" element={<UserProfileContainer />} />
           </Route>
           {/* <Route path="/profile/:id" element={<UserProfileContainer />} /> */}
-          <Route path="/" element={<UserProfileContainer />} />
+          <Route path="/" element={<Navigate to="/profile" />} />
           <Route path="/dialogs" element={<Conversations />} />
           <Route path="/users" element={<UsersContainer />} />
           <Route path="/news" element={<News />} />

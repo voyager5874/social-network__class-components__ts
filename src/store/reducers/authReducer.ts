@@ -6,12 +6,14 @@ const initialState: AuthReducerStateType = {
   login: null,
   email: null,
   isLoggedIn: false,
+  captcha: null,
 };
 
 export type AuthReducerActionType =
   | ReturnType<typeof setAuthData>
   | ReturnType<typeof setLoginStatus>
-  | ReturnType<typeof resetAuthState>;
+  | ReturnType<typeof resetAuthState>
+  | ReturnType<typeof setCaptcha>;
 
 export const authReducer = (
   state: AuthReducerStateType = initialState,
@@ -22,8 +24,10 @@ export const authReducer = (
       return { ...state, ...action.data };
     case 'SET-LOGIN-STATE':
       return { ...state, isLoggedIn: action.loginStatus };
+    case 'SET-CAPTCHA':
+      return { ...state, captcha: action.url };
     case 'RESET-AUTH-STATE':
-      return { isLoggedIn: false, login: null, email: null, id: null };
+      return { isLoggedIn: false, login: null, email: null, id: null, captcha: null };
     default:
       return state;
   }
@@ -44,4 +48,10 @@ export const setLoginStatus = (loginStatus: boolean) =>
   ({
     type: 'SET-LOGIN-STATE',
     loginStatus,
+  } as const);
+
+export const setCaptcha = (url: string) =>
+  ({
+    type: 'SET-CAPTCHA',
+    url,
   } as const);

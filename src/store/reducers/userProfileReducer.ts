@@ -27,6 +27,7 @@ const initialState: UserProfileReducerStateType = {
       large: null,
     },
   },
+  followed: null,
   entityStatus: EntityStatus.idle,
   status: null,
 };
@@ -35,7 +36,8 @@ export type UserProfileReducerActionsType =
   | ReturnType<typeof setUserProfile>
   | ReturnType<typeof setUserProfileEntityStatus>
   | ReturnType<typeof setUserStatus>
-  | ReturnType<typeof setCurrentUserAvatar>;
+  | ReturnType<typeof setCurrentUserAvatar>
+  | ReturnType<typeof setFollowedStatus>;
 
 export const userProfileReducer = (
   state: UserProfileReducerStateType = initialState,
@@ -56,6 +58,8 @@ export const userProfileReducer = (
         ...state,
         profileData: { ...state.profileData, photos: action.imageData },
       };
+    case 'SET-FOLLOWED-STATUS':
+      return { ...state, followed: action.followed };
     default:
       return state;
   }
@@ -83,4 +87,10 @@ export const setCurrentUserAvatar = (imageData: AvatarImageDataType) =>
   ({
     type: 'SET-AVATAR',
     imageData,
+  } as const);
+
+export const setFollowedStatus = (followed: boolean) =>
+  ({
+    type: 'SET-FOLLOWED-STATUS',
+    followed,
   } as const);

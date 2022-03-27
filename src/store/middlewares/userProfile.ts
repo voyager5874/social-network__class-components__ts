@@ -11,34 +11,72 @@ import {
 import { EntityStatus } from 'store/reducers/types';
 import {
   setCurrentUserAvatar,
+  setFollowedStatus,
   setUserProfile,
   setUserProfileEntityStatus,
   setUserStatus,
 } from 'store/reducers/userProfileReducer';
 import { setTotalUsersCount } from 'store/reducers/usersReducer';
+import { RootStateType } from 'store/types';
 import { getRandomInteger } from 'utils';
 
-export const getUserProfile = (userID: number) => (dispatch: Dispatch) => {
+// export const getUserProfile = (userID: number) => (dispatch: Dispatch) => {
+//   dispatch(setUserProfileEntityStatus(EntityStatus.busy));
+//   usersAPI
+//     .getUserProfile(userID)
+//     .then(response => {
+//       if (response.data.userId) {
+//         dispatch(setUserProfile(response.data));
+//       } else {
+//         processServerError(
+//           'getUserProfile(TC)',
+//           "server reached but hasn't respond with data",
+//           dispatch,
+//         );
+//       }
+//     })
+//     .catch((error: AxiosError) => {
+//       processNetworkError('getUsers(TC)', error, dispatch);
+//     })
+//     .finally(() => {
+//       dispatch(setUserProfileEntityStatus(EntityStatus.idle));
+//     });
+// };
+
+export const getFollowedStatus = (userID: number) => async (dispatch: Dispatch) => {
   dispatch(setUserProfileEntityStatus(EntityStatus.busy));
-  usersAPI
-    .getUserProfile(userID)
-    .then(response => {
-      if (response.data.userId) {
-        dispatch(setUserProfile(response.data));
-      } else {
-        processServerError(
-          'getUserProfile(TC)',
-          "server reached but hasn't respond with data",
-          dispatch,
-        );
-      }
-    })
-    .catch((error: AxiosError) => {
-      processNetworkError('getUsers(TC)', error, dispatch);
-    })
-    .finally(() => {
-      dispatch(setUserProfileEntityStatus(EntityStatus.idle));
-    });
+  try {
+    const response = await usersAPI.checkIfUserFollowedByCurrentUser(userID);
+    if (response.data) {
+      debugger;
+      dispatch(setFollowedStatus(true));
+    } else {
+      dispatch(setFollowedStatus(false));
+    }
+  } catch (error) {
+    processNetworkError('getUsers(TC)', error as AxiosError, dispatch);
+  }
+  dispatch(setUserProfileEntityStatus(EntityStatus.idle));
+};
+
+export const getProfile = (userID: number) => async (dispatch: any) => {
+  dispatch(setUserProfileEntityStatus(EntityStatus.busy));
+  try {
+    const response = await usersAPI.getUserProfile(userID);
+    if (response.data.userId) {
+      dispatch(setUserProfile(response.data));
+      dispatch(getFollowedStatus(userID));
+    } else {
+      processServerError(
+        'getUserProfile(TC)',
+        "server reached but hasn't respond with data",
+        dispatch,
+      );
+    }
+  } catch (error) {
+    processNetworkError('getUsers(TC)', error as AxiosError, dispatch);
+  }
+  dispatch(setUserProfileEntityStatus(EntityStatus.idle));
 };
 
 export const getUserStatus = (userID: number) => (dispatch: Dispatch) => {
@@ -101,7 +139,7 @@ export const updateCurrentUserProfile =
     try {
       const response = await usersAPI.putNewCurrentUserProfileData(data);
       if (response.data.resultCode === ResponseCodes.Success) {
-        dispatch(getUserProfile(currentUserID));
+        dispatch(getProfile(currentUserID));
       } else {
         processServerError('updateProfile(TC)', response.data, dispatch);
       }
@@ -112,7 +150,7 @@ export const updateCurrentUserProfile =
   };
 
 export const findRealSamurai =
-  (navigate: any) => async (dispatch: any, getState: any) => {
+  (navigate: any) => async (dispatch: any, getState: () => RootStateType) => {
     dispatch(setUserProfileEntityStatus(EntityStatus.busy));
     let usersCount = getState().users.totalCount;
     if (!usersCount) {

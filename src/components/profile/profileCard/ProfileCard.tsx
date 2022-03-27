@@ -4,6 +4,7 @@ import styles from './ProfileCard.module.css';
 
 import { GetUserProfileResponseType } from 'api/types';
 import userWithoutPhoto from 'components/common/assets/userWithoutPhoto.png';
+import { ToggleButton } from 'components/common/toggleButton/ToggleButton';
 import ProfileInfo from 'components/profile/profileCard/ProfileInfo';
 import { ProfileInfoEditForm } from 'components/profile/profileCard/ProfileInfoEditForm';
 import { UserStatus } from 'components/profile/profileCard/UserStatus';
@@ -14,6 +15,8 @@ type ProfileCardPropsType = GetUserProfileResponseType & {
   updateCurrentUserStatus: (status: string) => void;
   updateCurrentUserAvatar: (img: File) => void;
   isProfileOwner: boolean;
+  followed: Nullable<boolean>;
+  changeFollowed: (userID: number, newFollowedState: boolean) => void;
 };
 
 export const ProfileCard = ({
@@ -28,6 +31,8 @@ export const ProfileCard = ({
   updateCurrentUserStatus,
   updateCurrentUserAvatar,
   isProfileOwner,
+  followed,
+  changeFollowed,
 }: ProfileCardPropsType): ComponentReturnType => {
   // type SocialMediaListType = keyof typeof contacts;
   // const socialMediaList = Object.keys(contacts) as Array<keyof typeof contacts>;
@@ -36,6 +41,12 @@ export const ProfileCard = ({
   const onImageSelect = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       updateCurrentUserAvatar(event.target.files[0]);
+    }
+  };
+
+  const handleFollowedStatusChange = (newStatus: boolean) => {
+    if (userId) {
+      changeFollowed(userId, newStatus);
     }
   };
 
@@ -50,12 +61,21 @@ export const ProfileCard = ({
         <div>{isProfileOwner && <input type="file" onChange={onImageSelect} />}</div>
       </div>
       <div className={styles.profileTextInfo}>
-        <h2>{fullName}</h2>
+        <h2>
+          {fullName}{' '}
+          {!isProfileOwner && (
+            <ToggleButton
+              currentToggledValue={followed}
+              changeValueCallback={handleFollowedStatusChange}
+            />
+          )}
+        </h2>
         <UserStatus
           isProfileOwner={isProfileOwner}
           statusText={userStatus}
           updateCurrentUserStatus={updateCurrentUserStatus}
         />
+
         {editMode ? (
           <ProfileInfoEditForm />
         ) : (

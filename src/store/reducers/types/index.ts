@@ -60,6 +60,7 @@ export type UserProfileReducerStateType = {
   profileData: GetUserProfileResponseType;
   entityStatus: EntityStatus;
   status: Nullable<string>;
+  followed: Nullable<boolean>;
 };
 
 export type ProfilePageStateType = {
@@ -78,7 +79,10 @@ export type DialogPageStateType = {
   newMessageBody: string;
 };
 
-export type AuthReducerStateType = AuthMeResponseDataType & { isLoggedIn: boolean };
+export type AuthReducerStateType = AuthMeResponseDataType & {
+  isLoggedIn: boolean;
+  captcha: Nullable<string>;
+};
 
 export type AvatarImageDataType = {
   large: string;

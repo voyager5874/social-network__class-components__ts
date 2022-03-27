@@ -5,12 +5,17 @@ import { authAPI } from 'api/authAPI';
 import { LoginDataType } from 'api/types';
 import { ResponseCodes } from 'enums';
 import { initializeApp } from 'store/middlewares/app';
-import { getUserProfile, getUserStatus } from 'store/middlewares/userProfile';
+import { getProfile, getUserStatus } from 'store/middlewares/userProfile';
 import {
   processNetworkError,
   processServerError,
 } from 'store/middlewares/utils/processRequestErrors';
-import { resetAuthState, setAuthData, setLoginStatus } from 'store/reducers/authReducer';
+import {
+  resetAuthState,
+  setAuthData,
+  setCaptcha,
+  setLoginStatus,
+} from 'store/reducers/authReducer';
 import { EntityStatus } from 'store/reducers/types';
 import { setUserProfileEntityStatus } from 'store/reducers/userProfileReducer';
 
@@ -21,7 +26,7 @@ export const login = (data: LoginDataType) => (dispatch: any) => {
     .then(response => {
       if (response.data.resultCode === ResponseCodes.Success) {
         dispatch(setLoginStatus(true));
-        dispatch(getUserProfile(response.data.data.userId));
+        dispatch(getProfile(response.data.data.userId));
         dispatch(getUserStatus(response.data.data.userId));
         dispatch(initializeApp()); //  App -> useEffect or this one ? use authMe instead ?
       } else {
@@ -66,3 +71,16 @@ export const authMe = () => (dispatch: Dispatch) =>
     .catch(error => {
       processNetworkError('auth(TC)', error, dispatch);
     });
+
+export const getCaptcha = () => async (dispatch: Dispatch) => {
+  try {
+    const response = await authAPI.getCaptcha();
+    if (response) {
+      dispatch(setCaptcha(response.url));
+    } else {
+      processServerError('getCaptcha', '?', dispatch);
+    }
+  } catch (error) {
+    processNetworkError('getCaptcha', error as AxiosError, dispatch);
+  }
+};

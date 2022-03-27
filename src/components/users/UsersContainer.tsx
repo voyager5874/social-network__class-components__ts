@@ -88,13 +88,6 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
   busyUserEntities: state.users.busyEntities,
 });
 
-// export const UsersContainer = connect(mapStateToProps, {
-//   follow,
-//   unfollow,
-//   getUsers,
-//   setCurrentPage,
-// })(UsersMiddleLayer);
-
 export type UsersPropsType = MapDispatchToPropsType & MapStateToPropsType;
 
 export default compose<ComponentType>(
