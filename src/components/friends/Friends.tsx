@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, NavLink } from 'react-router-dom';
 
-import style from './Friends.module.css';
+import styles from './Friends.module.css';
 
 import { UserOnServerType } from 'api/types';
 import noAvatar from 'components/common/assets/userWithoutPhoto.png';
@@ -19,17 +20,20 @@ export const Friends = () => {
     state => state.friends.users,
   );
   return (
-    <div>
+    <ul className={styles.friendsList}>
       {friends.map(friend => (
-        <div key={friend.id}>
-          <h3>{friend.name}</h3>
-          <div>{friend.status}</div>
-          <img
-            src={friend.photos.large ? friend.photos.large : noAvatar}
-            alt="friend avatar"
-          />
-        </div>
+        <li key={friend.id} className={styles.friendCard}>
+          <NavLink className={styles.friendLink} to={`/profile/${friend.id}`}>
+            <h3 className={styles.friendName}>{friend.name}</h3>
+            <div>{friend.status}</div>
+            <img
+              className={styles.friendAvatar}
+              src={friend.photos.large ? friend.photos.large : noAvatar}
+              alt="friend avatar"
+            />
+          </NavLink>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
