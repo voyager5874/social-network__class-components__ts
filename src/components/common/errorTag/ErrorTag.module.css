@@ -1,4 +1,6 @@
 .errorText{
     color: red;
     font-size: 12px;
+    background-color: rgba(240, 255, 255, 0.6);
+    /*align-self: flex-start;*/
 }

@@ -1,8 +1,10 @@
-import { AxiosError } from 'axios';
+import { Axios, AxiosError } from 'axios';
+import { FormikHelpers } from 'formik';
 import { Dispatch } from 'redux';
 
 import { authAPI } from 'api/authAPI';
 import { LoginDataType } from 'api/types';
+import { FIRST_ARRAY_ITEM_INDEX } from 'constants/base';
 import { ResponseCodes } from 'enums';
 import { initializeApp } from 'store/middlewares/app';
 import { getProfile, getUserStatus } from 'store/middlewares/userProfile';
@@ -19,27 +21,35 @@ import {
 import { EntityStatus } from 'store/reducers/types';
 import { setUserProfileEntityStatus } from 'store/reducers/userProfileReducer';
 
-export const login = (data: LoginDataType) => (dispatch: any) => {
-  dispatch(setUserProfileEntityStatus(EntityStatus.busy)); // should I create such state for the whole app ?
-  authAPI
-    .login(data)
-    .then(response => {
+export const login =
+  (
+    data: LoginDataType,
+    setFormikSubmitting: FormikHelpers<LoginDataType>['setSubmitting'],
+    setFormikStatus: FormikHelpers<LoginDataType>['setStatus'],
+  ) =>
+  async (dispatch: any) => {
+    dispatch(setUserProfileEntityStatus(EntityStatus.busy));
+    setFormikSubmitting(true);
+    try {
+      const response = await authAPI.login(data);
       if (response.data.resultCode === ResponseCodes.Success) {
         dispatch(setLoginStatus(true));
         dispatch(getProfile(response.data.data.userId));
         dispatch(getUserStatus(response.data.data.userId));
         dispatch(initializeApp()); //  App -> useEffect or this one ? use authMe instead ?
       } else {
-        processServerError('login(TC)', response.data, dispatch);
+        // processServerError('login(TC)', response.data, dispatch);
+        setFormikStatus(response.data.messages[FIRST_ARRAY_ITEM_INDEX]);
       }
-    })
-    .catch((error: AxiosError) => {
-      processNetworkError('login(TC)', error, dispatch);
-    })
-    .finally(() => {
-      dispatch(setUserProfileEntityStatus(EntityStatus.idle)); // move to process RequestErrors ?
-    });
-};
+    } catch (error) {
+      // processNetworkError('login(TC)', error as AxiosError, dispatch);
+      // @ts-ignore
+      setFormikStatus(error.message);
+    }
+
+    dispatch(setUserProfileEntityStatus(EntityStatus.idle)); // move to process RequestErrors ?
+    setFormikSubmitting(false);
+  };
 
 export const logout = () => (dispatch: Dispatch) => {
   authAPI

@@ -48,7 +48,6 @@ export const getFollowedStatus = (userID: number) => async (dispatch: Dispatch) 
   try {
     const response = await usersAPI.checkIfUserFollowedByCurrentUser(userID);
     if (response.data) {
-      debugger;
       dispatch(setFollowedStatus(true));
     } else {
       dispatch(setFollowedStatus(false));
@@ -133,7 +132,6 @@ export const updateCurrentUserAvatar = (image: File) => async (dispatch: Dispatc
 export const updateCurrentUserProfile =
   (data: Partial<UpdateUserProfileRequestDataType>) =>
   async (dispatch: any, getState: any) => {
-    debugger;
     dispatch(setUserProfileEntityStatus(EntityStatus.busy));
     const currentUserID = getState().authData.id;
     try {

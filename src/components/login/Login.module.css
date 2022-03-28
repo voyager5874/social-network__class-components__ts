@@ -10,13 +10,14 @@
     background-color: rgba(217, 231, 156, 0.65);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     /*width: 100%;*/
     border: 3px solid brown;
     border-radius: 10px;
     width: 360px;
     padding: 20px;
+    height: 260px;
 }
 
 .inputContainer{
@@ -37,4 +38,8 @@
 
 .checkboxContainer{
     height: 30px;
+}
+
+.formStatus{
+    height: 20px;
 }

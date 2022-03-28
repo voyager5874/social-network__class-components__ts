@@ -1,4 +1,4 @@
-import { Form, Formik, Field, ErrorMessage } from 'formik';
+import { Form, Formik, Field, ErrorMessage, FormikProps, FormikHelpers } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -31,8 +31,8 @@ export const Login = (): ComponentReturnType => {
     state => state.authData.isLoggedIn,
   );
 
-  const onSubmit = (values: LoginDataType) => {
-    dispatch(login(values));
+  const onSubmit = (values: LoginDataType, actions: FormikHelpers<LoginDataType>) => {
+    dispatch(login(values, actions.setSubmitting, actions.setStatus));
   };
 
   if (userIsLoggedIn) return <Navigate replace to="/" />; // replace is to delete from history so "back" won't bring to login page
@@ -43,46 +43,48 @@ export const Login = (): ComponentReturnType => {
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      <Form className={styles.loginFormContainer}>
-        <div className={styles.loginForm}>
-          <div className={styles.inputContainer}>
-            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-            <label htmlFor="email" className={styles.inputLabel}>
-              <span>Email Address</span>
-              <Field id="email" name="email" />
-            </label>
-            <ErrorMessage name="email">
-              {error => <div className={styles.errorText}>{error}</div>}
-            </ErrorMessage>
-          </div>
+      {formik => {
+        console.log(formik);
+        return (
+          <Form className={styles.loginFormContainer}>
+            <div className={styles.loginForm}>
+              <div className={styles.formStatus}>
+                {formik.status && <ErrorTag>{formik.status}</ErrorTag>}
+              </div>
 
-          <div className={styles.inputContainer}>
-            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-            <label htmlFor="password" className={styles.inputLabel}>
-              password
-              <Field id="password" name="password" type="password" />
-            </label>
-            <ErrorMessage name="password" component={ErrorTag} />
-          </div>
-          <div className={styles.checkboxContainer}>
-            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-            <label htmlFor="rememberMe" className={styles.checkboxLabel}>
-              Remember me
-              <Field type="checkbox" id="rememberMe" name="rememberMe" />
-            </label>
-          </div>
-          <button
-            type="submit"
-            // disabled={
-            //   formik.isSubmitting
-            //   Boolean(Formik.errors.password) ||
-            //   Boolean(formik.errors.email) ||
-            // }
-          >
-            Submit
-          </button>
-        </div>
-      </Form>
+              <div className={styles.inputContainer}>
+                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                <label htmlFor="email" className={styles.inputLabel}>
+                  <span>email</span>
+                  <Field id="email" name="email" />
+                </label>
+                <ErrorMessage name="email">
+                  {error => <div className={styles.errorText}>{error}</div>}
+                </ErrorMessage>
+              </div>
+
+              <div className={styles.inputContainer}>
+                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                <label htmlFor="password" className={styles.inputLabel}>
+                  password
+                  <Field id="password" name="password" type="password" />
+                </label>
+                <ErrorMessage name="password" component={ErrorTag} />
+              </div>
+              <div className={styles.checkboxContainer}>
+                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                <label htmlFor="rememberMe" className={styles.checkboxLabel}>
+                  Remember me
+                  <Field type="checkbox" id="rememberMe" name="rememberMe" />
+                </label>
+              </div>
+              <button type="submit" disabled={formik.isSubmitting || !formik.isValid}>
+                Submit
+              </button>
+            </div>
+          </Form>
+        );
+      }}
     </Formik>
   );
 };
