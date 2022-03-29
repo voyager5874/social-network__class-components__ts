@@ -21,6 +21,19 @@ import {
 import { EntityStatus } from 'store/reducers/types';
 import { setUserProfileEntityStatus } from 'store/reducers/userProfileReducer';
 
+export const getCaptcha = () => async (dispatch: Dispatch) => {
+  try {
+    const response = await authAPI.getCaptcha();
+    if (response) {
+      dispatch(setCaptcha(response.url));
+    } else {
+      processServerError('getCaptcha', '?', dispatch);
+    }
+  } catch (error) {
+    processNetworkError('getCaptcha', error as AxiosError, dispatch);
+  }
+};
+
 export const login =
   (
     data: LoginDataType,
@@ -37,6 +50,11 @@ export const login =
         dispatch(getProfile(response.data.data.userId));
         dispatch(getUserStatus(response.data.data.userId));
         dispatch(initializeApp()); //  App -> useEffect or this one ? use authMe instead ?
+        dispatch(setCaptcha(null));
+      }
+      if (response.data.resultCode === ResponseCodes.CaptchaRequired) {
+        dispatch(getCaptcha());
+        setFormikStatus(response.data.messages[FIRST_ARRAY_ITEM_INDEX]);
       } else {
         // processServerError('login(TC)', response.data, dispatch);
         setFormikStatus(response.data.messages[FIRST_ARRAY_ITEM_INDEX]);
@@ -81,16 +99,3 @@ export const authMe = () => (dispatch: Dispatch) =>
     .catch(error => {
       processNetworkError('auth(TC)', error, dispatch);
     });
-
-export const getCaptcha = () => async (dispatch: Dispatch) => {
-  try {
-    const response = await authAPI.getCaptcha();
-    if (response) {
-      dispatch(setCaptcha(response.url));
-    } else {
-      processServerError('getCaptcha', '?', dispatch);
-    }
-  } catch (error) {
-    processNetworkError('getCaptcha', error as AxiosError, dispatch);
-  }
-};

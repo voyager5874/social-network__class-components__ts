@@ -17,7 +17,7 @@
     border-radius: 10px;
     width: 360px;
     padding: 20px;
-    height: 260px;
+    min-height: 260px;
 }
 
 .inputContainer{

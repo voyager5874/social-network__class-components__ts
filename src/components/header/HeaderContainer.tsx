@@ -1,14 +1,13 @@
-import { Component } from 'react';
+import { Component, ComponentType } from 'react';
 
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 
-import { authAPI } from 'api/authAPI';
-import { AuthMeResponseDataType } from 'api/types';
+import { withRouter } from 'components/common';
+import { WithRouterPropsType } from 'components/common/HOC/types';
 import { Header } from 'components/header/Header';
-import { ResponseCodes } from 'enums';
 import { initializeApp } from 'store/middlewares/app';
 import { logout } from 'store/middlewares/login';
-import { setAuthData, setLoginStatus } from 'store/reducers/authReducer';
 import { RootStateType } from 'store/types';
 import { Nullable } from 'types';
 
@@ -17,9 +16,14 @@ class HeaderContainer extends Component<HeaderPropsType> {
     // this.props.authCurrentUser(); // useEffect in App.tsx ?
   }
 
+  logout = () => {
+    this.props.logout();
+    this.props.router.navigate('/login');
+  };
+
   render() {
     const { isLoggedIn, login } = this.props;
-    return <Header isLoggedIn={isLoggedIn} login={login} logout={this.props.logout} />;
+    return <Header isLoggedIn={isLoggedIn} login={login} logout={this.logout} />;
   }
 }
 
@@ -39,8 +43,9 @@ type MapDispatchToPropsType = {
   logout: () => void;
 };
 
-type HeaderPropsType = mapStateToPropsType & MapDispatchToPropsType;
+type HeaderPropsType = mapStateToPropsType & MapDispatchToPropsType & WithRouterPropsType;
 
-export default connect(mapStateToProps, { authCurrentUser: initializeApp, logout })(
-  HeaderContainer,
-);
+export default compose<ComponentType>(
+  withRouter,
+  connect(mapStateToProps, { authCurrentUser: initializeApp, logout }),
+)(HeaderContainer);

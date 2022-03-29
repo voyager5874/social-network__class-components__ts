@@ -5,6 +5,7 @@ import { compose } from 'redux';
 
 import { GetUserProfileResponseType } from 'api/types';
 import { withRouter } from 'components/common';
+import { WithRouterPropsType } from 'components/common/HOC/types';
 import { withAuthRedirect } from 'components/common/HOC/withAuthRedirect';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { Profile } from 'components/profile/Profile';
@@ -33,7 +34,7 @@ class ProfileContainer extends Component<UserProfilePropsType> {
     this.collectProfilePageData();
   }
 
-  showRandomProfile = async () => {
+  showRandomProfile = () => {
     this.props.findRealSamurai(this.props.router.navigate);
     //   this.props
     //     .findRealSamurai(this.props.router.navigate)
@@ -128,22 +129,6 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
   followed: state.userProfile.followed,
   // usersCount: state.users.totalCount,
 });
-
-type WithRouterPropsType = {
-  router: {
-    location: {
-      pathname: string;
-      search: string;
-      hash: string;
-      state: Nullable<string>;
-      key: string;
-    };
-    params: {
-      id: string;
-    };
-    navigate: (url: string) => void;
-  };
-};
 
 export type UserProfilePropsType = MapStateToPropsType &
   MapDispatchToPropsType &

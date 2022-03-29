@@ -58,11 +58,32 @@ export type AuthMeResponseDataType = {
   email: Nullable<string>;
 };
 
-// fieldsErrors is not really used anywhere so it's possible to just use BasicResponseType
+// { captcha required
+//   "data": {},
+//   "messages": [
+//   "Incorrect anti-bot symbols"
+// ],
+//   "fieldsErrors": [
+//   {
+//     "field": "captcha",
+//     "error": "Incorrect anti-bot symbols"
+//   }
+// ],
+//   "resultCode": 10
+// }
+
+// type FieldsErrorType = {
+//   field: string;
+//   error: string;
+// };
+
+// fieldsErrors ? captcha and possibly incorrect profile data fields
+// do I need to process these errors ?
+
 // export type AuthMeResponseType = {
 //   data: AuthMeResponseDataType;
 //   messages: Array<string>;
-//   fieldsErrors: Array<string>;
+//   fieldsErrors: FieldsErrorType[];
 //   resultCode: ResponseCodes;
 // };
 

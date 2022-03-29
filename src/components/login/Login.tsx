@@ -9,12 +9,13 @@ import { LoginDataType } from 'api/types';
 import { ErrorTag } from 'components/common';
 import { login } from 'store/middlewares/login';
 import { RootStateType } from 'store/types';
-import { ComponentReturnType } from 'types';
+import { ComponentReturnType, Nullable } from 'types';
 
 const initialValues: LoginDataType = {
   email: process.env.REACT_APP_LOGIN || '',
   password: process.env.REACT_APP_PASSWORD || '',
   rememberMe: false,
+  captcha: '',
 };
 
 const validationSchema = Yup.object({
@@ -31,6 +32,10 @@ export const Login = (): ComponentReturnType => {
     state => state.authData.isLoggedIn,
   );
 
+  const captcha = useSelector<RootStateType, Nullable<string>>(
+    state => state.authData.captcha,
+  );
+
   const onSubmit = (values: LoginDataType, actions: FormikHelpers<LoginDataType>) => {
     dispatch(login(values, actions.setSubmitting, actions.setStatus));
   };
@@ -44,7 +49,7 @@ export const Login = (): ComponentReturnType => {
       onSubmit={onSubmit}
     >
       {formik => {
-        console.log(formik);
+        console.log('formik');
         return (
           <Form className={styles.loginFormContainer}>
             <div className={styles.loginForm}>
@@ -78,6 +83,16 @@ export const Login = (): ComponentReturnType => {
                   <Field type="checkbox" id="rememberMe" name="rememberMe" />
                 </label>
               </div>
+              {captcha && <img src={captcha || ''} alt="captcha" />}
+              {captcha && (
+                <div className={styles.inputContainer}>
+                  {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                  <label htmlFor="captcha" className={styles.inputLabel}>
+                    captcha
+                    <Field id="captcha" name="captcha" type="text" />
+                  </label>
+                </div>
+              )}
               <button type="submit" disabled={formik.isSubmitting || !formik.isValid}>
                 Submit
               </button>

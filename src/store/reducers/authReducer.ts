@@ -1,5 +1,6 @@
 import { AuthMeResponseDataType } from 'api/types';
 import { AuthReducerStateType } from 'store/reducers/types';
+import { Nullable } from 'types';
 
 const initialState: AuthReducerStateType = {
   id: null,
@@ -50,7 +51,7 @@ export const setLoginStatus = (loginStatus: boolean) =>
     loginStatus,
   } as const);
 
-export const setCaptcha = (url: string) =>
+export const setCaptcha = (url: Nullable<string>) =>
   ({
     type: 'SET-CAPTCHA',
     url,
