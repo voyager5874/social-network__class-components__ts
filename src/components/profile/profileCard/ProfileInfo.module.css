@@ -1,3 +1,9 @@
 .profileTextInfo{
-    max-width: 350px;
+    /*max-width: 350px;*/
+    /*padding: 20px;*/
+    /*width:100%;*/
+}
+
+.aboutMe{
+    margin-bottom: 20px;
 }

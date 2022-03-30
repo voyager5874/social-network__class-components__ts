@@ -25,6 +25,7 @@ export const AddPostForm: FC<AddPostFormPropsType> = ({
   return (
     <div className={styles.addPostForm}>
       <textarea
+        className={styles.newPostTextArea}
         placeholder="Nulla dies sine linea"
         onChange={handleTextareaChange}
         value={newPostText}

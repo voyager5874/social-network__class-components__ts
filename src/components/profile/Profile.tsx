@@ -42,9 +42,6 @@ export const Profile = ({
   const someContent = 'Profile';
   return (
     <div className={styles.profile}>
-      <button type="button" onClick={showRandomProfile}>
-        showRandomProfile
-      </button>
       <ProfileCard
         changeFollowed={changeFollowed}
         followed={followed}
@@ -59,7 +56,11 @@ export const Profile = ({
         updateCurrentUserStatus={updateCurrentUserStatus}
         updateCurrentUserAvatar={updateCurrentUserAvatar}
         isProfileOwner={isProfileOwner}
+        showRandomProfile={showRandomProfile}
       />
+      {/* <button type="button" onClick={showRandomProfile}> */}
+      {/*  showRandomProfile */}
+      {/* </button> */}
       <MyPosts
         posts={posts}
         addPost={addPost}

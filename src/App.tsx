@@ -68,7 +68,6 @@ const App = (): ComponentReturnType => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
-      <Footer />
     </div>
   );
 };

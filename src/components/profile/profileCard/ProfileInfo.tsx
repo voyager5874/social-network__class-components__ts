@@ -30,7 +30,7 @@ const ProfileInfo = ({
       {/*  statusText={userStatus} */}
       {/*  updateCurrentUserStatus={updateCurrentUserStatus} */}
       {/* /> */}
-      <div>
+      <div className={styles.aboutMe}>
         <b>About me:</b>
         {` ${aboutMe || 'no info'}`}
       </div>

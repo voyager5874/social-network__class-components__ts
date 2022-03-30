@@ -13,28 +13,25 @@ export const LeftSideBar = (): ComponentReturnType => {
       <ul>
         <li>
           <NavLink
-            style={({ isActive }) => ({ color: isActive ? 'yellow' : 'blue' })}
-            className={styles.link}
-            // className={({ isActive }) => `nav_link${isActive ? ' active' : ''}`}
+            // style={({ isActive }) => ({ color: isActive ? 'yellow' : 'blue' })}
+            // className={styles.link}
+            className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}
             to="/profile"
           >
             Profile
           </NavLink>
         </li>
         <li>
-          <button
-            className={styles.navButton}
-            type="button"
-            onClick={handleDialogsLinkClick}
+          <NavLink
+            className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}
+            to="/messages"
           >
             Messages
-          </button>
+          </NavLink>
         </li>
         <li>
           <NavLink
-            style={({ isActive }) => ({ color: isActive ? 'yellow' : 'blue' })}
-            // className={({ isActive }) => `nav_link${isActive ? ' active' : ''}`}
-            className={styles.link}
+            className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}
             to="/news"
           >
             News
@@ -42,9 +39,7 @@ export const LeftSideBar = (): ComponentReturnType => {
         </li>
         <li>
           <NavLink
-            style={({ isActive }) => ({ color: isActive ? 'yellow' : 'blue' })}
-            className={styles.link}
-            // className={({ isActive }) => `nav_link${isActive ? ' active' : ''}`}
+            className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}
             to="/users"
           >
             Users
@@ -52,9 +47,7 @@ export const LeftSideBar = (): ComponentReturnType => {
         </li>
         <li>
           <NavLink
-            style={({ isActive }) => ({ color: isActive ? 'yellow' : 'blue' })}
-            className={styles.link}
-            // className={({ isActive }) => `nav_link${isActive ? ' active' : ''}`}
+            className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}
             to="/friends"
           >
             Friends

@@ -22,6 +22,7 @@ import { RootStateType } from 'store/types';
 export const getUsers =
   (pageNumber: number, usersPerPage: number) => async (dispatch: Dispatch) => {
     dispatch(setUsersListEntityStatus(EntityStatus.busy));
+    debugger;
     try {
       const response = await usersAPI.getUsers(pageNumber, usersPerPage);
       if (response.data.totalCount) {

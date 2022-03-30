@@ -2,20 +2,25 @@ import { FC } from 'react';
 
 import styles from './Post.module.css';
 
-import { PostType } from 'components/profile/types';
+import { PostPropsType } from 'components/profile/types';
 import { ComponentReturnType } from 'types';
 
 // export const Post = (): ComponentReturnType => <div>Post</div>;
 
-export const Post: FC<PostType> = ({ postText, likesCount }): ComponentReturnType => (
+export const Post: FC<PostPropsType> = ({
+  postText,
+  likesCount,
+  author,
+}): ComponentReturnType => (
   <div className={styles.item}>
-    <img
-      src="https://image.shutterstock.com/image-vector/user-avatar-icon-sign-profile-260nw-1145752283.jpg"
-      alt="avatar"
-    />
-    {postText}
+    <div className={styles.author}>
+      <img src={author.avatar} alt="avatar" />
+      <div>{author.name}</div>
+    </div>
+
     <div>
-      <span>like</span> {likesCount}
+      <div>{postText}</div>
+      <div>{`likes ${likesCount}`}</div>
     </div>
   </div>
 );

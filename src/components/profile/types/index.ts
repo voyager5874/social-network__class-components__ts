@@ -1,8 +1,13 @@
 import { UserProfileContactsType } from 'api/types';
 
 export type PostPropsType = {
-  message: string;
+  postText: string;
+  postID: string;
   likesCount: number;
+  author: {
+    avatar: string;
+    name: string;
+  };
 };
 export type PostType = {
   id: string;

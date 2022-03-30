@@ -1,13 +1,53 @@
 .profileInfoContainer{
-    background-color: coral;
+    /*background-color: coral;*/
     display: flex;
+    margin-bottom: 20px;
+}
+
+.profilePictureContainer{
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-right: 20px;
+    max-height: 450px;
 }
 
 .profilePicture{
-    height: 300px;
+    height: 260px;
+    border-radius: 5px;
+    margin-bottom: 20px;
 }
 
 .profileTextInfo{
     margin-left: 10px;
-    background-color: rgba(213, 201, 121, 0.45);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 100%
+}
+
+.userName{
+    margin: 0px 0px 1px;
+    /*padding: 0px;*/
+}
+
+.button{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #649ebb;
+    margin-bottom: 10px;
+}
+
+.button:hover{
+    background-color: #456d81;
+}
+
+.userActionsPopup{
+    background-color: #649ebb;
+    display: flex;
+    flex-direction: column;
 }

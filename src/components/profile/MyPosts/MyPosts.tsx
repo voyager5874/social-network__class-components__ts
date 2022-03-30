@@ -17,12 +17,18 @@ export const MyPosts: FC<MyPostsPropsType> = ({
   const content = posts
     .reverse()
     .map(({ id, postText, likesCount }) => (
-      <Post key={id} postText={postText} likesCount={likesCount} id={id} />
+      <Post
+        key={id}
+        postText={postText}
+        author={{ name: 'me', avatar: 'src' }}
+        likesCount={likesCount}
+        postID={id}
+      />
     ));
 
   return (
     <div className={styles.postsBlock}>
-      <h3>My posts</h3>
+      {/* <h3>My posts</h3> */}
       <AddPostForm
         onSubmit={addPost}
         onChange={updateNewPostText}

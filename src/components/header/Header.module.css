@@ -1,13 +1,37 @@
 .header{
-    height: 7vh;
-    background-color: cornflowerblue;
+    height: 6vh;
+    background-color: white;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    /*!*position: fixed;*!*/
-    /*top: 0;*/
-    /*left: 1%;*/
-    /*width: 98%;*/
+    position: fixed;
+    top: 0;
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     padding: 5px;
     align-items: center;
+}
+
+.headerContent{
+    /*border: 1px solid;*/
+    width:70%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.appFlag{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.siteLogo{
+    height: 45px;
+    margin-right: 10px;
+}
+
+.siteCaption{
+    margin: 0px;
+    padding: 0px;
+    font-size: 0.9rem;
 }

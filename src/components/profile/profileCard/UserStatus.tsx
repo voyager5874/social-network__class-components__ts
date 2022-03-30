@@ -1,5 +1,7 @@
 import { ChangeEvent, Component, KeyboardEvent } from 'react';
 
+import styles from './UserStatus.module.css';
+
 import { Nullable } from 'types';
 import { getTrimmedValue } from 'utils';
 
@@ -82,7 +84,7 @@ export class UserStatus extends Component<UserStatusPropsType, UserStatusStateTy
       </div>
     ) : (
       <div onDoubleClick={this.activateEditMode}>
-        <h3>{this.props.statusText}</h3>
+        <p className={styles.statusText}>{this.props.statusText}</p>
       </div>
     );
   }

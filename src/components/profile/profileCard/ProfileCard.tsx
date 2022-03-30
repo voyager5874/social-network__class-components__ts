@@ -17,6 +17,7 @@ type ProfileCardPropsType = GetUserProfileResponseType & {
   isProfileOwner: boolean;
   followed: Nullable<boolean>;
   changeFollowed: (userID: number, newFollowedState: boolean) => void;
+  showRandomProfile: () => void;
 };
 
 export const ProfileCard = ({
@@ -33,10 +34,12 @@ export const ProfileCard = ({
   isProfileOwner,
   followed,
   changeFollowed,
+  showRandomProfile,
 }: ProfileCardPropsType): ComponentReturnType => {
   // type SocialMediaListType = keyof typeof contacts;
   // const socialMediaList = Object.keys(contacts) as Array<keyof typeof contacts>;
   const [editMode, setEditMode] = useState(false);
+  const [showUserActionsPopup, setShowUserActionsPopup] = useState(false);
 
   const onImageSelect = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -50,34 +53,81 @@ export const ProfileCard = ({
     }
   };
 
+  const handleShowOptions = () => {
+    setShowUserActionsPopup(!showUserActionsPopup);
+  };
   return (
     <div className={styles.profileInfoContainer}>
-      <div>
+      <div className={styles.profilePictureContainer}>
         <img
           className={styles.profilePicture}
           src={photos.large ? photos.large : userWithoutPhoto}
           alt="profile"
         />
         <div>{isProfileOwner && <input type="file" onChange={onImageSelect} />}</div>
+        {isProfileOwner && !editMode && (
+          <button
+            className={styles.button}
+            type="button"
+            onClick={() => setEditMode(true)}
+          >
+            edit profile
+          </button>
+        )}
+        {!isProfileOwner && (
+          <button type="button" className={styles.button}>
+            Write a message
+          </button>
+        )}
+        {followed && (
+          <div onMouseEnter={handleShowOptions} onMouseLeave={handleShowOptions}>
+            Among your friends
+            {showUserActionsPopup && (
+              <div onBlur={handleShowOptions} className={styles.userActionsPopup}>
+                {!isProfileOwner && (
+                  <ToggleButton
+                    labelForFalseValue="follow"
+                    labelForTrueValue="unfollow"
+                    currentToggledValue={followed}
+                    changeValueCallback={handleFollowedStatusChange}
+                  />
+                )}
+                <button type="button" onClick={showRandomProfile}>
+                  show random samurai profile
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+        {!isProfileOwner && !followed && (
+          <div onMouseEnter={handleShowOptions} onMouseLeave={handleShowOptions}>
+            Add to friends
+            {showUserActionsPopup && (
+              <div onBlur={handleShowOptions} className={styles.userActionsPopup}>
+                {!isProfileOwner && (
+                  <ToggleButton
+                    labelForFalseValue="follow"
+                    labelForTrueValue="unfollow"
+                    currentToggledValue={followed}
+                    changeValueCallback={handleFollowedStatusChange}
+                  />
+                )}
+                <button type="button" onClick={showRandomProfile}>
+                  show random samurai profile
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
       <div className={styles.profileTextInfo}>
-        <h2>
-          {fullName}{' '}
-          {!isProfileOwner && (
-            <ToggleButton
-              labelForFalseValue="follow"
-              labelForTrueValue="unfollow"
-              currentToggledValue={followed}
-              changeValueCallback={handleFollowedStatusChange}
-            />
-          )}
-        </h2>
+        <h3 className={styles.userName}>{fullName}</h3>
         <UserStatus
           isProfileOwner={isProfileOwner}
           statusText={userStatus}
           updateCurrentUserStatus={updateCurrentUserStatus}
         />
-
+        <hr />
         {editMode ? (
           <ProfileInfoEditForm />
         ) : (
@@ -88,11 +138,6 @@ export const ProfileCard = ({
             lookingForAJobDescription={lookingForAJobDescription}
             userId={userId}
           />
-        )}
-        {isProfileOwner && !editMode && (
-          <button type="button" onClick={() => setEditMode(true)}>
-            edit profile
-          </button>
         )}
       </div>
     </div>
