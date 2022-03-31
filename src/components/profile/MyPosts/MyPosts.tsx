@@ -2,6 +2,7 @@ import { FC } from 'react';
 
 import styles from './MyPosts.module.css';
 
+import userWithoutAvatar from 'components/common/assets/userWithoutPhoto.png';
 import { AddPostForm } from 'components/profile/MyPosts/addPostForm/AddPostForm';
 import { Post } from 'components/profile/MyPosts/post/Post';
 import { MyPostsPropsType } from 'components/profile/types';
@@ -20,7 +21,7 @@ export const MyPosts: FC<MyPostsPropsType> = ({
       <Post
         key={id}
         postText={postText}
-        author={{ name: 'me', avatar: 'src' }}
+        author={{ name: 'me', avatar: userWithoutAvatar }}
         likesCount={likesCount}
         postID={id}
       />

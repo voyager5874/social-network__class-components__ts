@@ -1,17 +1,56 @@
 .addPostForm{
     display: flex;
     flex-direction: column;
-    /*width: 400px;*/
+    padding: 20px;
+    width: 100%;
     background-color: white;
     border-radius: 5px;
     margin-bottom: 20px;
 
 }
+.textareaContainer{
+    /*background-color: rgba(152,187,81,0.46);*/
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
 
-.addPostForm button{
-    margin-top: 5px;
 }
 
 .newPostTextArea{
-    resize: none;
+    resize: vertical;
+    border: none;
+    outline: none;
+    width: 90%;
+}
+.authorPicture{
+    width: 20px;
+    margin-right: 20px;
+}
+
+.controlsContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.compositionControls{
+   display: flex;
+    width: 100px;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.button{
+    color: white;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #649ebb;
+    margin-bottom: 10px;
+}
+
+.button:hover{
+    background-color: #456d81;
 }

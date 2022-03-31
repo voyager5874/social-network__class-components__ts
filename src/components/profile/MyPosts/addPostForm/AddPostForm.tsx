@@ -1,7 +1,14 @@
 import { ChangeEvent, FC, KeyboardEvent } from 'react';
 
+import { AiFillCamera, AiFillVideoCamera } from 'react-icons/ai';
+import {
+  BsFillFileEarmarkMusicFill,
+  BsFillFileEarmarkRichtextFill,
+} from 'react-icons/bs';
+
 import styles from './AddPostForm.module.css';
 
+import userWithoutPic from 'components/common/assets/userWithoutPhoto.png';
 import { AddPostFormPropsType } from 'components/profile/types';
 import { ComponentReturnType } from 'types';
 
@@ -24,16 +31,28 @@ export const AddPostForm: FC<AddPostFormPropsType> = ({
   };
   return (
     <div className={styles.addPostForm}>
-      <textarea
-        className={styles.newPostTextArea}
-        placeholder="Nulla dies sine linea"
-        onChange={handleTextareaChange}
-        value={newPostText}
-        onKeyPress={handleEnterPress}
-      />
-      <button type="button" onClick={handleAddPost}>
-        add post
-      </button>
+      <div className={styles.textareaContainer}>
+        <img src={userWithoutPic} alt="author-avatar" className={styles.authorPicture} />
+        <textarea
+          className={styles.newPostTextArea}
+          placeholder="Nulla dies sine linea"
+          onChange={handleTextareaChange}
+          value={newPostText}
+          onKeyPress={handleEnterPress}
+        />
+      </div>
+      <div className={styles.controlsContainer}>
+        <div className={styles.compositionControls}>
+          <AiFillCamera className={styles.attachmentTypeIcon} />
+          <AiFillVideoCamera className={styles.attachmentTypeIcon} />
+          <BsFillFileEarmarkMusicFill className={styles.attachmentTypeIcon} />
+          <BsFillFileEarmarkRichtextFill className={styles.attachmentTypeIcon} />
+        </div>
+
+        <button type="button" onClick={handleAddPost} className={styles.button}>
+          Publish
+        </button>
+      </div>
     </div>
   );
 };

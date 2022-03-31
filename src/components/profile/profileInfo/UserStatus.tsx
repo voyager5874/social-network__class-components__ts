@@ -1,7 +1,9 @@
 import { ChangeEvent, Component, KeyboardEvent } from 'react';
 
-import styles from './UserStatus.module.css';
+import classNames from 'classnames/bind';
+import { AiFillEdit } from 'react-icons/ai';
 
+import styles from 'components/profile/profileInfo/UserStatus.module.css';
 import { Nullable } from 'types';
 import { getTrimmedValue } from 'utils';
 
@@ -13,14 +15,18 @@ type UserStatusPropsType = {
 
 type UserStatusStateType = {
   editMode: boolean;
+  showEditIcon: boolean;
   status: Nullable<string>;
 };
+
+const css = classNames.bind(styles);
 
 export class UserStatus extends Component<UserStatusPropsType, UserStatusStateType> {
   constructor(props: UserStatusPropsType) {
     super(props);
     this.state = {
       editMode: false,
+      showEditIcon: false,
       status: this.props.statusText,
     };
   }
@@ -45,10 +51,20 @@ export class UserStatus extends Component<UserStatusPropsType, UserStatusStateTy
     }
   };
 
-  handleEnterKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+  handleEnterKeyPress = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === 'Enter') {
       this.handleStatusUpdate();
     }
+  };
+
+  handleShowIcon = () => {
+    if (!this.props.isProfileOwner) return;
+    this.setState({ showEditIcon: true });
+  };
+
+  handleHideIcon = () => {
+    // if (!this.props.isProfileOwner) return;
+    this.setState({ showEditIcon: false });
   };
 
   activateEditMode = () => {
@@ -65,26 +81,42 @@ export class UserStatus extends Component<UserStatusPropsType, UserStatusStateTy
     this.handleStatusUpdate();
   };
 
-  handleInputTextChange = (event: ChangeEvent<HTMLInputElement>) => {
+  handleInputTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     // this.props.updateCurrentUserStatus(event.currentTarget.value);
     this.setState({ status: event.currentTarget.value });
   };
 
   render() {
-    return this.state.editMode ? (
-      <div>
-        <input
-          onKeyPress={this.handleEnterKeyPress}
-          // eslint-disable-next-line jsx-a11y/no-autofocus
-          autoFocus
-          onBlur={this.deactivateEditMode}
-          value={this.state.status || ''}
-          onChange={this.handleInputTextChange}
-        />
-      </div>
-    ) : (
-      <div onDoubleClick={this.activateEditMode}>
-        <p className={styles.statusText}>{this.props.statusText}</p>
+    const statusTextStyle = css({
+      statusText: true,
+      highlightedText: this.state.showEditIcon,
+    });
+    return (
+      <div className={styles.statusContainer}>
+        {this.state.editMode ? (
+          <textarea
+            wrap="hard"
+            className={styles.statusInput}
+            onKeyPress={this.handleEnterKeyPress}
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus
+            onBlur={this.deactivateEditMode}
+            value={this.state.status || ''}
+            onChange={this.handleInputTextChange}
+          />
+        ) : (
+          <span
+            className={statusTextStyle}
+            onDoubleClick={this.activateEditMode}
+            onMouseEnter={this.handleShowIcon}
+            onMouseLeave={this.handleHideIcon}
+          >
+            {this.props.statusText}{' '}
+            {this.state.showEditIcon && (
+              <AiFillEdit className={styles.editIcon} onClick={this.activateEditMode} />
+            )}
+          </span>
+        )}
       </div>
     );
   }

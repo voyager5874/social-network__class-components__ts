@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
 
-import styles from './ProfileInfo.module.css';
-
 import { UserProfileContactsType } from 'api/types';
+import styles from 'components/profile/profileInfo/ProfileTextInfo.module.css';
 import { Nullable } from 'types';
 
 type ProfileInfoPropsType = {
@@ -13,7 +12,7 @@ type ProfileInfoPropsType = {
   userId: Nullable<any>;
 };
 
-const ProfileInfo = ({
+const ProfileTextInfo = ({
   contacts,
   lookingForAJob,
   lookingForAJobDescription,
@@ -57,4 +56,4 @@ const ProfileInfo = ({
   );
 };
 
-export default ProfileInfo;
+export default ProfileTextInfo;

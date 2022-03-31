@@ -2,10 +2,9 @@ import { ErrorMessage, Field, Form, Formik, useField } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
-import styles from './ProfileInfoEditForm.module.css';
-
 import { GetUserProfileResponseType, UserProfileContactsType } from 'api/types';
 import { ErrorTag } from 'components/common';
+import styles from 'components/profile/profileInfo/ProfileInfoEditForm.module.css';
 import { correctUrlRe } from 'constants/regExp';
 import { updateCurrentUserProfile } from 'store/middlewares/userProfile';
 import { RootStateType } from 'store/types';

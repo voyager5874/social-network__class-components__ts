@@ -1,5 +1,6 @@
 .header{
     height: 6vh;
+    min-height: 40px;
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     position: fixed;
@@ -26,12 +27,12 @@
 }
 
 .siteLogo{
-    height: 45px;
+    height: 30px;
     margin-right: 10px;
 }
 
 .siteCaption{
     margin: 0px;
     padding: 0px;
-    font-size: 0.9rem;
+    font-size: 0.8em;
 }

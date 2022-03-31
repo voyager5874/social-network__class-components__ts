@@ -5,7 +5,7 @@ export type PostPropsType = {
   postID: string;
   likesCount: number;
   author: {
-    avatar: string;
+    avatar: any;
     name: string;
   };
 };

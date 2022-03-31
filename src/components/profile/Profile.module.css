@@ -1,4 +1,69 @@
-.profile{
-    /*background-color: #d1ffc4;*/
-    width: 100%;
+.pageContainer{
+    /*background-color: coral;*/
+    display: flex;
+    width:100%;
+    /*margin-bottom: 20px;*/
 }
+
+.pageCenter{
+    min-width: 500px;
+    /*background-color: #649ebb;*/
+}
+
+.pageLeft{
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-right: 20px;
+    max-height: 450px;
+}
+
+.profilePicture{
+    height: 260px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.userActionsCaller{
+    margin-bottom: 10px;
+}
+
+.profileInfo{
+    /*margin-left: 10px;*/
+    /*border: 1px solid black;*/
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 20px;
+
+}
+
+.userName{
+    margin: 0px 0px 1px;
+    /*padding: 0px;*/
+}
+
+.button{
+    color: white;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #649ebb;
+    margin-bottom: 10px;
+}
+
+.button:hover{
+    background-color: #456d81;
+}
+
+.userActionsPopup{
+    background-color: #649ebb;
+    display: flex;
+    flex-direction: column;
+}
+

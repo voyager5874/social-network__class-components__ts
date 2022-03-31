@@ -17,9 +17,9 @@ export const Post: FC<PostPropsType> = ({
       <img src={author.avatar} alt="avatar" />
       <div>{author.name}</div>
     </div>
+    <div className={styles.postContent}>{postText}</div>
 
-    <div>
-      <div>{postText}</div>
+    <div className={styles.reactions}>
       <div>{`likes ${likesCount}`}</div>
     </div>
   </div>

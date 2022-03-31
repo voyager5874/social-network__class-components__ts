@@ -23,7 +23,7 @@ export const Header = ({
         <h1 className={styles.siteCaption}>IT-INCUBATOR NETWORK</h1>
       </div>
 
-      <div>
+      <div className={styles.user}>
         <div>{login}</div>
         <div>
           {isLoggedIn ? (
