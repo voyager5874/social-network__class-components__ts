@@ -2,6 +2,7 @@ import { ChangeEvent, Component, KeyboardEvent } from 'react';
 
 import classNames from 'classnames/bind';
 import { AiFillEdit } from 'react-icons/ai';
+import TextareaAutosize from 'react-textarea-autosize';
 
 import styles from 'components/profile/profileInfo/UserStatus.module.css';
 import { Nullable } from 'types';
@@ -94,8 +95,8 @@ export class UserStatus extends Component<UserStatusPropsType, UserStatusStateTy
     return (
       <div className={styles.statusContainer}>
         {this.state.editMode ? (
-          <textarea
-            wrap="hard"
+          <TextareaAutosize
+            maxLength={300}
             className={styles.statusInput}
             onKeyPress={this.handleEnterKeyPress}
             // eslint-disable-next-line jsx-a11y/no-autofocus

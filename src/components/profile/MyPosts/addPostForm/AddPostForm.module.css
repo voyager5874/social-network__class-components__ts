@@ -1,8 +1,9 @@
 .addPostForm{
     display: flex;
     flex-direction: column;
+    align-content: space-between;
     padding: 20px;
-    width: 100%;
+    /*width: 100%;*/
     background-color: white;
     border-radius: 5px;
     margin-bottom: 20px;
@@ -17,10 +18,11 @@
 }
 
 .newPostTextArea{
-    resize: vertical;
+    resize: none;
     border: none;
     outline: none;
-    width: 90%;
+    overflow: hidden;
+    width: 95%;
 }
 .authorPicture{
     width: 20px;

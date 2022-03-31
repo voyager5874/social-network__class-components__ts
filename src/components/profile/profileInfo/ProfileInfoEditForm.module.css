@@ -2,6 +2,19 @@
     display: flex;
     flex-direction: column;
 }
+
+.formBlock{
+    /*border: 1px solid;*/
+    min-height: 50px;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form label{
+    margin-bottom: 6px;
+    font-weight: bold;
+}
 .error{
     color: red;
     font-size: 12px;
@@ -10,15 +23,24 @@
 }
 
 .textarea{
-    width:300px;
-    height: 100px;
+    width: 96%;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2) inset;
+    padding: 10px;
+    overflow: hidden;
+    word-break: break-all;
+    /*height: 100px;*/
     resize: none;
+    margin-bottom: 0px;
 }
 
 .socialMediaFieldContainer{
     display: flex;
     flex-direction: column;
-    height: 60px;
+    height: 80px;
+    margin-bottom: 20px;
 }
 
 .socialMediaFieldLabel{
@@ -28,5 +50,42 @@
 
 .submitButton{
     min-height: 20px;
+    padding: 10px;
+}
+
+.checkbox{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    /*align-content: center;*/
+}
+
+.checkbox input {
+    margin-right: 10px;
+}
+
+
+.form input[type="text"]{
+    border-radius: 5px;
+    border: none;
+    height: 30px;
+    box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2) inset;
     padding: 5px;
+    margin-bottom: 5px;
+
+}
+
+.button{
+    color: white;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #649ebb;
+    margin-bottom: 10px;
+}
+
+.button:hover{
+    background-color: #456d81;
 }

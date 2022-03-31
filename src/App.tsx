@@ -52,7 +52,7 @@ const App = (): ComponentReturnType => {
   ) : (
     <div className="appWrapper">
       <HeaderContainer />
-      <div className="pageCenter">
+      <div className="content">
         <LeftSideBar />
         <Routes>
           <Route path="/profile" element={<UserProfileContainer />}>

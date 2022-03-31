@@ -12,9 +12,9 @@ import { RootStateType } from 'store/types';
 const YesNoField = ({ children, ...props }: any) => {
   const [field, meta] = useField({ ...props, type: 'checkbox' });
   return (
-    <div>
+    <div className={styles.checkbox}>
       {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-      <label className={styles.checkbox}>
+      <label>
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <input type="checkbox" {...field} {...props} />
         {children}
@@ -31,11 +31,9 @@ const SocialMediaField = ({ children, ...props }: any) => {
   return (
     <div className={styles.socialMediaFieldContainer}>
       {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-      <label className={styles.socialMediaFieldLabel}>
-        {children}
-        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-        <input type="text" {...field} {...props} />
-      </label>
+      <label className={styles.socialMediaFieldLabel}>{children}</label>
+      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+      <input type="text" {...field} {...props} />
       {meta.touched && meta.error ? (
         <div className={styles.error}>{meta.error}</div>
       ) : null}
@@ -115,40 +113,42 @@ export const ProfileInfoEditForm = () => {
       }}
     >
       <Form className={styles.form}>
-        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-        <label htmlFor="fullName">
-          Full name
+        <div className={styles.formBlock}>
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+          <label htmlFor="fullName">Full name </label>
           <Field name="fullName" type="text" id="fullName" />
-        </label>
-        <ErrorMessage name="fullName" component={ErrorTag} />
-
-        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-        <label htmlFor="aboutMe">About me</label>
-        <Field as="textarea" name="aboutMe" type="text" className={styles.textarea} />
-        <ErrorMessage name="aboutMe" component={ErrorTag} />
+          <ErrorMessage name="fullName" component={ErrorTag} />
+        </div>
+        <div className={styles.formBlock}>
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+          <label htmlFor="aboutMe">About me</label>
+          <Field as="textarea" name="aboutMe" type="text" className={styles.textarea} />
+          <ErrorMessage name="aboutMe" component={ErrorTag} />
+        </div>
 
         <YesNoField name="lookingForAJob">I am currently looking for a job</YesNoField>
-
-        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-        <label htmlFor="lookingForAJobDescription">Job description</label>
-        <Field
-          as="textarea"
-          name="lookingForAJobDescription"
-          type="text"
-          className={styles.textarea}
-        />
-        <ErrorMessage name="lookingForAJobDescription" component={ErrorTag} />
-
+        <div className={styles.formBlock}>
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+          <label htmlFor="lookingForAJobDescription">Job description</label>
+          <Field
+            as="textarea"
+            name="lookingForAJobDescription"
+            type="text"
+            className={styles.textarea}
+          />
+          <ErrorMessage name="lookingForAJobDescription" component={ErrorTag} />
+        </div>
         <div className={styles.socialMediaBlock}>
-          <b>My social media:</b>
+          <h3>My social media:</h3>
+
           {socialMediaList.map(media => (
             <SocialMediaField key={media} name={`contacts.${media}`}>
-              {media}
+              <b>{media}</b>
             </SocialMediaField>
           ))}
         </div>
 
-        <button type="submit" className={styles.submitButton}>
+        <button type="submit" className={styles.button}>
           Submit
         </button>
       </Form>

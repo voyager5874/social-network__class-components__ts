@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 
+import Floater from 'react-floater';
 import { AiFillCaretDown } from 'react-icons/ai';
 
 import { GetUserProfileResponseType } from 'api/types';
@@ -50,7 +51,6 @@ export const Profile = ({
   // type SocialMediaListType = keyof typeof contacts;
   // const socialMediaList = Object.keys(contacts) as Array<keyof typeof contacts>;
   const [editMode, setEditMode] = useState(false);
-  const [showUserActionsPopup, setShowUserActionsPopup] = useState(false);
 
   const onImageSelect = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -64,9 +64,6 @@ export const Profile = ({
     }
   };
 
-  const handleShowOptions = () => {
-    setShowUserActionsPopup(!showUserActionsPopup);
-  };
   return (
     <div className={styles.pageContainer}>
       <div className={styles.pageLeft}>
@@ -95,44 +92,37 @@ export const Profile = ({
             Write a message
           </button>
         )}
-        {!isProfileOwner && (
-          <div>
-            {followed ? (
-              <div
-                className={styles.userActionsCaller}
-                onMouseEnter={handleShowOptions}
-                // onMouseLeave={handleShowOptions}
-              >
-                Among your friends <AiFillCaretDown />
-              </div>
-            ) : (
-              <div
-                className={styles.userActionsCaller}
-                onMouseEnter={handleShowOptions}
-                // onMouseLeave={handleShowOptions}
-              >
-                Add to friends <AiFillCaretDown />
-              </div>
-            )}
-          </div>
-        )}
 
-        {showUserActionsPopup && (
-          <div
-            // onMouseEnter={handleShowOptions}
-            onMouseLeave={handleShowOptions}
-            className={styles.userActionsPopup}
+        {!isProfileOwner && (
+          <Floater
+            event="hover"
+            eventDelay={1}
+            content={
+              <div className={styles.userActionsPopup}>
+                <ToggleButton
+                  labelForFalseValue="follow"
+                  labelForTrueValue="unfollow"
+                  currentToggledValue={followed}
+                  changeValueCallback={handleFollowedStatusChange}
+                />
+                <button type="button" onClick={showRandomProfile}>
+                  show random samurai profile
+                </button>
+              </div>
+            }
           >
-            <ToggleButton
-              labelForFalseValue="follow"
-              labelForTrueValue="unfollow"
-              currentToggledValue={followed}
-              changeValueCallback={handleFollowedStatusChange}
-            />
-            <button type="button" onClick={showRandomProfile}>
-              show random samurai profile
-            </button>
-          </div>
+            <div>
+              {followed ? (
+                <div className={styles.userActionsCaller}>
+                  Among your friends <AiFillCaretDown />
+                </div>
+              ) : (
+                <div className={styles.userActionsCaller}>
+                  Add to friends <AiFillCaretDown />
+                </div>
+              )}
+            </div>
+          </Floater>
         )}
       </div>
       <div className={styles.pageCenter}>

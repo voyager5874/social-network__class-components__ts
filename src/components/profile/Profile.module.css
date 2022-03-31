@@ -1,16 +1,21 @@
 .pageContainer{
-    /*background-color: coral;*/
+    /*border: 3px solid greenyellow;*/
     display: flex;
-    width:100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%; /* i.e. 70% of the screen - leftSideBar width
     /*margin-bottom: 20px;*/
 }
 
 .pageCenter{
-    min-width: 500px;
     /*background-color: #649ebb;*/
+    /*border: 2px solid;*/
+    width: 65%;
+    /*min-width: 500px;*/
 }
 
 .pageLeft{
+    min-width: 25%;
     background-color: white;
     border-radius: 5px;
     display: flex;
@@ -18,6 +23,8 @@
     padding: 20px;
     margin-right: 20px;
     max-height: 450px;
+    margin-bottom: 20px;
+
 }
 
 .profilePicture{
@@ -36,7 +43,7 @@
     background-color: white;
     padding: 20px;
     border-radius: 5px;
-    width: 100%;
+    /*width: 100%;*/
     margin-bottom: 20px;
 
 }

@@ -5,6 +5,7 @@ import {
   BsFillFileEarmarkMusicFill,
   BsFillFileEarmarkRichtextFill,
 } from 'react-icons/bs';
+import TextareaAutosize from 'react-textarea-autosize';
 
 import styles from './AddPostForm.module.css';
 
@@ -33,7 +34,7 @@ export const AddPostForm: FC<AddPostFormPropsType> = ({
     <div className={styles.addPostForm}>
       <div className={styles.textareaContainer}>
         <img src={userWithoutPic} alt="author-avatar" className={styles.authorPicture} />
-        <textarea
+        <TextareaAutosize
           className={styles.newPostTextArea}
           placeholder="Nulla dies sine linea"
           onChange={handleTextareaChange}

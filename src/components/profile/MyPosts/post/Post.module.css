@@ -3,7 +3,7 @@
   margin-bottom: 20px;
   border-radius: 5px;
   padding: 20px;
-  width: 100%;
+  /*width: 100%;*/
 }
 
 .item img {
@@ -14,4 +14,8 @@
 
 .author{
   display: flex;
+}
+
+.postContent{
+  word-break: break-all;
 }

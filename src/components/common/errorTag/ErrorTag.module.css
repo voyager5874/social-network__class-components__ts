@@ -3,4 +3,7 @@
     font-size: 12px;
     background-color: rgba(240, 255, 255, 0.6);
     /*align-self: flex-start;*/
+    /*margin-bottom: 10px;*/
+    height: 20px;
+    /*margin: 0px;*/
 }
