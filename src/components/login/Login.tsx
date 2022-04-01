@@ -1,4 +1,4 @@
-import { Form, Formik, Field, ErrorMessage, FormikProps, FormikHelpers } from 'formik';
+import { Form, Formik, Field, ErrorMessage, FormikHelpers } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -7,6 +7,7 @@ import styles from './Login.module.css';
 
 import { LoginDataType } from 'api/types';
 import { ErrorTag } from 'components/common';
+import { OrdinaryButton } from 'components/common/ordinaryButton/OrdinaryButton';
 import { login } from 'store/middlewares/login';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType, Nullable } from 'types';
@@ -71,7 +72,7 @@ export const Login = (): ComponentReturnType => {
               <div className={styles.inputContainer}>
                 {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                 <label htmlFor="password" className={styles.inputLabel}>
-                  password
+                  <span>password</span>
                   <Field id="password" name="password" type="password" />
                 </label>
                 <ErrorMessage name="password" component={ErrorTag} />
@@ -79,7 +80,7 @@ export const Login = (): ComponentReturnType => {
               <div className={styles.checkboxContainer}>
                 {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                 <label htmlFor="rememberMe" className={styles.checkboxLabel}>
-                  Remember me
+                  <span>Remember me</span>
                   <Field type="checkbox" id="rememberMe" name="rememberMe" />
                 </label>
               </div>
@@ -93,9 +94,12 @@ export const Login = (): ComponentReturnType => {
                   </label>
                 </div>
               )}
-              <button type="submit" disabled={formik.isSubmitting || !formik.isValid}>
+              <OrdinaryButton
+                type="submit"
+                disabled={formik.isSubmitting || !formik.isValid}
+              >
                 Submit
-              </button>
+              </OrdinaryButton>
             </div>
           </Form>
         );

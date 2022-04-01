@@ -1,3 +1,4 @@
+import { loremIpsum } from 'react-lorem-ipsum';
 import { v1 } from 'uuid';
 
 import { PostType } from 'components/profile/types';
@@ -5,10 +6,10 @@ import { PostsStateType } from 'store/reducers/types';
 
 const initialState: PostsStateType = {
   posts: [
-    { id: v1(), postText: 'Hi, how are you?', likesCount: 12 },
-    { id: v1(), postText: "It's my first post", likesCount: 11 },
-    { id: v1(), postText: 'Blabla', likesCount: 11 },
-    { id: v1(), postText: 'Dada', likesCount: 11 },
+    { id: v1(), postText: loremIpsum({ random: true })[0], likesCount: 12 },
+    { id: v1(), postText: loremIpsum({ random: true })[0], likesCount: 11 },
+    { id: v1(), postText: loremIpsum({ random: true })[0], likesCount: 11 },
+    { id: v1(), postText: loremIpsum({ random: true })[0], likesCount: 11 },
   ],
   newPostText: '',
 };

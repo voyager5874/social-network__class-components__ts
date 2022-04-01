@@ -10,6 +10,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import styles from './AddPostForm.module.css';
 
 import userWithoutPic from 'components/common/assets/userWithoutPhoto.png';
+import { OrdinaryButton } from 'components/common/ordinaryButton/OrdinaryButton';
 import { AddPostFormPropsType } from 'components/profile/types';
 import { ComponentReturnType } from 'types';
 
@@ -50,9 +51,9 @@ export const AddPostForm: FC<AddPostFormPropsType> = ({
           <BsFillFileEarmarkRichtextFill className={styles.attachmentTypeIcon} />
         </div>
 
-        <button type="button" onClick={handleAddPost} className={styles.button}>
+        <OrdinaryButton type="button" onClick={handleAddPost}>
           Publish
-        </button>
+        </OrdinaryButton>
       </div>
     </div>
   );

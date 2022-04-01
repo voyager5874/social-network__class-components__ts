@@ -14,8 +14,14 @@
 
 .author{
   display: flex;
+  margin-bottom: 20px;
+}
+
+.author img {
+  margin-right: 20px;
 }
 
 .postContent{
   word-break: break-all;
+  margin-bottom: 20px;
 }

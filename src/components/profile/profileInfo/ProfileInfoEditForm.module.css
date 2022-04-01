@@ -29,7 +29,7 @@
     border-radius: 5px;
     box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2) inset;
     padding: 10px;
-    overflow: hidden;
+    /*overflow: hidden;*/
     word-break: break-all;
     /*height: 100px;*/
     resize: none;
@@ -65,27 +65,13 @@
 }
 
 
-.form input[type="text"]{
+.form input[type=text]{
     border-radius: 5px;
     border: none;
+    outline: none;
     height: 30px;
     box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2) inset;
     padding: 5px;
     margin-bottom: 5px;
 
-}
-
-.button{
-    color: white;
-    font-weight: bold;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #649ebb;
-    margin-bottom: 10px;
-}
-
-.button:hover{
-    background-color: #456d81;
 }

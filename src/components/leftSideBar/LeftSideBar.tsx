@@ -24,7 +24,7 @@ export const LeftSideBar = (): ComponentReturnType => {
         <li>
           <NavLink
             className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}
-            to="/messages"
+            to="/dialogs"
           >
             Messages
           </NavLink>

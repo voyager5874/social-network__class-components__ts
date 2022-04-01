@@ -5,6 +5,7 @@ import { AiFillCaretDown } from 'react-icons/ai';
 
 import { GetUserProfileResponseType } from 'api/types';
 import userWithoutPhoto from 'components/common/assets/userWithoutPhoto.png';
+import { OrdinaryButton } from 'components/common/ordinaryButton/OrdinaryButton';
 import { ToggleButton } from 'components/common/toggleButton/ToggleButton';
 import { MyPosts } from 'components/profile/MyPosts/MyPosts';
 import styles from 'components/profile/Profile.module.css';
@@ -73,24 +74,25 @@ export const Profile = ({
           alt="profile"
         />
         <div>{isProfileOwner && <input type="file" onChange={onImageSelect} />}</div>
-        {isProfileOwner && !editMode && (
-          <button
-            className={styles.button}
-            type="button"
-            onClick={() => setEditMode(true)}
-          >
-            edit profile
-          </button>
-        )}
+        {isProfileOwner &&
+          (editMode ? (
+            <OrdinaryButton type="button" onClick={() => setEditMode(false)}>
+              quit edit mode
+            </OrdinaryButton>
+          ) : (
+            <OrdinaryButton type="button" onClick={() => setEditMode(true)}>
+              edit profile
+            </OrdinaryButton>
+          ))}
         {isProfileOwner && (
-          <button type="button" onClick={showRandomProfile} className={styles.button}>
+          <OrdinaryButton type="button" onClick={showRandomProfile}>
             show random samurai profile
-          </button>
+          </OrdinaryButton>
         )}
         {!isProfileOwner && (
-          <button type="button" className={styles.button}>
+          <OrdinaryButton type="button" className={styles.button}>
             Write a message
-          </button>
+          </OrdinaryButton>
         )}
 
         {!isProfileOwner && (
@@ -105,9 +107,9 @@ export const Profile = ({
                   currentToggledValue={followed}
                   changeValueCallback={handleFollowedStatusChange}
                 />
-                <button type="button" onClick={showRandomProfile}>
+                <OrdinaryButton type="button" onClick={showRandomProfile}>
                   show random samurai profile
-                </button>
+                </OrdinaryButton>
               </div>
             }
           >

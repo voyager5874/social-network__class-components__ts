@@ -11,11 +11,12 @@
     /*background-color: #649ebb;*/
     /*border: 2px solid;*/
     width: 65%;
-    /*min-width: 500px;*/
+    min-width: 350px;
+
 }
 
 .pageLeft{
-    min-width: 25%;
+    min-width: 200px;
     background-color: white;
     border-radius: 5px;
     display: flex;
@@ -53,20 +54,20 @@
     /*padding: 0px;*/
 }
 
-.button{
-    color: white;
-    font-weight: bold;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #649ebb;
-    margin-bottom: 10px;
-}
+/*.button{*/
+/*    color: white;*/
+/*    font-weight: bold;*/
+/*    padding-top: 10px;*/
+/*    padding-bottom: 10px;*/
+/*    border: none;*/
+/*    border-radius: 5px;*/
+/*    background-color: #649ebb;*/
+/*    margin-bottom: 10px;*/
+/*}*/
 
-.button:hover{
-    background-color: #456d81;
-}
+/*.button:hover{*/
+/*    background-color: #456d81;*/
+/*}*/
 
 .userActionsPopup{
     background-color: #649ebb;

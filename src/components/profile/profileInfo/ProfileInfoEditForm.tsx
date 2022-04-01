@@ -1,10 +1,13 @@
 import { ErrorMessage, Field, Form, Formik, useField } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
+import TextareaAutosize from 'react-textarea-autosize';
 import * as Yup from 'yup';
+
+import styles from './ProfileInfoEditForm.module.css';
 
 import { GetUserProfileResponseType, UserProfileContactsType } from 'api/types';
 import { ErrorTag } from 'components/common';
-import styles from 'components/profile/profileInfo/ProfileInfoEditForm.module.css';
+import { OrdinaryButton } from 'components/common/ordinaryButton/OrdinaryButton';
 import { correctUrlRe } from 'constants/regExp';
 import { updateCurrentUserProfile } from 'store/middlewares/userProfile';
 import { RootStateType } from 'store/types';
@@ -112,46 +115,58 @@ export const ProfileInfoEditForm = () => {
         setSubmitting(false);
       }}
     >
-      <Form className={styles.form}>
-        <div className={styles.formBlock}>
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <label htmlFor="fullName">Full name </label>
-          <Field name="fullName" type="text" id="fullName" />
-          <ErrorMessage name="fullName" component={ErrorTag} />
-        </div>
-        <div className={styles.formBlock}>
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <label htmlFor="aboutMe">About me</label>
-          <Field as="textarea" name="aboutMe" type="text" className={styles.textarea} />
-          <ErrorMessage name="aboutMe" component={ErrorTag} />
-        </div>
+      {formik => (
+        <Form className={styles.form}>
+          <div className={styles.formBlock}>
+            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+            <label htmlFor="fullName">Full name </label>
+            <Field name="fullName" type="text" id="fullName" />
+            <ErrorMessage name="fullName" component={ErrorTag} />
+          </div>
+          <div className={styles.formBlock}>
+            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+            <label htmlFor="aboutMe">About me</label>
+            {/* <Field as="textarea" name="aboutMe" type="text" className={styles.textarea} /> */}
+            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+            <TextareaAutosize
+              {...formik.getFieldProps('aboutMe')}
+              className={styles.textarea}
+            />
+            <ErrorMessage name="aboutMe" component={ErrorTag} />
+          </div>
 
-        <YesNoField name="lookingForAJob">I am currently looking for a job</YesNoField>
-        <div className={styles.formBlock}>
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <label htmlFor="lookingForAJobDescription">Job description</label>
-          <Field
-            as="textarea"
-            name="lookingForAJobDescription"
-            type="text"
-            className={styles.textarea}
-          />
-          <ErrorMessage name="lookingForAJobDescription" component={ErrorTag} />
-        </div>
-        <div className={styles.socialMediaBlock}>
-          <h3>My social media:</h3>
+          <YesNoField name="lookingForAJob">I am currently looking for a job</YesNoField>
+          <div className={styles.formBlock}>
+            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+            <label htmlFor="lookingForAJobDescription">Job description</label>
+            {/* <Field */}
+            {/*  as="textarea" */}
+            {/*  name="lookingForAJobDescription" */}
+            {/*  type="text" */}
+            {/*  className={styles.textarea} */}
+            {/* /> */}
+            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+            <TextareaAutosize
+              {...formik.getFieldProps('lookingForAJobDescription')}
+              className={styles.textarea}
+            />
+            <ErrorMessage name="lookingForAJobDescription" component={ErrorTag} />
+          </div>
+          <div className={styles.socialMediaBlock}>
+            <h3>My social media:</h3>
 
-          {socialMediaList.map(media => (
-            <SocialMediaField key={media} name={`contacts.${media}`}>
-              <b>{media}</b>
-            </SocialMediaField>
-          ))}
-        </div>
+            {socialMediaList.map(media => (
+              <SocialMediaField key={media} name={`contacts.${media}`}>
+                <b>{media}</b>
+              </SocialMediaField>
+            ))}
+          </div>
 
-        <button type="submit" className={styles.button}>
-          Submit
-        </button>
-      </Form>
+          <OrdinaryButton type="submit" disabled={formik.isSubmitting}>
+            Submit
+          </OrdinaryButton>
+        </Form>
+      )}
     </Formik>
   );
 };
