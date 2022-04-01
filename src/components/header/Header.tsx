@@ -9,12 +9,16 @@ type HeaderPropsType = {
   isLoggedIn: boolean;
   login: Nullable<string>;
   logout: () => void;
+  name: Nullable<string>;
+  photo: Nullable<string>;
 };
 
 export const Header = ({
   isLoggedIn,
   login,
   logout,
+  name,
+  photo,
 }: HeaderPropsType): ComponentReturnType => (
   <div className={styles.header}>
     <div className={styles.headerContent}>
@@ -24,7 +28,7 @@ export const Header = ({
       </div>
 
       <div className={styles.user}>
-        <div>{login}</div>
+        <div>{name}</div>
         <div>
           {isLoggedIn ? (
             <button type="button" onClick={logout}>

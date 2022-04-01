@@ -90,6 +90,8 @@ export type DialogPageStateType = {
 export type AuthReducerStateType = AuthMeResponseDataType & {
   isLoggedIn: boolean;
   captcha: Nullable<string>;
+  fullName: Nullable<string>;
+  photo: Nullable<string>;
 };
 
 export type AvatarImageDataType = {

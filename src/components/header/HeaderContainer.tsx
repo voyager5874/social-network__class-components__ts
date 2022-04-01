@@ -22,19 +22,23 @@ class HeaderContainer extends Component<HeaderPropsType> {
   };
 
   render() {
-    const { isLoggedIn, login } = this.props;
-    return <Header isLoggedIn={isLoggedIn} login={login} logout={this.logout} />;
+    const { isLoggedIn, login, name, photo } = this.props;
+    return <Header isLoggedIn={isLoggedIn} login={login} logout={this.logout} name={name} photo={photo}/>;
   }
 }
 
 type mapStateToPropsType = {
   isLoggedIn: boolean;
   login: Nullable<string>;
+  name: Nullable<string>;
+  photo: Nullable<string>;
 };
 
 const mapStateToProps = (state: RootStateType): mapStateToPropsType => ({
   isLoggedIn: state.authData.isLoggedIn,
   login: state.authData.login,
+  name: state.authData.fullName,
+  photo: state.authData.photo,
 });
 
 type MapDispatchToPropsType = {

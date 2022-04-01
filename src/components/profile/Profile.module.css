@@ -54,21 +54,6 @@
     /*padding: 0px;*/
 }
 
-/*.button{*/
-/*    color: white;*/
-/*    font-weight: bold;*/
-/*    padding-top: 10px;*/
-/*    padding-bottom: 10px;*/
-/*    border: none;*/
-/*    border-radius: 5px;*/
-/*    background-color: #649ebb;*/
-/*    margin-bottom: 10px;*/
-/*}*/
-
-/*.button:hover{*/
-/*    background-color: #456d81;*/
-/*}*/
-
 .userActionsPopup{
     background-color: #649ebb;
     display: flex;

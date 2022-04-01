@@ -90,9 +90,7 @@ export const Profile = ({
           </OrdinaryButton>
         )}
         {!isProfileOwner && (
-          <OrdinaryButton type="button" className={styles.button}>
-            Write a message
-          </OrdinaryButton>
+          <OrdinaryButton type="button">Write a message</OrdinaryButton>
         )}
 
         {!isProfileOwner && (
@@ -107,9 +105,9 @@ export const Profile = ({
                   currentToggledValue={followed}
                   changeValueCallback={handleFollowedStatusChange}
                 />
-                <OrdinaryButton type="button" onClick={showRandomProfile}>
+                <button type="button" onClick={showRandomProfile}>
                   show random samurai profile
-                </OrdinaryButton>
+                </button>
               </div>
             }
           >

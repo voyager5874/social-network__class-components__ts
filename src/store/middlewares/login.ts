@@ -1,8 +1,8 @@
-import { Axios, AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { FormikHelpers } from 'formik';
 import { Dispatch } from 'redux';
 
-import { authAPI } from 'api/authAPI';
+import { authAPI, usersAPI } from 'api';
 import { LoginDataType } from 'api/types';
 import { FIRST_ARRAY_ITEM_INDEX } from 'constants/base';
 import { ResponseCodes } from 'enums';
@@ -16,6 +16,8 @@ import {
   resetAuthState,
   setAuthData,
   setCaptcha,
+  setLoggedInUserFullName,
+  setLoggedInUserPhoto,
   setLoginStatus,
 } from 'store/reducers/authReducer';
 import { EntityStatus } from 'store/reducers/types';
@@ -99,3 +101,24 @@ export const authMe = () => (dispatch: Dispatch) =>
     .catch(error => {
       processNetworkError('auth(TC)', error, dispatch);
     });
+
+export const authMeWithAdditionalData = () => async (dispatch: Dispatch) => {
+  try {
+    const response = await authAPI.authMe();
+    if (response.data.resultCode === ResponseCodes.Success) {
+      dispatch(setAuthData(response.data.data));
+      dispatch(setLoginStatus(true));
+      const loggedInUserData = await usersAPI.getUserProfile(response.data.data.id!);
+      if (loggedInUserData.data.fullName) {
+        dispatch(setLoggedInUserFullName(loggedInUserData.data.fullName));
+      }
+      if (loggedInUserData.data.photos.small) {
+        dispatch(setLoggedInUserPhoto(loggedInUserData.data.photos.small));
+      }
+    } else {
+      processServerError('authMe(TC)', response.data, dispatch);
+    }
+  } catch (error) {
+    processNetworkError('auth(TC)', error as AxiosError, dispatch);
+  }
+};
