@@ -9,7 +9,8 @@
     margin: 0px;
 }
 
-.friendCard{
+.friendsList li{
+    border: 2px solid red;
     padding: 0px;
     margin-right: 20px;
     margin-bottom: 20px;
@@ -17,32 +18,41 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     background-color: white;
     border-radius: 5px;
-    height: 400px;
+    height: 60vh;
     width: 350px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-
-
-}
-
-.friendName{
-    border: 1px solid;
-    justify-content: center;
-}
-
-.friendAvatar{
-    border: 1px solid;
-    height: 250px;
 }
 
 .friendLink{
-    padding-left: 30px;
-    padding-right: 30px;
-    /*border: 2px solid blue;*/
+    text-decoration: none;
+    height: 60vh;
+    /*width: 350px;*/
+    border: 2px solid blue;
+    /*padding: 20px;*/
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-around;
+    /*padding-bottom: 20px;*/
+}
+
+.friendName{
+    margin: 0;
+    border: 1px solid;
     justify-content: center;
+    color: rgb(3, 26, 37)
+}
+
+.friendAvatar{
+    border-radius: 5px;
+    /*max-height: 250px;*/
+    min-height: 100px;
+    height: 60%;
+}
+
+.friendStatus{
+    word-break: break-all;
+    font-size: 0.9rem;
+    padding-left: 20px;
+    padding-right: 20px;
+    /*margin-bottom: 10px;*/
 }

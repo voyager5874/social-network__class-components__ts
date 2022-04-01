@@ -54,9 +54,18 @@
     /*padding: 0px;*/
 }
 
+.popupTrigger{
+    /*border: 1px solid;*/
+
+}
+
 .userActionsPopup{
-    background-color: #649ebb;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     display: flex;
     flex-direction: column;
+    border-radius: 5px;
+    padding: 20px;
+    align-items: flex-start;
 }
 

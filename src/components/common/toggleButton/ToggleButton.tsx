@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
 
 import styles from './ToggleButton.module.css';
 
+import { LinkStyledButton } from 'components/common/linkButton/linkStyledButton';
 import { Nullable } from 'types';
 
-type ToggleButtonPropsType = {
+type DefaultButtonPropsType = DetailedHTMLProps<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+>;
+
+type ToggleButtonPropsType = DefaultButtonPropsType & {
   changeValueCallback: (newValue: boolean) => void;
   currentToggledValue: Nullable<boolean>;
   labelForTrueValue: string;
@@ -16,27 +22,36 @@ export const ToggleButton = ({
   currentToggledValue,
   labelForFalseValue,
   labelForTrueValue,
+  children,
+  ...respProps
 }: ToggleButtonPropsType) => {
   const handleValueChange = () => {
     changeValueCallback(!currentToggledValue);
   };
   return currentToggledValue ? (
-    <button
+    <LinkStyledButton
       // disabled={buttonDisabled}
-      className={styles.button}
+      // className={styles.button}
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...respProps}
       type="button"
       onClick={handleValueChange}
     >
+      {children} <span style={{ width: '10px' }} />
       {labelForTrueValue}
-    </button>
+    </LinkStyledButton>
   ) : (
-    <button
+    <LinkStyledButton
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...respProps}
       // disabled={buttonDisabled}
-      className={styles.button}
+      // className={styles.button}
       type="button"
       onClick={handleValueChange}
     >
+      {children}
+      <span style={{ width: '10px' }} />
       {labelForFalseValue}
-    </button>
+    </LinkStyledButton>
   );
 };

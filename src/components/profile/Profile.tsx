@@ -1,10 +1,13 @@
-import { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
-import Floater from 'react-floater';
 import { AiFillCaretDown } from 'react-icons/ai';
+import { GiCardRandom } from 'react-icons/gi';
+import { RiUserFollowFill, RiUserUnfollowFill } from 'react-icons/ri';
+import Popup from 'reactjs-popup';
 
 import { GetUserProfileResponseType } from 'api/types';
 import userWithoutPhoto from 'components/common/assets/userWithoutPhoto.png';
+import { LinkStyledButton } from 'components/common/linkButton/linkStyledButton';
 import { OrdinaryButton } from 'components/common/ordinaryButton/OrdinaryButton';
 import { ToggleButton } from 'components/common/toggleButton/ToggleButton';
 import { MyPosts } from 'components/profile/MyPosts/MyPosts';
@@ -94,35 +97,39 @@ export const Profile = ({
         )}
 
         {!isProfileOwner && (
-          <Floater
-            event="hover"
-            eventDelay={1}
-            content={
-              <div className={styles.userActionsPopup}>
-                <ToggleButton
-                  labelForFalseValue="follow"
-                  labelForTrueValue="unfollow"
-                  currentToggledValue={followed}
-                  changeValueCallback={handleFollowedStatusChange}
-                />
-                <button type="button" onClick={showRandomProfile}>
-                  show random samurai profile
-                </button>
+          <Popup
+            trigger={
+              <div className={styles.popupTrigger}>
+                {followed ? (
+                  <OrdinaryButton type="button" style={{ width: '100%' }}>
+                    Among your friends <AiFillCaretDown />
+                  </OrdinaryButton>
+                ) : (
+                  <OrdinaryButton type="button" style={{ width: '100%' }}>
+                    Add to friends <AiFillCaretDown />
+                  </OrdinaryButton>
+                )}
               </div>
             }
+            closeOnDocumentClick
+            position="bottom left"
           >
-            <div>
-              {followed ? (
-                <div className={styles.userActionsCaller}>
-                  Among your friends <AiFillCaretDown />
-                </div>
-              ) : (
-                <div className={styles.userActionsCaller}>
-                  Add to friends <AiFillCaretDown />
-                </div>
-              )}
+            <div className={styles.userActionsPopup}>
+              <ToggleButton
+                labelForFalseValue="follow"
+                labelForTrueValue="unfollow"
+                currentToggledValue={followed}
+                changeValueCallback={handleFollowedStatusChange}
+              >
+                {followed ? <RiUserUnfollowFill /> : <RiUserFollowFill />}
+              </ToggleButton>
+
+              <LinkStyledButton type="button" onClick={showRandomProfile}>
+                <GiCardRandom /> <span style={{ width: '10px' }} />
+                show random samurai profile
+              </LinkStyledButton>
             </div>
-          </Floater>
+          </Popup>
         )}
       </div>
       <div className={styles.pageCenter}>

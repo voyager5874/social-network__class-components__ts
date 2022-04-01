@@ -22,10 +22,10 @@ export const Friends = () => {
   return (
     <ul className={styles.friendsList}>
       {friends.map(friend => (
-        <li key={friend.id} className={styles.friendCard}>
+        <li key={friend.id}>
           <NavLink className={styles.friendLink} to={`/profile/${friend.id}`}>
             <h3 className={styles.friendName}>{friend.name}</h3>
-            <div>{friend.status}</div>
+            <div className={styles.friendStatus}>{friend.status}</div>
             <img
               className={styles.friendAvatar}
               src={friend.photos.large ? friend.photos.large : noAvatar}

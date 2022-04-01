@@ -35,3 +35,35 @@
     padding: 0px;
     font-size: 0.8rem;
 }
+
+.user{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.user:hover{
+    background-color: rgba(173, 205, 222, 0.27);
+    cursor: pointer;
+}
+
+.loggedInUserAvatar{
+    border-radius: 50%;
+    height: 40px;
+}
+
+.userPopup{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    /*align-items: flex-start;*/
+}
+
+.popupItem{
+    margin-bottom: 10px;
+}

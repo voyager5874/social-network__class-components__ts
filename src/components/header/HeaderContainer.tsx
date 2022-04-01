@@ -23,7 +23,15 @@ class HeaderContainer extends Component<HeaderPropsType> {
 
   render() {
     const { isLoggedIn, login, name, photo } = this.props;
-    return <Header isLoggedIn={isLoggedIn} login={login} logout={this.logout} name={name} photo={photo}/>;
+    return (
+      <Header
+        isLoggedIn={isLoggedIn}
+        login={login}
+        logout={this.logout}
+        name={name}
+        photo={photo}
+      />
+    );
   }
 }
 
