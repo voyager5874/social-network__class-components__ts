@@ -1,12 +1,12 @@
-import { AiOutlineCaretDown, AiOutlineLogout } from 'react-icons/ai';
-import { NavLink } from 'react-router-dom';
+import { AiOutlineCaretDown } from 'react-icons/ai';
+import { MdLogout } from 'react-icons/md';
 import Popup from 'reactjs-popup';
 
 import styles from './Header.module.css';
 
 import logo from 'components/common/assets/logo3.jpg';
 import noAvatar from 'components/common/assets/ninja-coder.jpg';
-import { LinkStyledButton } from 'components/common/linkButton/linkStyledButton';
+import { UniversalButton } from 'components/common/universalButton/UniversalButton';
 import { ComponentReturnType, Nullable } from 'types';
 
 type HeaderPropsType = {
@@ -47,9 +47,9 @@ export const Header = ({
         <div className={styles.userPopup}>
           <span className={styles.popupItem}>{name}</span>
           {/* <span className={styles.popupItem}>you logged in as {login}</span> */}
-          <LinkStyledButton type="button" onClick={logout}>
-            <AiOutlineLogout /> Logout
-          </LinkStyledButton>
+          <UniversalButton linkStyled onClick={logout}>
+            <MdLogout style={{ marginRight: '10px' }} /> Logout
+          </UniversalButton>
         </div>
       </Popup>
     </div>

@@ -61,9 +61,10 @@
     padding: 20px;
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    /*align-items: flex-start;*/
+    align-items: flex-start;
 }
 
 .popupItem{
+    /*border: 1px solid;*/
     margin-bottom: 10px;
 }

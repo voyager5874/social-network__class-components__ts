@@ -7,9 +7,8 @@ import Popup from 'reactjs-popup';
 
 import { GetUserProfileResponseType } from 'api/types';
 import userWithoutPhoto from 'components/common/assets/userWithoutPhoto.png';
-import { LinkStyledButton } from 'components/common/linkButton/linkStyledButton';
-import { OrdinaryButton } from 'components/common/ordinaryButton/OrdinaryButton';
 import { ToggleButton } from 'components/common/toggleButton/ToggleButton';
+import { UniversalButton } from 'components/common/universalButton/UniversalButton';
 import { MyPosts } from 'components/profile/MyPosts/MyPosts';
 import styles from 'components/profile/Profile.module.css';
 import { ProfileInfoEditForm } from 'components/profile/profileInfo/ProfileInfoEditForm';
@@ -79,21 +78,29 @@ export const Profile = ({
         <div>{isProfileOwner && <input type="file" onChange={onImageSelect} />}</div>
         {isProfileOwner &&
           (editMode ? (
-            <OrdinaryButton type="button" onClick={() => setEditMode(false)}>
+            <UniversalButton
+              onClick={() => setEditMode(false)}
+              className={styles.userProfileButton}
+            >
               quit edit mode
-            </OrdinaryButton>
+            </UniversalButton>
           ) : (
-            <OrdinaryButton type="button" onClick={() => setEditMode(true)}>
+            <UniversalButton
+              onClick={() => setEditMode(true)}
+              className={styles.userProfileButton}
+            >
               edit profile
-            </OrdinaryButton>
+            </UniversalButton>
           ))}
         {isProfileOwner && (
-          <OrdinaryButton type="button" onClick={showRandomProfile}>
+          <UniversalButton onClick={showRandomProfile}>
             show random samurai profile
-          </OrdinaryButton>
+          </UniversalButton>
         )}
         {!isProfileOwner && (
-          <OrdinaryButton type="button">Write a message</OrdinaryButton>
+          <UniversalButton className={styles.userProfileButton}>
+            Write a message
+          </UniversalButton>
         )}
 
         {!isProfileOwner && (
@@ -101,13 +108,13 @@ export const Profile = ({
             trigger={
               <div className={styles.popupTrigger}>
                 {followed ? (
-                  <OrdinaryButton type="button" style={{ width: '100%' }}>
+                  <UniversalButton style={{ width: '100%' }}>
                     Among your friends <AiFillCaretDown />
-                  </OrdinaryButton>
+                  </UniversalButton>
                 ) : (
-                  <OrdinaryButton type="button" style={{ width: '100%' }}>
+                  <UniversalButton style={{ width: '100%' }}>
                     Add to friends <AiFillCaretDown />
-                  </OrdinaryButton>
+                  </UniversalButton>
                 )}
               </div>
             }
@@ -116,18 +123,20 @@ export const Profile = ({
           >
             <div className={styles.userActionsPopup}>
               <ToggleButton
+                linkStyled
                 labelForFalseValue="follow"
                 labelForTrueValue="unfollow"
                 currentToggledValue={followed}
                 changeValueCallback={handleFollowedStatusChange}
+                style={{ marginBottom: '20px' }}
               >
                 {followed ? <RiUserUnfollowFill /> : <RiUserFollowFill />}
               </ToggleButton>
 
-              <LinkStyledButton type="button" onClick={showRandomProfile}>
+              <UniversalButton linkStyled onClick={showRandomProfile}>
                 <GiCardRandom /> <span style={{ width: '10px' }} />
                 show random samurai profile
-              </LinkStyledButton>
+              </UniversalButton>
             </div>
           </Popup>
         )}

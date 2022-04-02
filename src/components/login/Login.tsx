@@ -1,4 +1,4 @@
-import { Form, Formik, Field, ErrorMessage, FormikHelpers } from 'formik';
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -7,7 +7,7 @@ import styles from './Login.module.css';
 
 import { LoginDataType } from 'api/types';
 import { ErrorTag } from 'components/common';
-import { OrdinaryButton } from 'components/common/ordinaryButton/OrdinaryButton';
+import { UniversalButton } from 'components/common/universalButton/UniversalButton';
 import { login } from 'store/middlewares/login';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType, Nullable } from 'types';
@@ -94,12 +94,12 @@ export const Login = (): ComponentReturnType => {
                   </label>
                 </div>
               )}
-              <OrdinaryButton
+              <UniversalButton
                 type="submit"
                 disabled={formik.isSubmitting || !formik.isValid}
               >
                 Submit
-              </OrdinaryButton>
+              </UniversalButton>
             </div>
           </Form>
         );

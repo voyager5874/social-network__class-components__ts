@@ -7,7 +7,7 @@ import styles from './ProfileInfoEditForm.module.css';
 
 import { GetUserProfileResponseType, UserProfileContactsType } from 'api/types';
 import { ErrorTag } from 'components/common';
-import { OrdinaryButton } from 'components/common/ordinaryButton/OrdinaryButton';
+import { UniversalButton } from 'components/common/universalButton/UniversalButton';
 import { correctUrlRe } from 'constants/regExp';
 import { updateCurrentUserProfile } from 'store/middlewares/userProfile';
 import { RootStateType } from 'store/types';
@@ -127,8 +127,8 @@ export const ProfileInfoEditForm = () => {
             {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
             <label htmlFor="aboutMe">About me</label>
             {/* <Field as="textarea" name="aboutMe" type="text" className={styles.textarea} /> */}
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
             <TextareaAutosize
+              // eslint-disable-next-line react/jsx-props-no-spreading
               {...formik.getFieldProps('aboutMe')}
               className={styles.textarea}
             />
@@ -147,6 +147,7 @@ export const ProfileInfoEditForm = () => {
             {/* /> */}
             {/* eslint-disable-next-line react/jsx-props-no-spreading */}
             <TextareaAutosize
+              // eslint-disable-next-line react/jsx-props-no-spreading
               {...formik.getFieldProps('lookingForAJobDescription')}
               className={styles.textarea}
             />
@@ -162,9 +163,9 @@ export const ProfileInfoEditForm = () => {
             ))}
           </div>
 
-          <OrdinaryButton type="submit" disabled={formik.isSubmitting}>
+          <UniversalButton type="submit" disabled={formik.isSubmitting}>
             Submit
-          </OrdinaryButton>
+          </UniversalButton>
         </Form>
       )}
     </Formik>
