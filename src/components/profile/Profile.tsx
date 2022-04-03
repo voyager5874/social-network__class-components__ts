@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 
 import { AiFillCaretDown } from 'react-icons/ai';
 import { GiCardRandom } from 'react-icons/gi';
+import { MdOutlineDeleteForever, MdUpload } from 'react-icons/md';
 import { RiUserFollowFill, RiUserUnfollowFill } from 'react-icons/ri';
 import Popup from 'reactjs-popup';
 
@@ -70,12 +71,49 @@ export const Profile = ({
   return (
     <div className={styles.pageContainer}>
       <div className={styles.pageLeft}>
-        <img
-          className={styles.profilePicture}
-          src={photos.large ? photos.large : userWithoutPhoto}
-          alt="profile"
-        />
-        <div>{isProfileOwner && <input type="file" onChange={onImageSelect} />}</div>
+        {/* <img */}
+        {/*  className={styles.profilePicture} */}
+        {/*  src={photos.large ? photos.large : userWithoutPhoto} */}
+        {/*  alt="profile" */}
+        {/* /> */}
+
+        <Popup
+          trigger={
+            <div className={styles.profilePhotoPopupTrigger}>
+              <img
+                className={styles.profilePicture}
+                src={photos.large ? photos.large : userWithoutPhoto}
+                alt="profile"
+              />
+            </div>
+          }
+          on="hover"
+          mouseLeaveDelay={1000}
+          mouseEnterDelay={300}
+          contentStyle={{ padding: '0px', border: 'none', outline: 'none' }}
+          arrow={false}
+          closeOnDocumentClick
+          position="center center"
+        >
+          {isProfileOwner && (
+            <div className={styles.profilePhotoPopup}>
+              <label htmlFor="photoPicker">
+                <MdUpload style={{ marginRight: '5px' }} /> <span>Change photo</span>
+                <input id="photoPicker" type="file" onChange={onImageSelect} />
+              </label>
+              <UniversalButton
+                linkStyled
+                white
+                className={styles.profilePhotoPopupButton}
+              >
+                {' '}
+                <MdOutlineDeleteForever style={{ marginRight: '10px' }} /> delete photo
+              </UniversalButton>
+            </div>
+          )}
+        </Popup>
+
+        {/* <div>{isProfileOwner && <input type="file" onChange={onImageSelect} />}</div> */}
         {isProfileOwner &&
           (editMode ? (
             <UniversalButton

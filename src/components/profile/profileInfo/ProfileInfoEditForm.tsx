@@ -164,7 +164,7 @@ export const ProfileInfoEditForm = () => {
           </div>
 
           <UniversalButton type="submit" disabled={formik.isSubmitting}>
-            Submit
+            Save
           </UniversalButton>
         </Form>
       )}

@@ -18,7 +18,11 @@
 .leftSideBar li{
     margin-bottom: 10px;
     /*padding-left:0px;*/
+}
 
+.leftSideBar li:hover{
+
+    transform: scale(1.02);
 }
 
 .link{
@@ -26,6 +30,11 @@
     color: #0d5679;
     font-weight: bold;
     /*margin-bottom: 20px;*/
+}
+
+
+.link:hover{
+
 }
 
 .activeLink{
