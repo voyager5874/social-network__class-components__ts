@@ -19,7 +19,7 @@ import {
 } from 'store/reducers/userProfileReducer';
 import { setTotalUsersCount } from 'store/reducers/usersReducer';
 import { RootStateType } from 'store/types';
-import { getRandomInteger, validateGithubAddress } from 'utils';
+import { getRandomInteger, validateUserContact } from 'utils';
 
 export const getFollowedStatus = (userID: number) => async (dispatch: Dispatch) => {
   dispatch(setUserProfileEntityStatus(EntityStatus.busy));
@@ -156,7 +156,7 @@ export const findRealSamurai =
         const response = await usersAPI.getUserProfile(userID);
         if (
           response.data.contacts.github &&
-          validateGithubAddress(response.data.contacts.github)
+          validateUserContact(response.data.contacts.github, 'github.com/')
         ) {
           // dispatch(getUserProfile(userID))
           // return Promise.resolve(userID);

@@ -41,20 +41,13 @@ export const User = ({
   };
   return (
     <div className={styles.userCard}>
-      <NavLink
-        to={`/profile/${id}`}
-        style={{ textDecoration: 'none', marginBottom: '20px' }}
-      >
-        <div className={styles.pictureBlock}>
-          <h3>{name}</h3>
-          <div className={styles.status}>{status}</div>
-          <img className={styles.avatar} src={photo} alt="avatar" />
-        </div>
-        <div className={styles.textBlock}>
-          <div>{uniqueUrlName}</div>
-          <div>County: {country}</div>
-          <div>City: {city}</div>
-        </div>
+      <NavLink className={styles.navLink} to={`/profile/${id}`}>
+        <h3 className={styles.name}>{name}</h3>
+        <div className={styles.status}>{status}</div>
+        <img className={styles.avatar} src={photo} alt="avatar" />
+        <div>{uniqueUrlName}</div>
+        <div className={styles.country}>County: {country}</div>
+        <div className={styles.city}>City: {city}</div>
       </NavLink>
 
       <div className={styles.controls}>

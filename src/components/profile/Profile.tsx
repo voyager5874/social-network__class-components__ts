@@ -169,7 +169,11 @@ export const Profile = ({
                 changeValueCallback={handleFollowedStatusChange}
                 style={{ marginBottom: '20px' }}
               >
-                {followed ? <RiUserUnfollowFill /> : <RiUserFollowFill />}
+                {followed ? (
+                  <RiUserUnfollowFill style={{ marginRight: '10px' }} />
+                ) : (
+                  <RiUserFollowFill style={{ marginRight: '10px' }} />
+                )}
               </ToggleButton>
               <UniversalButton linkStyled style={{ marginBottom: '20px' }}>
                 <ImEyeBlocked /> <span style={{ width: '10px' }} />

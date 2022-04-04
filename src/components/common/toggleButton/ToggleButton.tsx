@@ -43,7 +43,7 @@ export const ToggleButton = ({
       {...respProps}
       onClick={handleValueChange}
     >
-      {children} <span style={{ width: '10px' }} />
+      {children}
       {labelForTrueValue}
     </UniversalButton>
   ) : (
@@ -56,7 +56,6 @@ export const ToggleButton = ({
       onClick={handleValueChange}
     >
       {children}
-      <span style={{ width: '10px' }} />
       {labelForFalseValue}
     </UniversalButton>
   );
