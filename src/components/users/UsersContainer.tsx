@@ -41,8 +41,14 @@ class UsersContainer extends Component<UsersPropsType> {
   };
 
   render(): ComponentReturnType {
-    const { users, page, totalNumberOfPages, entityStatus, busyUserEntities } =
-      this.props;
+    const {
+      users,
+      page,
+      totalNumberOfPages,
+      entityStatus,
+      busyUserEntities,
+      totalUsersCount,
+    } = this.props;
     return entityStatus === EntityStatus.busy ? (
       <LoadingVisualizer />
     ) : (
@@ -55,6 +61,7 @@ class UsersContainer extends Component<UsersPropsType> {
         unfollow={this.unfollowUser}
         leapValue={10}
         busyEntities={busyUserEntities}
+        totalUsersCount={totalUsersCount}
       />
     );
   }
@@ -76,6 +83,7 @@ type MapStateToPropsType = {
   totalNumberOfPages: number;
   entityStatus: EntityStatus;
   busyUserEntities: Array<number>;
+  totalUsersCount: number;
 };
 
 const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
@@ -84,6 +92,7 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
   page: state.users.currentPage,
   usersPerPage: DATA_PORTION_SIZE,
   totalNumberOfPages: Math.ceil(state.users.totalCount / DATA_PORTION_SIZE),
+  totalUsersCount: state.users.totalCount,
   entityStatus: state.users.entityStatus,
   busyUserEntities: state.users.busyEntities,
 });

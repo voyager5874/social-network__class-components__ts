@@ -1,7 +1,9 @@
 .page{
-    /*width: 100%;*/
+    /*border: 1px solid;*/
+    width: 100%;
     display: flex;
     flex-direction: column;
+    min-height: 90vh;
 }
 
 .users{
@@ -11,8 +13,18 @@
     justify-content: space-around;
 }
 
-.users User {
-    margin-right: 20px;
+/*.users User {*/
+/*    margin-right: 20px;*/
+/*    margin-bottom: 20px;*/
+/*}*/
+
+.paginatorContainer{
+    width: 100%;
+    text-align: center;
     margin-bottom: 20px;
 }
+
+/*.paginator{*/
+/*margin-bottom: 20px;*/
+/*}*/
 

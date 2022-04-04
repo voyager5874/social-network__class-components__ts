@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Pagination } from 'antd';
+
 import userPic from './assets/user-pic-2.png';
 import styles from './Users.module.css';
 
@@ -17,6 +19,7 @@ type UsersPureFuncPropsType = {
   unfollow: (id: number) => void;
   leapValue: number;
   busyEntities: Array<number>;
+  totalUsersCount: number;
 };
 
 export const UsersPureFunc = ({
@@ -28,15 +31,30 @@ export const UsersPureFunc = ({
   unfollow,
   leapValue,
   busyEntities,
+  totalUsersCount,
 }: UsersPureFuncPropsType): ComponentReturnType => (
   <div className={styles.page}>
-    <Paginator
-      totalNumberOfPages={numberOfPages}
-      currentPage={currentPage}
-      numberOfButtons={5}
-      getPage={getPage}
-      leapValue={leapValue}
-    />
+    {/* <Paginator */}
+    {/*  totalNumberOfPages={numberOfPages} */}
+    {/*  currentPage={currentPage} */}
+    {/*  numberOfButtons={5} */}
+    {/*  getPage={getPage} */}
+    {/*  leapValue={leapValue} */}
+    {/* /> */}
+    <div className={styles.paginatorContainer}>
+      <Pagination
+        className={styles.paginator}
+        defaultCurrent={1}
+        current={currentPage}
+        onChange={getPage}
+        total={totalUsersCount}
+        pageSize={12}
+        // showSizeChanger
+        // showQuickJumper
+        // showTotal={total => `Total ${total} items`}
+      />
+    </div>
+
     <div className={styles.users}>
       {users.map(
         ({ id, status, name, uniqueUrlName, followed, photos }: UserOnServerType) => (
