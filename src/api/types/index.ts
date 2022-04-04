@@ -122,3 +122,4 @@ export type PutProfilePhotoResponseDataType = {
 export type GetCaptchaResponseType = {
   url: string;
 };
+

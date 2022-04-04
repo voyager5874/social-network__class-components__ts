@@ -30,7 +30,7 @@ export const Paginator = ({
   }
   // const leapValue = 10; // move it to props!
   return (
-    <div>
+    <div style={{ marginBottom: '20px' }}>
       <button
         type="button"
         disabled={currentPage < leapValue}

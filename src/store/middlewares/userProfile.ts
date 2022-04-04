@@ -8,6 +8,7 @@ import {
   processNetworkError,
   processServerError,
 } from 'store/middlewares/utils/processRequestErrors';
+import { setLoggedInUserPhoto } from 'store/reducers/authReducer';
 import { EntityStatus } from 'store/reducers/types';
 import {
   setCurrentUserAvatar,
@@ -18,30 +19,7 @@ import {
 } from 'store/reducers/userProfileReducer';
 import { setTotalUsersCount } from 'store/reducers/usersReducer';
 import { RootStateType } from 'store/types';
-import { getRandomInteger } from 'utils';
-
-// export const getUserProfile = (userID: number) => (dispatch: Dispatch) => {
-//   dispatch(setUserProfileEntityStatus(EntityStatus.busy));
-//   usersAPI
-//     .getUserProfile(userID)
-//     .then(response => {
-//       if (response.data.userId) {
-//         dispatch(setUserProfile(response.data));
-//       } else {
-//         processServerError(
-//           'getUserProfile(TC)',
-//           "server reached but hasn't respond with data",
-//           dispatch,
-//         );
-//       }
-//     })
-//     .catch((error: AxiosError) => {
-//       processNetworkError('getUsers(TC)', error, dispatch);
-//     })
-//     .finally(() => {
-//       dispatch(setUserProfileEntityStatus(EntityStatus.idle));
-//     });
-// };
+import { getRandomInteger, validateGithubAddress } from 'utils';
 
 export const getFollowedStatus = (userID: number) => async (dispatch: Dispatch) => {
   dispatch(setUserProfileEntityStatus(EntityStatus.busy));
@@ -120,6 +98,7 @@ export const updateCurrentUserAvatar = (image: File) => async (dispatch: Dispatc
     const response = await usersAPI.putProfilePhoto(image);
     if (response.data.resultCode === ResponseCodes.Success) {
       dispatch(setCurrentUserAvatar(response.data.data.photos));
+      dispatch(setLoggedInUserPhoto(response.data.data.photos.small));
     } else {
       processServerError('updateAvatarTC', response.data, dispatch);
     }
@@ -175,8 +154,10 @@ export const findRealSamurai =
       const userID: number = getRandomInteger(3, usersCount);
       try {
         const response = await usersAPI.getUserProfile(userID);
-        // if (response.data.photos.small && response.data.contacts.github) {
-        if (response.data.contacts.github) {
+        if (
+          response.data.contacts.github &&
+          validateGithubAddress(response.data.contacts.github)
+        ) {
           // dispatch(getUserProfile(userID))
           // return Promise.resolve(userID);
           navigate(`${userID}`);

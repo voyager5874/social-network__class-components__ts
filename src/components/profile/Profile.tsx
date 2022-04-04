@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 
 import { AiFillCaretDown } from 'react-icons/ai';
 import { GiCardRandom } from 'react-icons/gi';
+import { ImEyeBlocked } from 'react-icons/im';
 import { MdOutlineDeleteForever, MdUpload } from 'react-icons/md';
 import { RiUserFollowFill, RiUserUnfollowFill } from 'react-icons/ri';
 import Popup from 'reactjs-popup';
@@ -170,7 +171,10 @@ export const Profile = ({
               >
                 {followed ? <RiUserUnfollowFill /> : <RiUserFollowFill />}
               </ToggleButton>
-
+              <UniversalButton linkStyled style={{ marginBottom: '20px' }}>
+                <ImEyeBlocked /> <span style={{ width: '10px' }} />
+                Don&apos;t show in random search again
+              </UniversalButton>
               <UniversalButton linkStyled onClick={showRandomProfile}>
                 <GiCardRandom /> <span style={{ width: '10px' }} />
                 show random samurai profile

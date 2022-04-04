@@ -29,7 +29,7 @@ export const UsersPureFunc = ({
   leapValue,
   busyEntities,
 }: UsersPureFuncPropsType): ComponentReturnType => (
-  <div className={styles.users}>
+  <div className={styles.page}>
     <Paginator
       totalNumberOfPages={numberOfPages}
       currentPage={currentPage}
@@ -37,21 +37,25 @@ export const UsersPureFunc = ({
       getPage={getPage}
       leapValue={leapValue}
     />
-    {users.map(
-      ({ id, status, name, uniqueUrlName, followed, photos }: UserOnServerType) => (
-        <User
-          key={id}
-          name={name}
-          id={id}
-          followed={followed}
-          status={status || ''}
-          photo={photos.small ? photos.small : userPic}
-          uniqueUrlName={uniqueUrlName || ''}
-          follow={follow}
-          unfollow={unfollow}
-          busyEntities={busyEntities}
-        />
-      ),
-    )}
+    <div className={styles.users}>
+      {users.map(
+        ({ id, status, name, uniqueUrlName, followed, photos }: UserOnServerType) => (
+          <User
+            key={id}
+            country="USA"
+            city="New York"
+            name={name}
+            id={id}
+            followed={followed}
+            status={status || ''}
+            photo={photos.small ? photos.small : userPic}
+            uniqueUrlName={uniqueUrlName || ''}
+            follow={follow}
+            unfollow={unfollow}
+            busyEntities={busyEntities}
+          />
+        ),
+      )}
+    </div>
   </div>
 );

@@ -51,7 +51,7 @@ export const Users = (): ComponentReturnType => {
   };
 
   return (
-    <div className={styles.users}>
+    <div className={styles.page}>
       <Paginator
         totalNumberOfPages={numberOfPages}
         currentPage={page}
@@ -59,20 +59,24 @@ export const Users = (): ComponentReturnType => {
         getPage={getPage}
         leapValue={10}
       />
-      {users.map(({ id, status, name, uniqueUrlName, followed, photos }) => (
-        <User
-          key={id}
-          name={name}
-          id={id}
-          followed={followed}
-          status={status || ''}
-          photo={photos.small ? photos.small : userPic}
-          uniqueUrlName={uniqueUrlName || ''}
-          follow={() => handleFollow(id)}
-          unfollow={() => handleUnfollow(id)}
-          busyEntities={busy}
-        />
-      ))}
+      <div className={styles.users}>
+        {users.map(({ id, status, name, uniqueUrlName, followed, photos }) => (
+          <User
+            city="New York"
+            country="USA"
+            key={id}
+            name={name}
+            id={id}
+            followed={followed}
+            status={status || ''}
+            photo={photos.small ? photos.small : userPic}
+            uniqueUrlName={uniqueUrlName || ''}
+            follow={() => handleFollow(id)}
+            unfollow={() => handleUnfollow(id)}
+            busyEntities={busy}
+          />
+        ))}
+      </div>
     </div>
   );
 };
