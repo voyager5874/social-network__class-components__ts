@@ -16,13 +16,13 @@ import {
   setTotalUsersCount,
   setUsers,
   setUsersListEntityStatus,
+  setUsersPerPageCount,
 } from 'store/reducers/usersReducer';
 import { RootStateType } from 'store/types';
 
 export const getUsers =
   (pageNumber: number, usersPerPage: number) => async (dispatch: Dispatch) => {
     dispatch(setUsersListEntityStatus(EntityStatus.busy));
-    debugger;
     try {
       const response = await usersAPI.getUsers(pageNumber, usersPerPage);
       if (response.data.totalCount) {
@@ -36,6 +36,10 @@ export const getUsers =
     }
     dispatch(setUsersListEntityStatus(EntityStatus.idle));
   };
+
+// export const changePerPageUserCount = (newCount: number) => (dispatch: Dispatch) => {
+//   dispatch(setUsersPerPageCount(newCount));
+// };
 
 export const changeFollowedByCurrentUserState =
   (userID: number, follow: boolean) =>

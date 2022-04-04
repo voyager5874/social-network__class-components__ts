@@ -10,7 +10,7 @@ import { UsersPureFunc } from 'components/users/UsersPureFunc';
 import { DATA_PORTION_SIZE } from 'constants/base';
 import { changeFollowedByCurrentUserState, getUsers } from 'store/middlewares/users';
 import { EntityStatus } from 'store/reducers/types';
-import { setCurrentPage } from 'store/reducers/usersReducer';
+import { setCurrentPage, setUsersPerPageCount } from 'store/reducers/usersReducer';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
 import 'react-circular-progressbar/dist/styles.css';
@@ -18,16 +18,21 @@ import 'react-circular-progressbar/dist/styles.css';
 class UsersContainer extends Component<UsersPropsType> {
   componentDidMount(): void {
     // const { page, usersPerPage, getUsers } = this.props;
-    this.props.getUsers(this.props.page, this.props.usersPerPage);
+    this.props.getUsers(this.props.page, this.props.perPageCount);
   }
 
-  getPage = (pageNumber: number): void => {
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    const { setCurrentPage, usersPerPage, totalNumberOfPages, page, getUsers } =
-      this.props;
-    if (pageNumber > totalNumberOfPages || pageNumber < 1 || pageNumber === page) return;
+  getPage = (pageNumber: number, pageSize: number): void => {
+    const {
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      setCurrentPage,
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      getUsers,
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      setUsersPerPageCount,
+    } = this.props;
+    setUsersPerPageCount(pageSize);
     setCurrentPage(pageNumber);
-    getUsers(pageNumber, usersPerPage);
+    getUsers(pageNumber, pageSize); // is this violation of flux ?
   };
 
   followUser = (userID: number): void => {
@@ -41,14 +46,8 @@ class UsersContainer extends Component<UsersPropsType> {
   };
 
   render(): ComponentReturnType {
-    const {
-      users,
-      page,
-      totalNumberOfPages,
-      entityStatus,
-      busyUserEntities,
-      totalUsersCount,
-    } = this.props;
+    const { users, page, entityStatus, busyUserEntities, totalUsersCount, perPageCount } =
+      this.props;
     return entityStatus === EntityStatus.busy ? (
       <LoadingVisualizer />
     ) : (
@@ -56,12 +55,11 @@ class UsersContainer extends Component<UsersPropsType> {
         users={users}
         currentPage={page}
         getPage={this.getPage}
-        numberOfPages={totalNumberOfPages}
         follow={this.followUser}
         unfollow={this.unfollowUser}
-        leapValue={10}
         busyEntities={busyUserEntities}
         totalUsersCount={totalUsersCount}
+        perPage={perPageCount}
       />
     );
   }
@@ -73,28 +71,27 @@ type MapDispatchToPropsType = {
   changeFollowedByCurrentUserState: (userID: number, newFollowedState: boolean) => void;
   setCurrentPage: (page: number) => void;
   getUsers: (pageNumber: number, usersPerPage: number) => void;
+  setUsersPerPageCount: (newCount: number) => void;
 };
 
 type MapStateToPropsType = {
   users: UserOnServerType[];
   // usersTotal: number;
   page: number;
-  usersPerPage: number;
-  totalNumberOfPages: number;
   entityStatus: EntityStatus;
   busyUserEntities: Array<number>;
   totalUsersCount: number;
+  perPageCount: number;
 };
 
 const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
   users: state.users.users,
   // usersTotal: state.users.totalCount,
   page: state.users.currentPage,
-  usersPerPage: DATA_PORTION_SIZE,
-  totalNumberOfPages: Math.ceil(state.users.totalCount / DATA_PORTION_SIZE),
   totalUsersCount: state.users.totalCount,
   entityStatus: state.users.entityStatus,
   busyUserEntities: state.users.busyEntities,
+  perPageCount: state.users.itemsPerPage,
 });
 
 export type UsersPropsType = MapDispatchToPropsType & MapStateToPropsType;
@@ -107,5 +104,6 @@ export default compose<ComponentType>(
     changeFollowedByCurrentUserState,
     getUsers,
     setCurrentPage,
+    setUsersPerPageCount,
   }),
 )(UsersContainer);

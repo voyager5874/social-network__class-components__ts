@@ -5,6 +5,7 @@ const initialState: UsersReducerStateType = {
   users: [],
   totalCount: 0,
   currentPage: 1,
+  itemsPerPage: 12,
   entityStatus: EntityStatus.idle,
   busyEntities: [],
 };
@@ -17,7 +18,8 @@ export type usersReducerActionsType =
   | ReturnType<typeof setUsersListEntityStatus>
   | ReturnType<typeof addToBusyEntities>
   | ReturnType<typeof removeFromBusyEntities>
-  | ReturnType<typeof setFollowedByCurrentUserState>;
+  | ReturnType<typeof setFollowedByCurrentUserState>
+  | ReturnType<typeof setUsersPerPageCount>;
 
 export const usersReducer = (
   state: UsersReducerStateType = initialState,
@@ -37,6 +39,8 @@ export const usersReducer = (
       return { ...state, totalCount: action.count };
     case 'SET-CURRENT-PAGE':
       return { ...state, currentPage: action.page };
+    case 'USER/SET-PER-PAGE-COUNT':
+      return { ...state, itemsPerPage: action.count };
     case 'SET-USER-ENTITY-STATUS':
       return {
         ...state,
@@ -81,6 +85,12 @@ export const setCurrentPage = (page: number) =>
   ({
     type: 'SET-CURRENT-PAGE',
     page,
+  } as const);
+
+export const setUsersPerPageCount = (count: number) =>
+  ({
+    type: 'USER/SET-PER-PAGE-COUNT',
+    count,
   } as const);
 
 export const setUserEntityStatus = (userID: number, status: EntityStatus) =>

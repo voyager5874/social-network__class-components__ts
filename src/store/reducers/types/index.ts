@@ -30,6 +30,7 @@ export type UsersReducerStateType = {
   users: UserInAppType[];
   totalCount: number;
   currentPage: number;
+  itemsPerPage: number;
   // isFetching: boolean;
   entityStatus: EntityStatus;
   busyEntities: Array<number>;

@@ -18,6 +18,10 @@
     /*max-height: 350px;*/
 }
 
+.userCard:hover{
+    transform: scale(1.02);
+}
+
 .navLink {
     /*background-color: rgba(81,180,83,0.46);*/
     color: #0a3b54;
@@ -30,6 +34,10 @@
     align-items: center;
     margin-bottom: 10px;
     /*height: 85%;*/
+}
+
+.navLink:hover{
+    color: #0a3b54;
 }
 
 .navLink:visited{
@@ -50,7 +58,7 @@
     overflow: hidden;
     display: block;
     text-align: center;
-    max-height: 20px;
+    height: 20px;
 }
 
 .avatar{
