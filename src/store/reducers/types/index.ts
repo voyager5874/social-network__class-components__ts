@@ -28,7 +28,7 @@ export type UserInAppType = UserOnServerType & { entityStatus: EntityStatus };
 
 export type UsersReducerStateType = {
   users: UserInAppType[];
-  totalCount: number;
+  totalCount: Nullable<number>;
   currentPage: number;
   itemsPerPage: number;
   // isFetching: boolean;
@@ -40,6 +40,7 @@ export type FriendsReducerStateType = {
   users: UserOnServerType[]; // haven't used possibility to set user entity status
   totalCount: Nullable<number>;
   currentPage: number;
+  itemsPerPage: number;
   entityStatus: EntityStatus;
   busyEntities: Array<number>;
 };

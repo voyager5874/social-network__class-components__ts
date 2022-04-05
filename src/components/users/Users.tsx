@@ -6,13 +6,12 @@ import userPic from './assets/user-pic-2.png';
 import styles from './Users.module.css';
 
 import { UserOnServerType } from 'api/types';
-import { usersAPI } from 'api/usersAPI';
 import { Paginator } from 'components/paginator/Paginator';
 import { User } from 'components/users/user/User';
-import { DATA_PORTION_SIZE } from 'constants/base';
-import { setFollowedByCurrentUserState, setUsers } from 'store/reducers/usersReducer';
+import { getUsers } from 'store/middlewares/users';
+import { setFollowedByCurrentUserState } from 'store/reducers/usersReducer';
 import { RootStateType } from 'store/types';
-import { ComponentReturnType } from 'types';
+import { ComponentReturnType, Nullable } from 'types';
 
 export const Users = (): ComponentReturnType => {
   const users = useSelector<RootStateType, UserOnServerType[]>(
@@ -22,24 +21,26 @@ export const Users = (): ComponentReturnType => {
     state => state.users.busyEntities,
   );
   const page = useSelector<RootStateType, number>(state => state.users.currentPage);
-  const totalNumberOfUsers = useSelector<RootStateType, number>(
+  const totalNumberOfUsers = useSelector<RootStateType, Nullable<number>>(
     state => state.users.totalCount,
   );
+
+  const pageSize = useSelector<RootStateType, number>(state => state.users.itemsPerPage);
+
   const dispatch = useDispatch();
 
-  const numberOfPages = Math.ceil(totalNumberOfUsers / DATA_PORTION_SIZE);
+  const numberOfPages = Math.ceil((totalNumberOfUsers || 0) / pageSize);
 
   const getPage = (pageNumber: number) => {
     if (pageNumber < 1 || pageNumber > numberOfPages) return;
-    usersAPI
-      .getUsers(pageNumber, DATA_PORTION_SIZE)
-      .then(response => dispatch(setUsers(response.data.items)));
+    dispatch(getUsers(page, pageSize));
   };
 
   useEffect(() => {
-    usersAPI
-      .getUsers(page, DATA_PORTION_SIZE)
-      .then(response => dispatch(setUsers(response.data.items)));
+    // usersAPI
+    //   .getUsers(page, pageSize)
+    //   .then(response => dispatch(setUsers(response.data.items)));
+    dispatch(getUsers(page, pageSize));
   }, []);
 
   const handleFollow = (id: number) => {

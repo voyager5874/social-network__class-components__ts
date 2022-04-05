@@ -5,21 +5,23 @@ const initialState: FriendsReducerStateType = {
   users: [],
   busyEntities: [],
   currentPage: 1,
+  itemsPerPage: 10,
   totalCount: null,
   entityStatus: EntityStatus.idle,
 };
 
-export type friendsReducerActionsType =
+export type FriendsReducerActionsType =
   | ReturnType<typeof setFriendsList>
   | ReturnType<typeof setFriendsCount>
   | ReturnType<typeof setFriendsListCurrentPage>
   | ReturnType<typeof addToBusyEntities>
   | ReturnType<typeof removeFromBusyEntities>
-  | ReturnType<typeof setFriendsListEntityStatus>;
+  | ReturnType<typeof setFriendsListEntityStatus>
+  | ReturnType<typeof setFriendsPerPageCount>;
 
 export const friendsReducer = (
   state: FriendsReducerStateType = initialState,
-  action: friendsReducerActionsType,
+  action: FriendsReducerActionsType,
 ): FriendsReducerStateType => {
   switch (action.type) {
     case 'FRIENDS/SET-ENTITIES':
@@ -28,6 +30,8 @@ export const friendsReducer = (
       return { ...state, totalCount: action.count };
     case 'FRIENDS/SET-CURRENT-PAGE':
       return { ...state, currentPage: action.page };
+    case 'FRIENDS/SET-PER-PAGE-COUNT':
+      return { ...state, itemsPerPage: action.count };
     case 'FRIENDS/ADD-TO-BUSY-ENTITIES':
       return { ...state, busyEntities: [...state.busyEntities, action.id] };
     case 'FRIENDS/REMOVE-FROM-BUSY-ENTITIES':
@@ -58,6 +62,12 @@ export const setFriendsListCurrentPage = (page: number) =>
   ({
     type: 'FRIENDS/SET-CURRENT-PAGE',
     page,
+  } as const);
+
+export const setFriendsPerPageCount = (count: number) =>
+  ({
+    type: 'FRIENDS/SET-PER-PAGE-COUNT',
+    count,
   } as const);
 
 export const setFriendsListEntityStatus = (status: EntityStatus) =>

@@ -7,7 +7,7 @@ import styles from './Users.module.css';
 
 import { UserOnServerType } from 'api/types';
 import { User } from 'components/users/user/User';
-import { ComponentReturnType } from 'types';
+import { ComponentReturnType, Nullable } from 'types';
 
 type UsersPureFuncPropsType = {
   users: UserOnServerType[];
@@ -16,7 +16,7 @@ type UsersPureFuncPropsType = {
   follow: (id: number) => void;
   unfollow: (id: number) => void;
   busyEntities: Array<number>;
-  totalUsersCount: number;
+  totalUsersCount: Nullable<number>;
   perPage: number;
 };
 
@@ -37,7 +37,7 @@ export const UsersPureFunc = ({
         defaultCurrent={1}
         current={currentPage}
         onChange={getPage}
-        total={totalUsersCount}
+        total={totalUsersCount || 0}
         defaultPageSize={12}
         pageSizeOptions={[12, 20, 50, 100]}
         pageSize={perPage}

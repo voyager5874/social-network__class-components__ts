@@ -5,7 +5,6 @@ import {
   GetUsersResponseType,
   PutProfilePhotoResponseDataType,
   UpdateUserProfileRequestDataType,
-  UserOnServerType,
 } from 'api/types';
 import { Nullable } from 'types';
 
@@ -37,10 +36,10 @@ export const usersAPI = {
     return axiosInstance.put<BasicResponseType<PutProfilePhotoResponseDataType>>(
       '/profile/photo',
       formData,
-      // {
-      //   headers: { 'Content-Type': 'multipart/form-data' },
-      // }, https://learn.javascript.ru/formdata says it will be automatically sent with such config
     );
   },
-  getFriendsList: () => axiosInstance.get<GetUsersResponseType>(`users?friend=true`),
+  getFriendsList: (pageNumber: number = 1, usersPerPage: number = 10) =>
+    axiosInstance.get<GetUsersResponseType>(
+      `users?friend=true&page=${pageNumber}&count=${usersPerPage}`,
+    ),
 };

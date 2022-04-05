@@ -7,12 +7,11 @@ import { UserOnServerType } from 'api/types';
 import { withAuthRedirect } from 'components/common/HOC/withAuthRedirect';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { UsersPureFunc } from 'components/users/UsersPureFunc';
-import { DATA_PORTION_SIZE } from 'constants/base';
 import { changeFollowedByCurrentUserState, getUsers } from 'store/middlewares/users';
 import { EntityStatus } from 'store/reducers/types';
 import { setCurrentPage, setUsersPerPageCount } from 'store/reducers/usersReducer';
 import { RootStateType } from 'store/types';
-import { ComponentReturnType } from 'types';
+import { ComponentReturnType, Nullable } from 'types';
 import 'react-circular-progressbar/dist/styles.css';
 
 class UsersContainer extends Component<UsersPropsType> {
@@ -80,7 +79,7 @@ type MapStateToPropsType = {
   page: number;
   entityStatus: EntityStatus;
   busyUserEntities: Array<number>;
-  totalUsersCount: number;
+  totalUsersCount: Nullable<number>;
   perPageCount: number;
 };
 

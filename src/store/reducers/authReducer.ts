@@ -12,7 +12,7 @@ const initialState: AuthReducerStateType = {
   photo: null,
 };
 
-export type AuthReducerActionType =
+export type AuthReducerActionsType =
   | ReturnType<typeof setAuthData>
   | ReturnType<typeof setLoginStatus>
   | ReturnType<typeof resetAuthState>
@@ -22,7 +22,7 @@ export type AuthReducerActionType =
 
 export const authReducer = (
   state: AuthReducerStateType = initialState,
-  action: AuthReducerActionType,
+  action: AuthReducerActionsType,
 ): AuthReducerStateType => {
   switch (action.type) {
     case 'SET-AUTH-DATA':

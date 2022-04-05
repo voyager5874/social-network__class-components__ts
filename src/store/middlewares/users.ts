@@ -16,12 +16,12 @@ import {
   setTotalUsersCount,
   setUsers,
   setUsersListEntityStatus,
-  setUsersPerPageCount,
 } from 'store/reducers/usersReducer';
-import { RootStateType } from 'store/types';
+import { AppActionsType, RootStateType } from 'store/types';
 
 export const getUsers =
-  (pageNumber: number, usersPerPage: number) => async (dispatch: Dispatch) => {
+  (pageNumber: number, usersPerPage: number) =>
+  async (dispatch: Dispatch<AppActionsType>) => {
     dispatch(setUsersListEntityStatus(EntityStatus.busy));
     try {
       const response = await usersAPI.getUsers(pageNumber, usersPerPage);
@@ -43,7 +43,7 @@ export const getUsers =
 
 export const changeFollowedByCurrentUserState =
   (userID: number, follow: boolean) =>
-  async (dispatch: Dispatch, getState: () => RootStateType) => {
+  async (dispatch: Dispatch<AppActionsType>, getState: () => RootStateType) => {
     dispatch(addToBusyEntities(userID));
     // const currentUserID = getState().authData.id;
     const loadedProfileID = getState().userProfile.profileData.userId;

@@ -3,7 +3,7 @@ import { EntityStatus, UsersReducerStateType } from 'store/reducers/types';
 
 const initialState: UsersReducerStateType = {
   users: [],
-  totalCount: 0,
+  totalCount: null,
   currentPage: 1,
   itemsPerPage: 12,
   entityStatus: EntityStatus.idle,

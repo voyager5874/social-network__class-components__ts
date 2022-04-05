@@ -67,3 +67,9 @@
     min-height: 20px;
 
 }
+
+.paginator {
+    /*border: 1px solid;*/
+    text-align: center;
+    margin-bottom: 20px;
+}

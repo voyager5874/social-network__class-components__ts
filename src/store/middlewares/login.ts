@@ -13,6 +13,7 @@ import {
   processServerError,
 } from 'store/middlewares/utils/processRequestErrors';
 import {
+  AuthReducerActionsType,
   resetAuthState,
   setAuthData,
   setCaptcha,
@@ -22,8 +23,9 @@ import {
 } from 'store/reducers/authReducer';
 import { EntityStatus } from 'store/reducers/types';
 import { setUserProfileEntityStatus } from 'store/reducers/userProfileReducer';
+import { AppActionsType, ThunkType } from 'store/types';
 
-export const getCaptcha = () => async (dispatch: Dispatch) => {
+export const getCaptcha = () => async (dispatch: Dispatch<AuthReducerActionsType>) => {
   try {
     const response = await authAPI.getCaptcha();
     if (response) {
@@ -41,12 +43,12 @@ export const login =
     data: LoginDataType,
     setFormikSubmitting: FormikHelpers<LoginDataType>['setSubmitting'],
     setFormikStatus: FormikHelpers<LoginDataType>['setStatus'],
-  ) =>
-  async (dispatch: any) => {
+  ): ThunkType =>
+  async dispatch => {
     dispatch(setUserProfileEntityStatus(EntityStatus.busy));
     setFormikSubmitting(true);
     try {
-      const response = await authAPI.login(data);
+      const response= await authAPI.login(data);
       if (response.data.resultCode === ResponseCodes.Success) {
         dispatch(setLoginStatus(true));
         dispatch(getProfile(response.data.data.userId));
@@ -63,15 +65,14 @@ export const login =
       }
     } catch (error) {
       // processNetworkError('login(TC)', error as AxiosError, dispatch);
-      // @ts-ignore
-      setFormikStatus(error.message);
+      setFormikStatus((error as AxiosError).message);
     }
 
     dispatch(setUserProfileEntityStatus(EntityStatus.idle)); // move to process RequestErrors ?
     setFormikSubmitting(false);
   };
 
-export const logout = () => (dispatch: Dispatch) => {
+export const logout = () => (dispatch: Dispatch<AppActionsType>) => {
   authAPI
     .logout()
     .then(response => {
@@ -87,38 +88,43 @@ export const logout = () => (dispatch: Dispatch) => {
     });
 };
 
-export const authMe = () => (dispatch: Dispatch) =>
-  authAPI
-    .authMe()
-    .then(response => {
+// export const authMe = () => (dispatch: Dispatch) =>
+//   authAPI
+//     .authMe()
+//     .then(response => {
+//       if (response.data.resultCode === ResponseCodes.Success) {
+//         dispatch(setAuthData(response.data.data));
+//         dispatch(setLoginStatus(true));
+//       } else {
+//         processServerError('authMe(TC)', response.data, dispatch);
+//       }
+//     })
+//     .catch(error => {
+//       processNetworkError('auth(TC)', error, dispatch);
+//     });
+
+export const authMeWithAdditionalData =
+  () =>
+  async (dispatch: Dispatch<AuthReducerActionsType>): Promise<boolean | string> => {
+    // no need to return anything, I'm just experimenting
+    try {
+      const response = await authAPI.authMe();
       if (response.data.resultCode === ResponseCodes.Success) {
         dispatch(setAuthData(response.data.data));
         dispatch(setLoginStatus(true));
-      } else {
-        processServerError('authMe(TC)', response.data, dispatch);
+        const loggedInUserData = await usersAPI.getUserProfile(response.data.data.id!);
+        if (loggedInUserData.data.fullName) {
+          dispatch(setLoggedInUserFullName(loggedInUserData.data.fullName));
+        }
+        if (loggedInUserData.data.photos.small) {
+          dispatch(setLoggedInUserPhoto(loggedInUserData.data.photos.small));
+        }
+        return true;
       }
-    })
-    .catch(error => {
-      processNetworkError('auth(TC)', error, dispatch);
-    });
-
-export const authMeWithAdditionalData = () => async (dispatch: Dispatch) => {
-  try {
-    const response = await authAPI.authMe();
-    if (response.data.resultCode === ResponseCodes.Success) {
-      dispatch(setAuthData(response.data.data));
-      dispatch(setLoginStatus(true));
-      const loggedInUserData = await usersAPI.getUserProfile(response.data.data.id!);
-      if (loggedInUserData.data.fullName) {
-        dispatch(setLoggedInUserFullName(loggedInUserData.data.fullName));
-      }
-      if (loggedInUserData.data.photos.small) {
-        dispatch(setLoggedInUserPhoto(loggedInUserData.data.photos.small));
-      }
-    } else {
       processServerError('authMe(TC)', response.data, dispatch);
+      return false;
+    } catch (error) {
+      processNetworkError('auth(TC)', error as AxiosError, dispatch);
+      return (error as AxiosError).message || 'error';
     }
-  } catch (error) {
-    processNetworkError('auth(TC)', error as AxiosError, dispatch);
-  }
-};
+  };
