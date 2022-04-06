@@ -26,6 +26,6 @@ export const initializeApp = (): ThunkType => async dispatch => {
     dispatch(setAppInitialized());
   } catch (error) {
     // eslint-disable-next-line no-alert
-    alert(JSON.stringify(error));
+    alert(`app initialization failure ${error}`);
   }
 };

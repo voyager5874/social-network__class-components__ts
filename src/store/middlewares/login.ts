@@ -48,7 +48,7 @@ export const login =
     dispatch(setUserProfileEntityStatus(EntityStatus.busy));
     setFormikSubmitting(true);
     try {
-      const response= await authAPI.login(data);
+      const response = await authAPI.login(data);
       if (response.data.resultCode === ResponseCodes.Success) {
         dispatch(setLoginStatus(true));
         dispatch(getProfile(response.data.data.userId));
@@ -122,9 +122,9 @@ export const authMeWithAdditionalData =
         return true;
       }
       processServerError('authMe(TC)', response.data, dispatch);
-      return false;
+      throw new Error(response.data.messages[0]);
     } catch (error) {
       processNetworkError('auth(TC)', error as AxiosError, dispatch);
-      return (error as AxiosError).message || 'error';
+      throw new Error((error as AxiosError).message);
     }
   };

@@ -20,7 +20,6 @@ const ProfileTextInfo = ({
   userId,
 }: ProfileInfoPropsType) => {
   const socialMediaList = Object.keys(contacts) as Array<keyof typeof contacts>;
-
   return (
     <div className={styles.profileTextInfo}>
       {/* <h2>{fullName}</h2> */}
@@ -39,7 +38,11 @@ const ProfileTextInfo = ({
         {socialMediaList.map(media => (
           <div key={media}>
             {contacts[media] && (
-              <Link target="_blank" to={`//${contacts[media]!.replace('https://', '')}`}>
+              <Link
+                target="_blank"
+                rel="nofollow noreferer noopener"
+                to={`//${contacts[media]!.replace('https://', '')}`}
+              >
                 {media}
               </Link>
             )}

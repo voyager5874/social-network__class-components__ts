@@ -34,11 +34,15 @@ class ProfileContainer extends Component<UserProfilePropsType> {
     this.collectProfilePageData();
   }
 
-  showRandomProfile = () => {
-    this.props.findRealSamurai(this.props.router.navigate);
-    //   this.props
-    //     .findRealSamurai(this.props.router.navigate)
-    //     .then(response => this.props.router.navigate(`/profile/${response}`));
+  showRandomProfile = async (): Promise<void> => {
+    // this.props.findRealSamurai(this.props.router.navigate);
+    try {
+      const response: number = await this.props.findRealSamurai();
+      this.props.router.navigate(`/profile/${response}`);
+    } catch (error) {
+      // eslint-disable-next-line no-alert
+      alert(`${error}`);
+    }
   };
 
   collectProfilePageData(): void {
@@ -105,7 +109,7 @@ type MapDispatchToPropsType = {
   updateNewPostText: (text: string) => void;
   updateCurrentUserStatus: (status: string) => void;
   updateCurrentUserAvatar: (image: File) => void;
-  findRealSamurai: (navigate: any) => any;
+  findRealSamurai: () => any;
 };
 
 type MapStateToPropsType = {

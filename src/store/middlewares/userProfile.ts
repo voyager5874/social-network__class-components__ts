@@ -133,13 +133,14 @@ export const updateCurrentUserProfile =
   };
 
 export const findRealSamurai =
-  (navigate: any): ThunkType =>
+  (): ThunkType =>
   async (
     dispatch: Dispatch<AppActionsType>,
     getState: () => RootStateType,
-  ): Promise<void> => {
+  ): Promise<number> => {
     dispatch(setUserProfileEntityStatus(EntityStatus.busy));
     let usersCount = getState().users.totalCount;
+    let userID = 0;
     if (!usersCount) {
       try {
         const response = await usersAPI.getUsers(1, 10);
@@ -148,9 +149,17 @@ export const findRealSamurai =
           usersCount = response.data.totalCount;
         } else {
           processServerError('findRealSamurai', 'no data received', dispatch);
+          throw new Error(
+            'error receiving users count while running findRealSamurai - server returned no data',
+          );
         }
       } catch (error) {
         console.warn(error);
+        throw new Error(
+          `findRealSamurai: error receiving users count - ${
+            (error as AxiosError).message
+          }`,
+        );
       }
     }
 
@@ -160,25 +169,26 @@ export const findRealSamurai =
     //   console.log(getUsersResponse);
     //   usersCount = getState().users.totalCount;
     // }
-    const findSamurai = async () => {
-      const userID: number = getRandomInteger(3, usersCount || 20000);
+    const searchProfile = async (): Promise<number> => {
+      userID = getRandomInteger(3, usersCount || 20000);
       try {
         const response = await usersAPI.getUserProfile(userID);
         if (
           response.data.contacts.github &&
           validateUserContact(response.data.contacts.github, 'github.com/')
         ) {
-          // dispatch(getUserProfile(userID))
-          // return Promise.resolve(userID);
-          navigate(`${userID}`);
-        } else {
-          await findSamurai();
+          return userID;
         }
+        await searchProfile();
       } catch (error) {
         console.warn(`there is no user with id ${userID}?`);
-        await findSamurai();
+        await searchProfile();
       }
+      return userID;
     };
-    await findSamurai();
+
+    // Do I have to use try/catch for searchProfile ? since there is no error return probably not
+    await searchProfile();
     dispatch(setUserProfileEntityStatus(EntityStatus.idle));
+    return userID;
   };
