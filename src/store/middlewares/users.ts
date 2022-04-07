@@ -14,6 +14,7 @@ import {
   removeFromBusyEntities,
   setFollowedByCurrentUserState,
   setTotalUsersCount,
+  setUserEntityStatus,
   setUsers,
   setUsersListEntityStatus,
 } from 'store/reducers/usersReducer';
@@ -45,6 +46,7 @@ export const changeFollowedByCurrentUserState =
   (userID: number, follow: boolean) =>
   async (dispatch: Dispatch<AppActionsType>, getState: () => RootStateType) => {
     dispatch(addToBusyEntities(userID));
+    dispatch(setUserEntityStatus(userID, EntityStatus.busy));
     // const currentUserID = getState().authData.id;
     const loadedProfileID = getState().userProfile.profileData.userId;
     const apiCall = follow ? usersAPI.followUser : usersAPI.unfollowUser;
@@ -63,4 +65,5 @@ export const changeFollowedByCurrentUserState =
     }
 
     dispatch(removeFromBusyEntities(userID));
+    dispatch(setUserEntityStatus(userID, EntityStatus.idle));
   };

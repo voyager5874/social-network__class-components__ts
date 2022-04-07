@@ -37,7 +37,7 @@ class ProfileContainer extends Component<UserProfilePropsType> {
   showRandomProfile = async (): Promise<void> => {
     // this.props.findRealSamurai(this.props.router.navigate);
     try {
-      const response: number = await this.props.findRealSamurai();
+      const response = await this.props.findRealSamurai();
       this.props.router.navigate(`/profile/${response}`);
     } catch (error) {
       // eslint-disable-next-line no-alert
@@ -102,14 +102,18 @@ class ProfileContainer extends Component<UserProfilePropsType> {
 
 type MapDispatchToPropsType = {
   // getUserProfile: (userID: number) => void;
-  getProfile: (userID: number) => void;
-  changeFollowedByCurrentUserState: (userID: number, newFollowedState: boolean) => void;
-  getUserStatus: (userID: number) => void;
-  addPost: () => void;
-  updateNewPostText: (text: string) => void;
-  updateCurrentUserStatus: (status: string) => void;
-  updateCurrentUserAvatar: (image: File) => void;
-  findRealSamurai: () => any;
+  getProfile: typeof getProfile;
+  changeFollowedByCurrentUserState: typeof changeFollowedByCurrentUserState;
+  getUserStatus: typeof getUserStatus;
+  addPost: typeof addPost;
+  updateNewPostText: typeof updateNewPostText;
+  // updateCurrentUserStatus: (status: string) => void;
+  updateCurrentUserStatus: typeof updateCurrentUserStatus;
+  // updateCurrentUserAvatar: (image: File) => void;
+  updateCurrentUserAvatar: typeof updateCurrentUserAvatar;
+  // findRealSamurai: () => any;
+  findRealSamurai: typeof findRealSamurai;
+  // findRealSamurai: () => () => Promise<number>;
 };
 
 type MapStateToPropsType = {

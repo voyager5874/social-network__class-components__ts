@@ -5,7 +5,7 @@ const initialState: FriendsReducerStateType = {
   users: [],
   busyEntities: [],
   currentPage: 1,
-  itemsPerPage: 10,
+  itemsPerPage: 12,
   totalCount: null,
   entityStatus: EntityStatus.idle,
 };

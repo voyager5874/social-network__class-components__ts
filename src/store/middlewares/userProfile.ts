@@ -1,9 +1,9 @@
 import { AxiosError } from 'axios';
 import { Dispatch } from 'redux';
-import { ThunkDispatch } from 'redux-thunk';
 
 import { usersAPI } from 'api';
 import { UpdateUserProfileRequestDataType } from 'api/types';
+import { FIRST_USER_ID } from 'constants/base';
 import { ResponseCodes } from 'enums';
 import {
   processNetworkError,
@@ -140,7 +140,7 @@ export const findRealSamurai =
   ): Promise<number> => {
     dispatch(setUserProfileEntityStatus(EntityStatus.busy));
     let usersCount = getState().users.totalCount;
-    let userID = 0;
+    let userID: number = 0;
     if (!usersCount) {
       try {
         const response = await usersAPI.getUsers(1, 10);
@@ -169,8 +169,13 @@ export const findRealSamurai =
     //   console.log(getUsersResponse);
     //   usersCount = getState().users.totalCount;
     // }
-    const searchProfile = async (): Promise<number> => {
-      userID = getRandomInteger(3, usersCount || 20000);
+
+    // the function won't get here if getUsers fails but I'm throwing an error anyways
+    // because of typescript and Nullable type of totalUsersCount
+    const searchProfile = async (): Promise<number | string> => {
+      // userID = getRandomInteger(3, usersCount || 18299); // total users count last checked - 18299
+      if (!usersCount) throw new Error('total users count is unknown');
+      userID = getRandomInteger(FIRST_USER_ID, usersCount);
       try {
         const response = await usersAPI.getUserProfile(userID);
         if (
@@ -188,7 +193,11 @@ export const findRealSamurai =
     };
 
     // Do I have to use try/catch for searchProfile ? since there is no error return probably not
-    await searchProfile();
+    try {
+      await searchProfile();
+    } catch (error) {
+      throw new Error(error as string);
+    }
     dispatch(setUserProfileEntityStatus(EntityStatus.idle));
     return userID;
   };

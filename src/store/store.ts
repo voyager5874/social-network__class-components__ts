@@ -1,3 +1,4 @@
+import { composeWithDevTools } from '@redux-devtools/extension';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
 
@@ -21,7 +22,7 @@ export const rootReducer = combineReducers({
   friends: friendsReducer,
 });
 
-export const store = createStore(rootReducer, applyMiddleware(thunk));
-
-// @ts-ignore
-window.store = store; // for testing and developing
+export const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunk)),
+);

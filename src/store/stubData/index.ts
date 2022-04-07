@@ -1,41 +1,42 @@
+import { loremIpsum } from 'react-lorem-ipsum';
 import { v1 } from 'uuid';
 
-import { STRING_STUB_SHORT } from 'constants/base';
+// import { STRING_STUB_SHORT } from 'constants/base';
 import { getRandomInteger } from 'utils';
 
 export const MAX_LIKES_COUNT = 100;
-export const postsElements = [
-  {
-    id: v1(),
-    postText: STRING_STUB_SHORT,
-    likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
-  },
-  {
-    id: v1(),
-    postText: STRING_STUB_SHORT,
-    likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
-  },
-  {
-    id: v1(),
-    postText: STRING_STUB_SHORT,
-    likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
-  },
-  {
-    id: v1(),
-    postText: STRING_STUB_SHORT,
-    likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
-  },
-  {
-    id: v1(),
-    postText: STRING_STUB_SHORT,
-    likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
-  },
-  {
-    id: v1(),
-    postText: STRING_STUB_SHORT,
-    likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
-  },
-];
+// export const postsElements = [
+//   {
+//     id: v1(),
+//     postText: STRING_STUB_SHORT,
+//     likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
+//   },
+//   {
+//     id: v1(),
+//     postText: STRING_STUB_SHORT,
+//     likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
+//   },
+//   {
+//     id: v1(),
+//     postText: STRING_STUB_SHORT,
+//     likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
+//   },
+//   {
+//     id: v1(),
+//     postText: STRING_STUB_SHORT,
+//     likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
+//   },
+//   {
+//     id: v1(),
+//     postText: STRING_STUB_SHORT,
+//     likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
+//   },
+//   {
+//     id: v1(),
+//     postText: STRING_STUB_SHORT,
+//     likesCount: getRandomInteger(1, MAX_LIKES_COUNT),
+//   },
+// ];
 
 export const dialogsData = [
   { id: v1(), name: 'Monika' },
@@ -46,11 +47,11 @@ export const dialogsData = [
 ];
 
 export const messagesData = [
-  { id: v1(), message: STRING_STUB_SHORT },
-  { id: v1(), message: STRING_STUB_SHORT },
-  { id: v1(), message: STRING_STUB_SHORT },
-  { id: v1(), message: STRING_STUB_SHORT },
-  { id: v1(), message: STRING_STUB_SHORT },
+  { id: v1(), message: loremIpsum({ random: true })[0] },
+  { id: v1(), message: loremIpsum({ random: true })[0] },
+  { id: v1(), message: loremIpsum({ random: true })[0] },
+  { id: v1(), message: loremIpsum({ random: true })[0] },
+  { id: v1(), message: loremIpsum({ random: true })[0] },
 ];
 
 export const RossID = v1();

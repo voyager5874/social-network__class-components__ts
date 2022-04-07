@@ -10,9 +10,17 @@ import { UsersPureFunc } from 'components/users/UsersPureFunc';
 import { changeFollowedByCurrentUserState, getUsers } from 'store/middlewares/users';
 import { EntityStatus } from 'store/reducers/types';
 import { setCurrentPage, setUsersPerPageCount } from 'store/reducers/usersReducer';
+import 'react-circular-progressbar/dist/styles.css';
+import {
+  selectUsers,
+  selectUsersBusyEntities,
+  selectUsersCurrentPage,
+  selectUsersEntityStatus,
+  selectUsersPageSize,
+  selectUsersTotalCount,
+} from 'store/selectors';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType, Nullable } from 'types';
-import 'react-circular-progressbar/dist/styles.css';
 
 class UsersContainer extends Component<UsersPropsType> {
   componentDidMount(): void {
@@ -65,17 +73,14 @@ class UsersContainer extends Component<UsersPropsType> {
 }
 
 type MapDispatchToPropsType = {
-  // follow: (userID: number) => void;
-  // unfollow: (userID: number) => void;
-  changeFollowedByCurrentUserState: (userID: number, newFollowedState: boolean) => void;
-  setCurrentPage: (page: number) => void;
-  getUsers: (pageNumber: number, usersPerPage: number) => void;
-  setUsersPerPageCount: (newCount: number) => void;
+  changeFollowedByCurrentUserState: typeof changeFollowedByCurrentUserState;
+  setCurrentPage: typeof setCurrentPage;
+  getUsers: typeof getUsers;
+  setUsersPerPageCount: typeof setUsersPerPageCount;
 };
 
 type MapStateToPropsType = {
   users: UserOnServerType[];
-  // usersTotal: number;
   page: number;
   entityStatus: EntityStatus;
   busyUserEntities: Array<number>;
@@ -84,13 +89,13 @@ type MapStateToPropsType = {
 };
 
 const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
-  users: state.users.users,
-  // usersTotal: state.users.totalCount,
-  page: state.users.currentPage,
-  totalUsersCount: state.users.totalCount,
-  entityStatus: state.users.entityStatus,
-  busyUserEntities: state.users.busyEntities,
-  perPageCount: state.users.itemsPerPage,
+  users: selectUsers(state),
+  page: selectUsersCurrentPage(state),
+  totalUsersCount: selectUsersTotalCount(state),
+  entityStatus: selectUsersEntityStatus(state),
+  // busyUserEntities: selectUsersBusyEntitiesIdList(state),
+  busyUserEntities: selectUsersBusyEntities(state),
+  perPageCount: selectUsersPageSize(state),
 });
 
 export type UsersPropsType = MapDispatchToPropsType & MapStateToPropsType;
@@ -98,8 +103,6 @@ export type UsersPropsType = MapDispatchToPropsType & MapStateToPropsType;
 export default compose<ComponentType>(
   withAuthRedirect,
   connect(mapStateToProps, {
-    // follow,
-    // unfollow,
     changeFollowedByCurrentUserState,
     getUsers,
     setCurrentPage,
