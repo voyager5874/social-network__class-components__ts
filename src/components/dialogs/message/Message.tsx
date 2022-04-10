@@ -16,33 +16,50 @@ export const Message: FC<MessagePropsType> = ({
   addedAt,
   senderAvatar,
   isLoggedInUserTheAuthor,
-}): ComponentReturnType => (
-  <div className={styles.post}>
-    {!isLoggedInUserTheAuthor && (
-      <>
-        <img src={senderAvatar || noAvatar} alt="avatar" className={styles.avatar} />
-        <div className={styles.decorator} />
-      </>
-    )}
+}): ComponentReturnType => {
+  const msec = Date.parse(addedAt);
+  const date = new Date(msec);
+  const stringTime = date.toLocaleTimeString();
+  const stringDate = date.toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+  return (
     <div
       className={
-        isLoggedInUserTheAuthor ? `${styles.bubble} ${styles.bubbleRight}` : styles.bubble
+        isLoggedInUserTheAuthor
+          ? `${styles.messageContainer} ${styles.messageContainerRight} `
+          : styles.messageContainer
       }
     >
-      <div>
+      {!isLoggedInUserTheAuthor && (
+        <>
+          <img src={senderAvatar || noAvatar} alt="avatar" className={styles.avatar} />
+          <div className={styles.decorator} />
+        </>
+      )}
+      <div
+        className={
+          isLoggedInUserTheAuthor
+            ? `${styles.bubble} ${styles.bubbleRight}`
+            : styles.bubble
+        }
+      >
         <div className={styles.author}>{userName}</div>
         <div className={styles.text}>{messageText}</div>
+        <div className={styles.time}>{stringDate}</div>
+        <div className={styles.time}>{stringTime}</div>
       </div>
-      <div className={styles.time}>{addedAt}</div>
+      {isLoggedInUserTheAuthor && (
+        <>
+          <div className={styles.decoratorRight} />
+          <img src={senderAvatar || noAvatar} alt="avatar" className={styles.avatar} />
+        </>
+      )}
     </div>
-    {isLoggedInUserTheAuthor && (
-      <>
-        <div className={styles.decoratorRight} />
-        <img src={senderAvatar || noAvatar} alt="avatar" className={styles.avatar} />
-      </>
-    )}
-  </div>
-);
+  );
+};
 
 // (
 //   <div className={styles.message}>

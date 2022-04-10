@@ -26,18 +26,24 @@ export const getInterlocutors = () => async (dispatch: Dispatch) => {
   }
 };
 
-export const getWithUserMessages = (userID: number) => async (dispatch: Dispatch) => {
-  try {
-    const response = await dialogsAPI.getWithUserDialog(userID);
-    if (response.data.totalCount) {
-      debugger;
-      dispatch(setWithUserMessages(response.data.items));
+export const getWithUserMessages =
+  (userID: number, pageNumber: number = 1, itemsPerPage: number = 20) =>
+  async (dispatch: Dispatch) => {
+    try {
+      const response = await dialogsAPI.getWithUserDialog(
+        userID,
+        pageNumber,
+        itemsPerPage,
+      );
+      if (response.data.totalCount) {
+        debugger;
+        dispatch(setWithUserMessages(response.data.items));
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-alert
+      alert((error as AxiosError).message);
     }
-  } catch (error) {
-    // eslint-disable-next-line no-alert
-    alert((error as AxiosError).message);
-  }
-};
+  };
 
 export const sendMessage = (userID: number, message: string) => async (dispatch: any) => {
   debugger;

@@ -21,10 +21,35 @@
 }
 
 .messagesContainer{
-    background-color: #d1ffc4;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #e9eee7;
     width: 80%;
 
 }
-.message{
-    background-color: brown;
+/*.message{*/
+/*    background-color: brown;*/
+/*}*/
+
+.sendMessageForm{
+    background-color: rgba(182, 194, 204, 0.75);
+    padding: 20px;
+    display: inline-flex;
+    flex-direction: column;
+    width: 100%
+}
+
+.textarea{
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    resize: none;
+    min-height: 50px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.button{
+    max-width: 200px;
 }

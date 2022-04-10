@@ -2,9 +2,11 @@ import { ChangeEvent, useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import TextareaAutosize from 'react-textarea-autosize';
 
 import styles from './Dialogs.module.css';
 
+import { UniversalButton } from 'components/common/universalButton/UniversalButton';
 import { Dialog } from 'components/dialogs/dialog/Dialog';
 import { Interlocutor } from 'components/dialogs/interlocutor/Interlocutor';
 import { InterlocutorType } from 'components/dialogs/types';
@@ -70,11 +72,19 @@ export const Dialogs = (): ComponentReturnType => {
 
       <div className={styles.messagesContainer}>
         <Dialog interlocutorID={Number(interlocutorID) || 3} />
-        <div>
-          <textarea onChange={handleNewMessageChange} value={messageText} />
-          <button type="submit" onClick={handleSendMessage}>
+        <div className={styles.sendMessageForm}>
+          <TextareaAutosize
+            onChange={handleNewMessageChange}
+            value={messageText}
+            className={styles.textarea}
+          />
+          <UniversalButton
+            type="submit"
+            onClick={handleSendMessage}
+            className={styles.button}
+          >
             send message
-          </button>
+          </UniversalButton>
         </div>
       </div>
     </div>

@@ -1,34 +1,44 @@
-.message {
-    margin: 5px;
-    padding: 10px;
-    background-color: rgba(236, 8, 8, 0.3);
-}
+/*.message {*/
+/*    margin: 5px;*/
+/*    padding: 10px;*/
+/*    background-color: rgba(236, 8, 8, 0.3);*/
+/*}*/
 
 
-.post {
+.messageContainer {
+    /*background-color: yellowgreen;*/
     display: flex;
     align-items: flex-end;
-    background-color: yellowgreen;
-    padding: 8px;
+    justify-content: left;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-bottom: 20px;
+}
+
+.messageContainerRight{
+    justify-content: right;
+
+
 }
 
 .avatar {
-    height: 100px;
+    height: 70px;
     border-radius: 50%;
 }
 
 .bubble {
+    background-color: rgba(146, 173, 189, 0.71);
     display: flex;
-    padding: 10px 10px 20px;
-    background-color: rgba(0, 55, 0, 0.9);
+    flex-direction: column;
+    padding: 15px;
     border-radius: 10px 10px 10px 0px;
-    min-width: 100px;
+    min-width: 300px;
     max-width: 500px;
-    min-height: 90px;
+    min-height: 100px;
 }
 
 .bubbleRight {
-    background-color: rgba(0, 102, 153, 0.46);
+    background-color: rgba(46, 133, 173, 0.67);
     border-radius: 10px 10px 0px 10px;
 
 }
@@ -36,37 +46,38 @@
 .decorator {
     width: 20px;
     height: 20px;
-    background: radial-gradient(circle at 0 0, rgba(0,0,0,0) 20px, rgba(0,55,0,0.9) 0);
+    background: radial-gradient(circle at 0 0, rgba(0,0,0,0) 20px, rgba(146, 173, 189, 0.71) 0);
     /*background: linear-gradient(to bottom right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 55, 0, 0.9) 50%, rgba(0, 55, 0, 0.9) 100%);*/
 }
 
 .decoratorRight {
     width: 20px;
     height: 20px;
-    background: radial-gradient(circle at 100% 0, rgba(0,0,0,0) 20px, rgba(0, 102, 153, 0.46) 0);
+    background: radial-gradient(circle at 100% 0, rgba(0,0,0,0) 20px, rgba(46, 133, 173, 0.67) 0);
     /*background: linear-gradient(to bottom right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 55, 0, 0.9) 50%, rgba(0, 55, 0, 0.9) 100%);*/
 }
 
 .author {
-    color: blueviolet;
-    font-size: 1.5em;
-    height: 30px;
+    /*background-color: darkgray;*/
+    font-size: 1.1rem;
     font-weight: bold;
+    margin-bottom: 10px;
 }
 
 .text {
-    display: flex;
-    align-items: flex-end;
+    /*background-color: #00ffe1;*/
+    /*display: flex;*/
+    /*align-items: flex-end;*/
     min-width: 200px;
-    max-width: 500px;
-    min-height: 50px;
-    color: white;
+    color: #031a25;
     word-break: break-all;
+    margin-bottom: 10px;
 }
 
 .time {
-    display: flex;
-    align-items: flex-end;
-    font: 1.5em Arial, sans-serif;
-    color: rgba(255, 255, 255, 0.5);
+    /*display: flex;*/
+    /*align-items: flex-end;*/
+    text-align: right;
+    font: 0.8rem Arial, sans-serif;
+    color: rgba(3, 26, 37, 0.8);
 }
