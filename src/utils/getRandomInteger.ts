@@ -10,5 +10,11 @@
 // }
 
 // someFunction(data);
-export const getRandomInteger = (min: number = 3, max: number = 20000): number =>
-  Math.floor(Math.random() * max + min);
+
+const MAX_ID_NUMBER = 23000;
+const MIN_ID_NUMBER = 3;
+
+export const getRandomInteger = (
+  min: number = MIN_ID_NUMBER,
+  max: number = MAX_ID_NUMBER,
+): number => Math.floor(Math.random() * max + min);

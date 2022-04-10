@@ -1,23 +1,63 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './Dialog.module.css';
 
+import { MessageOnServerType } from 'api/types';
 import { Message } from 'components/dialogs/message/Message';
-import { MessageType } from 'components/dialogs/types';
+import { getWithUserMessages } from 'store/middlewares/dialogs';
 import { RootStateType } from 'store/types';
-import { ComponentReturnType } from 'types';
+import { ComponentReturnType, Nullable } from 'types';
 
 export type DialogPropsType = {
-  interlocutorID: string;
+  interlocutorID: number;
 };
 export const Dialog = ({ interlocutorID }: DialogPropsType): ComponentReturnType => {
-  const dialog = useSelector<RootStateType, MessageType[]>(
-    state => state.messages.messages[interlocutorID],
+  const dispatch = useDispatch();
+  console.log('interlocutorID', interlocutorID);
+
+  useEffect(() => {
+    dispatch(getWithUserMessages(interlocutorID));
+  }, []);
+
+  useEffect(() => {
+    dispatch(getWithUserMessages(interlocutorID));
+  }, [interlocutorID]);
+
+  const messages = useSelector<RootStateType, MessageOnServerType[]>(
+    state => state.messages.messages,
   );
+
+  const interlocutorAvatar = useSelector<RootStateType, Nullable<string>>(state => {
+    // reselect
+    const interlocutor = state.interlocutors.find(
+      person => person.id === Number(interlocutorID),
+    );
+    return interlocutor ? interlocutor.photos.small : null;
+  });
+
+  const currentUserAvatar = useSelector<RootStateType, Nullable<string>>(
+    state => state.authData.photo,
+  );
+
+  const loggedInUserID = useSelector<RootStateType, Nullable<number>>(
+    state => state.authData.id,
+  );
+
   return (
     <div className={styles.dialog}>
-      {dialog.map(({ messageID, messageText }) => (
-        <Message key={messageID} messageText={messageText} />
+      {messages.map(({ id, addedAt, body, viewed, senderName, senderId }) => (
+        <Message
+          key={id}
+          userName={senderName}
+          isLoggedInUserTheAuthor={senderId === loggedInUserID}
+          messageText={body}
+          addedAt={addedAt}
+          senderAvatar={
+            senderId === Number(interlocutorID) ? interlocutorAvatar : currentUserAvatar
+          }
+        />
       ))}
     </div>
   );

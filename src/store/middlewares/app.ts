@@ -26,7 +26,8 @@ export const initializeApp = (): ThunkType => async dispatch => {
     dispatch(setAppInitialized());
   } catch (error) {
     // eslint-disable-next-line no-alert
-    alert(`app initialization failure ${error}`);
+    alert(`initialization: ${error}`);
+    dispatch(setAppInitialized());
   }
   dispatch(setAppEntityStatus(EntityStatus.idle));
 };

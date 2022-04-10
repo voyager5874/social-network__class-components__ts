@@ -23,10 +23,21 @@ export const selectUsersEntityStatus = (state: RootStateType): EntityStatus =>
   state.users.entityStatus;
 
 // just for possibly employing reselect
-
-export const selectUsersBusyEntities = createSelector([selectUsers], users => {
-  const currentlyProcessed = users.filter(
+// const findBusyEntitiesUsersID = (state: RootStateType): Array<number> => {
+//   const currentlyProcessed = state.users.users.filter(
+//     user => user.entityStatus === EntityStatus.busy,
+//   );
+//   return currentlyProcessed.map(user => user.id);
+// };
+//
+const findBusyUsersEntities = (state: RootStateType): Array<UserInAppType> => {
+  const currentlyProcessed = state.users.users.filter(
     user => user.entityStatus === EntityStatus.busy,
   );
-  return currentlyProcessed.map(user => user.id);
-});
+  return currentlyProcessed;
+};
+
+export const selectUsersBusyEntities = createSelector([findBusyUsersEntities], users =>
+  // (users || []).map(user => user.id),
+  users.map(user => user.id),
+);

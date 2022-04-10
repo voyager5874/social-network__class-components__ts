@@ -123,3 +123,32 @@ export type GetCaptchaResponseType = {
   url: string;
 };
 
+export type dialogsPostPayloadType = {
+  body: string;
+};
+
+export type MessageOnServerType = {
+  id: string;
+  body: string;
+  translatedBody: Nullable<any>;
+  addedAt: string;
+  senderId: number;
+  senderName: string;
+  recipientId: number;
+  recipientName: string;
+  viewed: boolean;
+  deletedBySender: boolean;
+  deletedByRecipient: boolean;
+  isSpam: boolean;
+  distributionId: Nullable<number>;
+};
+
+export type MessageOnServerDataType = {
+  message: MessageOnServerType;
+};
+
+export type GetWithUserDialogResponseType = {
+  items: MessageOnServerType[];
+  totalCount: Nullable<number>;
+  error: Nullable<string>;
+};

@@ -8,6 +8,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { Login } from 'components';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { Conversations } from 'components/conversations/Conversations';
+import { Dialogs } from 'components/dialogs/Dialogs';
 import { Footer } from 'components/footer/Footer';
 import { Friends } from 'components/friends/Friends';
 import HeaderContainer from 'components/header/HeaderContainer';
@@ -61,7 +62,10 @@ const App = (): ComponentReturnType => {
           {/* <Route path="/profile/:id" element={<UserProfileContainer />} /> */}
           <Route path="/friends" element={<Friends />} />
           <Route path="/" element={<Navigate to="/profile" />} />
-          <Route path="/dialogs" element={<Conversations />} />
+          <Route path="/dialogs" element={<Dialogs />}>
+            <Route path=":interlocutorID" element={Dialogs} />
+          </Route>
+
           <Route path="/users" element={<UsersContainer />} />
           <Route path="/news" element={<News />} />
           <Route path="/login" element={<Login />} />

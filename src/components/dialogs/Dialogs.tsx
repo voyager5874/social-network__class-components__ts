@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -8,40 +8,70 @@ import styles from './Dialogs.module.css';
 import { Dialog } from 'components/dialogs/dialog/Dialog';
 import { Interlocutor } from 'components/dialogs/interlocutor/Interlocutor';
 import { InterlocutorType } from 'components/dialogs/types';
-import { addMessageAC, updateNewMessageTextAC } from 'store/reducers/messagesReducer';
-import { MonicaID } from 'store/stubData';
+import { sendMessage } from 'store/middlewares';
+import { getInterlocutors } from 'store/middlewares/dialogs';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
 
 export const Dialogs = (): ComponentReturnType => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getInterlocutors());
+  }, []);
+
   const people = useSelector<RootStateType, InterlocutorType[]>(
     state => state.interlocutors,
   );
-  const newMessage = useSelector<RootStateType, string>(
-    state => state.messages.newMessageBody,
-  );
-  const dispatch = useDispatch();
+
+  const [messageText, setMessageText] = useState('');
+  // const newMessage = useSelector<RootStateType, string>(
+  //   state => state.messages.newMessageBody,
+  // );
+
   const { interlocutorID } = useParams();
+
   const handleNewMessageChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
-    const action = updateNewMessageTextAC(event.currentTarget.value);
-    dispatch(action);
+    setMessageText(event.currentTarget.value);
   };
+
   const handleSendMessage = (): void => {
-    dispatch(addMessageAC(MonicaID));
+    if (!interlocutorID) return;
+    const idAsNumber = Number(interlocutorID);
+    dispatch(sendMessage(idAsNumber, messageText));
   };
 
   return (
     <div className={styles.dialogs}>
       <div className={styles.peopleList}>
-        {people.map(({ name, id }) => (
-          <Interlocutor key={id} name={name} id={id} />
-        ))}
+        {people.map(
+          ({
+            id,
+            userName,
+            newMessagesCount,
+            photos,
+            hasNewMessages,
+            lastUserActivityDate,
+            lastDialogActivityDate,
+          }) => (
+            <Interlocutor
+              key={id}
+              id={id}
+              userName={userName}
+              photos={photos}
+              newMessagesCount={newMessagesCount}
+              lastUserActivityDate={lastUserActivityDate}
+              hasNewMessages={hasNewMessages}
+              lastDialogActivityDate={lastDialogActivityDate}
+            />
+          ),
+        )}
       </div>
 
       <div className={styles.messagesContainer}>
-        <Dialog interlocutorID={interlocutorID || MonicaID} />
+        <Dialog interlocutorID={Number(interlocutorID) || 3} />
         <div>
-          <textarea onChange={handleNewMessageChange} value={newMessage} />
+          <textarea onChange={handleNewMessageChange} value={messageText} />
           <button type="submit" onClick={handleSendMessage}>
             send message
           </button>

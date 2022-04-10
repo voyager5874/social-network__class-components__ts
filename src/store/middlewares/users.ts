@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { Dispatch } from 'redux';
 
 import { usersAPI } from 'api';
@@ -61,9 +61,11 @@ export const changeFollowedByCurrentUserState =
         processServerError('unfollow(TC)', response.data, dispatch);
       }
     } catch (error) {
-      processNetworkError('unfollow(TC)', error as AxiosError, dispatch);
+      if (axios.isAxiosError(error) && error.message) {
+        processNetworkError('unfollow(TC)', error, dispatch);
+      }
+    } finally {
+      dispatch(removeFromBusyEntities(userID));
+      dispatch(setUserEntityStatus(userID, EntityStatus.idle));
     }
-
-    dispatch(removeFromBusyEntities(userID));
-    dispatch(setUserEntityStatus(userID, EntityStatus.idle));
   };

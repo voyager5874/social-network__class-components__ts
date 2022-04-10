@@ -1,2 +1,2 @@
 // Thunks or Sagas...
-export {};
+export { sendMessage, getWithUserMessages } from './dialogs';

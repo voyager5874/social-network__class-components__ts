@@ -112,6 +112,10 @@ export const authMeWithAdditionalData =
       if (response.data.resultCode === ResponseCodes.Success) {
         dispatch(setAuthData(response.data.data));
         dispatch(setLoginStatus(true));
+
+        // there must be better ways but...
+        // @ts-ignore
+        window.loggedInUserID = response.data.data.id;
         const loggedInUserData = await usersAPI.getUserProfile(response.data.data.id!);
         if (loggedInUserData.data.fullName) {
           dispatch(setLoggedInUserFullName(loggedInUserData.data.fullName));

@@ -1,44 +1,38 @@
-import { v1 } from 'uuid';
-
+import { InterlocutorType } from 'components/dialogs/types';
 import { InterlocutorsStateType } from 'store/reducers/types';
-import { ChandlerID, JoeyID, MonicaID, PhoebeID, RachelID, RossID } from 'store/stubData';
+// import { ChandlerID, JoeyID, MonicaID, PhoebeID, RachelID, RossID } from 'store/stubData';
 
-const initialState: InterlocutorsStateType = [
-  { id: RossID, name: 'Ross' },
-  { id: MonicaID, name: 'Monica' },
-  { id: ChandlerID, name: 'Chandler' },
-  { id: RachelID, name: 'Rachel' },
-  { id: PhoebeID, name: 'Phoebe' },
-  { id: JoeyID, name: 'Joey' },
-];
+const initialState: InterlocutorsStateType = [];
 
 export const interlocutorsReducer = (
   state: InterlocutorsStateType = initialState,
   action: InterlocutorsReducerActionsType,
 ): InterlocutorsStateType => {
   switch (action.type) {
-    case 'ADD-INTERLOCUTOR':
-      return [{ id: action.id, name: action.name }, ...state];
-    case 'DELETE-INTERLOCUTOR':
-      return state.filter(person => person.id !== action.id);
+    case 'INTERLOCUTORS/ITEMS-LOADED':
+      return [...action.data];
     default:
       return state;
   }
 };
 
-export type InterlocutorsReducerActionsType =
-  | ReturnType<typeof addInterlocutorAC>
-  | ReturnType<typeof deleteInterlocutorAC>;
+export type InterlocutorsReducerActionsType = ReturnType<typeof setInterlocutors>;
 
-export const addInterlocutorAC = (name: string) =>
-  ({
-    type: 'ADD-INTERLOCUTOR',
-    name,
-    id: v1(),
-  } as const);
+// export const addInterlocutorAC = (name: string) =>
+//   ({
+//     type: 'ADD-INTERLOCUTOR',
+//     name,
+//     id: v1(),
+//   } as const);
+//
+// export const deleteInterlocutorAC = (id: string) =>
+//   ({
+//     type: 'DELETE-INTERLOCUTOR',
+//     id,
+//   } as const);
 
-export const deleteInterlocutorAC = (id: string) =>
+export const setInterlocutors = (data: InterlocutorType[]) =>
   ({
-    type: 'DELETE-INTERLOCUTOR',
-    id,
+    type: 'INTERLOCUTORS/ITEMS-LOADED',
+    data,
   } as const);

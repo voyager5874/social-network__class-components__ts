@@ -173,7 +173,7 @@ export const findRealSamurai =
     // the function won't get here if getUsers fails but I'm throwing an error anyways
     // because of typescript and Nullable type of totalUsersCount
     const searchProfile = async (): Promise<number | string> => {
-      // userID = getRandomInteger(3, usersCount || 18299); // total users count last checked - 18299
+      // userID = getRandomInteger(3, usersCount || 23304); // total users count last checked - 18299, but last user ID is 23304
       if (!usersCount) throw new Error('total users count is unknown');
       userID = getRandomInteger(FIRST_USER_ID, usersCount);
       try {
