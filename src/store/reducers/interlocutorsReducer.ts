@@ -1,6 +1,5 @@
 import { InterlocutorType } from 'components/dialogs/types';
 import { InterlocutorsStateType } from 'store/reducers/types';
-// import { ChandlerID, JoeyID, MonicaID, PhoebeID, RachelID, RossID } from 'store/stubData';
 
 const initialState: InterlocutorsStateType = [];
 
@@ -16,20 +15,14 @@ export const interlocutorsReducer = (
   }
 };
 
-export type InterlocutorsReducerActionsType = ReturnType<typeof setInterlocutors>;
+export type InterlocutorsReducerActionsType =
+  | ReturnType<typeof setInterlocutors>
+  | ReturnType<typeof addInterlocutor>;
 
-// export const addInterlocutorAC = (name: string) =>
-//   ({
-//     type: 'ADD-INTERLOCUTOR',
-//     name,
-//     id: v1(),
-//   } as const);
-//
-// export const deleteInterlocutorAC = (id: string) =>
-//   ({
-//     type: 'DELETE-INTERLOCUTOR',
-//     id,
-//   } as const);
+export const addInterlocutor = () =>
+  ({
+    type: 'INTERLOCUTORS/ITEM-CREATED',
+  } as const);
 
 export const setInterlocutors = (data: InterlocutorType[]) =>
   ({

@@ -21,6 +21,7 @@ import {
   setLoggedInUserPhoto,
   setLoginStatus,
 } from 'store/reducers/authReducer';
+import { resetMessagesReducerState } from 'store/reducers/messagesReducer';
 import { EntityStatus } from 'store/reducers/types';
 import { setUserProfileEntityStatus } from 'store/reducers/userProfileReducer';
 import { AppActionsType, ThunkType } from 'store/types';
@@ -79,6 +80,7 @@ export const logout = () => (dispatch: Dispatch<AppActionsType>) => {
       if (response.data.resultCode === ResponseCodes.Success) {
         // dispatch(setLoginStatus(false));
         dispatch(resetAuthState());
+        dispatch(resetMessagesReducerState());
       } else {
         processServerError('logout(TC)', response.data, dispatch);
       }

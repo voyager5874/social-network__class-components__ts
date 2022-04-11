@@ -17,6 +17,7 @@ import { ProfileInfoEditForm } from 'components/profile/profileInfo/ProfileInfoE
 import ProfileTextInfo from 'components/profile/profileInfo/ProfileTextInfo';
 import { UserStatus } from 'components/profile/profileInfo/UserStatus';
 import { PostType } from 'components/profile/types';
+import { startNewChat } from 'store/middlewares/dialogs';
 import { ComponentReturnType, Nullable } from 'types';
 
 type ProfileCardPropsType = GetUserProfileResponseType & {
@@ -31,6 +32,8 @@ type ProfileCardPropsType = GetUserProfileResponseType & {
   newPostText: string;
   addPost: () => void;
   updateNewPostText: (text: string) => void;
+  startChatWithThisUser: (userID: number) => void;
+  navigate: (path: string) => void;
 };
 
 export const Profile = ({
@@ -52,6 +55,8 @@ export const Profile = ({
   newPostText,
   addPost,
   updateNewPostText,
+  startChatWithThisUser,
+  navigate,
 }: ProfileCardPropsType): ComponentReturnType => {
   // type SocialMediaListType = keyof typeof contacts;
   // const socialMediaList = Object.keys(contacts) as Array<keyof typeof contacts>;
@@ -67,6 +72,13 @@ export const Profile = ({
     if (userId) {
       changeFollowed(userId, newStatus);
     }
+  };
+
+  const handleStartChat = () => {
+    debugger;
+    if (!userId) return;
+    startChatWithThisUser(userId);
+    navigate(`../dialogs/${userId}`);
   };
 
   return (
@@ -137,7 +149,7 @@ export const Profile = ({
           </UniversalButton>
         )}
         {!isProfileOwner && (
-          <UniversalButton className={styles.userProfileButton}>
+          <UniversalButton onClick={handleStartChat} className={styles.userProfileButton}>
             Write a message
           </UniversalButton>
         )}

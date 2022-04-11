@@ -15,7 +15,8 @@ export const dialogsAPI = {
     axiosInstance.get<GetWithUserDialogResponseType>(
       `dialogs/${userID}/messages?page=${pageNumber}&count=${itemsPerPage}`,
     ),
-  putNewChat: (userID: number) => axiosInstance.put(`dialogs/${userID}`),
+  putNewChat: (userID: number) =>
+    axiosInstance.put<BasicResponseType>(`dialogs/${userID}`),
   postMessageToWithUserDialog: (userID: number, message: string) => {
     const requestBody: dialogsPostPayloadType = {
       body: message,

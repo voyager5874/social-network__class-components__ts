@@ -35,7 +35,7 @@ export const getWithUserMessages =
         pageNumber,
         itemsPerPage,
       );
-      if (response.data.totalCount) {
+      if (response.data.items) {
         debugger;
         dispatch(setWithUserMessages(response.data.items));
       }
@@ -56,6 +56,18 @@ export const sendMessage = (userID: number, message: string) => async (dispatch:
       dispatch(getWithUserMessages(userID));
     }
     console.dir(response);
+  } catch (error) {
+    console.log((error as AxiosError).message);
+  }
+};
+
+export const startNewChat = (userID: number) => async (dispatch: Dispatch) => {
+  try {
+    const response = await dialogsAPI.putNewChat(userID);
+    debugger;
+    if (response) {
+      console.log(response);
+    }
   } catch (error) {
     console.log((error as AxiosError).message);
   }

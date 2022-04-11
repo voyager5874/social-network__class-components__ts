@@ -23,6 +23,8 @@ export const messagesReducer = (
       return { ...state, messages: action.data };
     case 'MESSAGES/TOTAL-COUNT-RECEIVED':
       return { ...state, totalCount: action.total };
+    case 'MESSAGES/RESET-STATE':
+      return { ...initialState };
     default:
       return state;
   }
@@ -33,6 +35,7 @@ export type MessagesReducerActionsType =
   | ReturnType<typeof setWithUserMessages>
   | ReturnType<typeof setMessagesEntityError>
   | ReturnType<typeof setWithUserMessagesTotalCount>
+  | ReturnType<typeof resetMessagesReducerState>
   | InterlocutorsReducerActionsType;
 
 export const addMessageAC = (interlocutorID: string) =>
@@ -57,4 +60,9 @@ export const setMessagesEntityError = (error: string) =>
   ({
     type: 'MESSAGES/ERROR-OCCURRED',
     error,
+  } as const);
+
+export const resetMessagesReducerState = () =>
+  ({
+    type: 'MESSAGES/RESET-STATE',
   } as const);

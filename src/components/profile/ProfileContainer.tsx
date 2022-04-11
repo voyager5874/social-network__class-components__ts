@@ -11,6 +11,7 @@ import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVi
 import { Profile } from 'components/profile/Profile';
 import { PostType } from 'components/profile/types';
 import { initializeApp } from 'store/middlewares/app';
+import { startNewChat } from 'store/middlewares/dialogs';
 import {
   findRealSamurai,
   getProfile,
@@ -95,6 +96,8 @@ class ProfileContainer extends Component<UserProfilePropsType> {
         updateCurrentUserAvatar={this.props.updateCurrentUserAvatar}
         isProfileOwner={this.props.profile.userId === this.props.loggedInUserID}
         showRandomProfile={this.showRandomProfile}
+        startChatWithThisUser={this.props.startNewChat}
+        navigate={this.props.router.navigate}
       />
     );
   }
@@ -114,6 +117,7 @@ type MapDispatchToPropsType = {
   // findRealSamurai: () => any;
   findRealSamurai: typeof findRealSamurai;
   // findRealSamurai: () => () => Promise<number>;
+  startNewChat: typeof startNewChat;
 };
 
 type MapStateToPropsType = {
@@ -155,5 +159,6 @@ export default compose<ComponentType>(
     updateCurrentUserAvatar,
     findRealSamurai,
     changeFollowedByCurrentUserState,
+    startNewChat,
   }),
 )(ProfileContainer);

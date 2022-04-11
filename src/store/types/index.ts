@@ -3,6 +3,7 @@ import { ThunkAction } from 'redux-thunk';
 import { AppReducerActionsType } from 'store/reducers/app';
 import { AuthReducerActionsType } from 'store/reducers/authReducer';
 import { FriendsReducerActionsType } from 'store/reducers/friends';
+import { MessagesReducerActionsType } from 'store/reducers/messagesReducer';
 import { postsReducerActionsType } from 'store/reducers/postsReducer';
 import { UserProfileReducerActionsType } from 'store/reducers/userProfileReducer';
 import { usersReducerActionsType } from 'store/reducers/usersReducer';
@@ -16,6 +17,7 @@ export type AppActionsType =
   | postsReducerActionsType
   | AuthReducerActionsType
   | AppReducerActionsType
-  | UserProfileReducerActionsType;
+  | UserProfileReducerActionsType
+  | MessagesReducerActionsType;
 
 export type ThunkType = ThunkAction<void, RootStateType, unknown, AppActionsType>;

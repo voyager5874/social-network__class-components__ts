@@ -35,16 +35,8 @@ export const authReducer = (
       return { ...state, fullName: action.name };
     case 'AUTH/SET-PHOTO':
       return { ...state, photo: action.photo };
-    case 'RESET-AUTH-STATE':
-      return {
-        isLoggedIn: false,
-        login: null,
-        email: null,
-        id: null,
-        captcha: null,
-        fullName: null,
-        photo: null,
-      };
+    case 'AUTH/RESET-STATE':
+      return { ...initialState };
     default:
       return state;
   }
@@ -58,7 +50,7 @@ export const setAuthData = (data: AuthMeResponseDataType) =>
 
 export const resetAuthState = () =>
   ({
-    type: 'RESET-AUTH-STATE',
+    type: 'AUTH/RESET-STATE',
   } as const);
 
 export const setLoginStatus = (loginStatus: boolean) =>
