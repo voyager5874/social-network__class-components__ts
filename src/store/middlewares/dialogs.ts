@@ -6,10 +6,6 @@ import { ResponseCodes } from 'enums';
 import { setInterlocutors } from 'store/reducers/interlocutorsReducer';
 import { setWithUserMessages } from 'store/reducers/messagesReducer';
 
-type dialogsPostPayloadType = {
-  body: string;
-};
-
 export const getInterlocutors = () => async (dispatch: Dispatch) => {
   try {
     const response = await dialogsAPI.getInterlocutors();

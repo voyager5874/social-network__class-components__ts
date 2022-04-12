@@ -28,13 +28,15 @@ export const Interlocutor: FC<InterlocutorType> = ({
       to={path}
       style={({ isActive }) => ({ color: isActive ? 'black' : 'blue' })}
     >
-      <div>{newMessagesCount}</div>
-      <div>{userName}</div>
       <img
         className={styles.avatar}
         src={photos.small || noAvatar}
         alt="interlocutor avatar"
       />
+      <div className={styles.interlocutorInfo}>
+        <div>{newMessagesCount}</div>
+        <div>{userName}</div>
+      </div>
     </NavLink>
   );
 };

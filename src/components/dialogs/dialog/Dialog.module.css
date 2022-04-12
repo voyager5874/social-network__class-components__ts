@@ -1,0 +1,7 @@
+.dialog{
+    background-color: white;
+    height: 65vh;
+    overflow: auto;
+    padding-bottom: 180px;
+    padding-top: 20px;
+}

@@ -1,17 +1,26 @@
 .interlocutor{
-    display: inline-flex;
-    flex-direction: column;
+    display: flex;
     align-items: center;
     word-break: break-all;
-    max-width: 100px;
+    width: 100%;
+    min-width: 220px;
     background-color: white;
-    border-radius: 5px;
-    margin-bottom: 20px;
+    /*border-radius: 5px;*/
+    /*margin-bottom: 20px;*/
+    padding: 10px;
+    /*border-top: 1px solid #0a3b54;*/
+    border-bottom: 2px solid rgba(106, 110, 112, 0.43);
 }
 
 
 
 .avatar{
-    width: 80px;
+    width: 60px;
     border-radius: 50%;
+    margin-right: 10px;
+}
+
+.interlocutorInfo{
+    display: flex;
+    flex-direction: column;
 }
