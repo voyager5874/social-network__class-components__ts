@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,10 +12,18 @@ import { ComponentReturnType, Nullable } from 'types';
 
 export type DialogPropsType = {
   interlocutorID: number;
+  // eslint-disable-next-line react/require-default-props
+  className?: string;
+  // eslint-disable-next-line react/require-default-props
+  hidden?: boolean;
 };
-export const Dialog = ({ interlocutorID }: DialogPropsType): ComponentReturnType => {
+export const Dialog: FC<DialogPropsType> = ({
+  interlocutorID,
+  className = '',
+  hidden = false,
+}): ComponentReturnType => {
   const dispatch = useDispatch();
-  console.log('interlocutorID', interlocutorID);
+  // console.log('interlocutorID', interlocutorID);
 
   useEffect(() => {
     dispatch(getWithUserMessages(interlocutorID));
@@ -46,7 +54,7 @@ export const Dialog = ({ interlocutorID }: DialogPropsType): ComponentReturnType
   );
 
   return (
-    <div className={styles.dialog}>
+    <div className={`${styles.dialog} ${hidden ? styles.hidden : ''} ${className}`}>
       {messages.map(({ id, addedAt, body, viewed, senderName, senderId }) => (
         <Message
           key={id}

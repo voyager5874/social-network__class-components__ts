@@ -1,7 +1,17 @@
 .dialog{
     background-color: white;
-    height: 65vh;
     overflow: auto;
-    padding-bottom: 180px;
+    height: calc(100% - 200px);
+    padding-bottom: 20px;
     padding-top: 20px;
+    transition: height 400ms;
+}
+
+.hidden{
+    height: 0 ;
+    margin: 0;
+    overflow: hidden;
+    padding-bottom: 0;
+    padding-top: 0;
+    transition: height 400ms;
 }

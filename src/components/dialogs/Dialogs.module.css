@@ -2,8 +2,8 @@
     border-radius: 5px;
     background-color: white;
     width: 100%;
-    /*height: 90vh;*/
     display: flex;
+    height: 92vh;
 }
 
 .pageLeft{
@@ -12,15 +12,15 @@
     justify-content: flex-start;
     align-items: center;
     width: 30%;
-    min-width: 225px;
-    height: 90vh;
+    min-width: 250px;
+    height: 100%;
     border-right: 2px solid rgba(106, 110, 112, 0.43);
 }
 
 .peopleListHeader{
     background-color: white;
-    border-radius: 5px 0px 0px 0px;
-    height: 7vh;
+    border-radius: 5px 0 0 0;
+    height:50px;
     min-height: 50px;
     width: 100%;
     display: flex;
@@ -30,47 +30,38 @@
     padding-right: 20px;
     border-bottom: 2px solid rgba(106, 110, 112, 0.43);
     font-weight: bold;
-    /*border-right: 1px solid #0a3b54;*/
 }
 
 .peopleList{
     /*background-color: #d5c979;*/
     padding-top: 20px;
-    /*min-width: 200px;*/
-    height: 83vh;
+    height: 95%;
     overflow: auto;
     width: 100%;
-    /*border-radius: 5px;*/
 }
 
-/*.person{*/
-/*    !*background-color: #00ffe1;*!*/
-
-/*}*/
-
-/*.avatar{*/
-/*    width: 100px;*/
-/*}*/
-
-.messagesContainer{
+.pageRight{
+    /*background-color: #e9eee7;*/
     border-radius: 5px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    background-color: #e9eee7;
     width: 70%;
+    min-width: 600px;
+    position: relative;
+    height: 100%;
 
 }
 
 .chatHeader{
-    border-radius: 0px 5px 0px 0px;
+    border-radius: 0 5px 0 0;
     background: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 7vh;
+    height: 50px;
     min-height: 50px;
     text-align: center;
     font-size: 1.3rem;
@@ -80,28 +71,47 @@
 
 
 .sendMessageForm{
-    /*box-sizing: border-box;*/
-    border-top: 2px solid rgba(106, 110, 112, 0.43);
+    position: absolute;
+    bottom: 0;
+    left: 0;
     background-color: rgb(236, 240, 243);
-
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     width: 100%;
-    height: 18vh;
-    min-height: 100px;
+    height: 150px;
+    border-top: 2px solid rgba(106, 110, 112, 0.43);
 
 }
 
-.textarea{
+.sendMessageFormExpanded{
+    height: calc(100% - 50px);
+    border-top: 0;
+    transition: height 600ms;
+}
 
-    /*overflow-scrolling: auto;*/
-    /*border-radius: 5px;*/
+.textarea{
     outline: none;
     border: none;
     resize: none;
-    min-height: 60px;
+    height: 70px;
     padding: 10px;
-    margin-bottom: 10px;
+    transition: max-height 0.6s, min-height 0.6s;
+
+}
+
+.textareaExpanded{
+    height: calc(100% - 78px);
+}
+
+.sendMessageFormControls{
+    /*background-color: #70c2a5;*/
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 80px;
+    padding-top: 15px;
 }
 
 .button{
@@ -123,8 +133,36 @@
     margin-right: 15px;
 }
 
-.sendMessageFormControls{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+
+
+.expandButton{
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 1.5rem;
+    position: absolute;
+    top: 15px;
+    right: 15px;
 }
+
+.expandButton:hover{
+    background-color: rgba(54, 131, 155, 0.51);
+    transition: background-color 1s;
+}
+
+.collapseButton{
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 1.5rem;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+}
+
+.collapseButton:hover{
+    background-color: rgba(54, 131, 155, 0.51);
+}
+
