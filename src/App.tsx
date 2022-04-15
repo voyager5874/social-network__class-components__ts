@@ -1,15 +1,13 @@
 import './App.css';
 
-import { useEffect, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { Login } from 'components';
 import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
-import { Conversations } from 'components/conversations/Conversations';
 import { Dialogs } from 'components/dialogs/Dialogs';
-import { Footer } from 'components/footer/Footer';
 import { Friends } from 'components/friends/Friends';
 import HeaderContainer from 'components/header/HeaderContainer';
 import { LeftSideBar } from 'components/leftSideBar/LeftSideBar';
@@ -35,6 +33,7 @@ const App = (): ComponentReturnType => {
     state => state.app.isInitialized,
   );
 
+  // eslint-disable-next-line no-console
   console.log(
     `app rendering, login status (isLoggedIn state variable): ${userLoggedIn} , user id set in profile store part is ${profileID}`,
   );

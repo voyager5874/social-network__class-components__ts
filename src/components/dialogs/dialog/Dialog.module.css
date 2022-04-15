@@ -15,3 +15,11 @@
     padding-top: 0;
     transition: height 400ms;
 }
+
+@keyframes show-overflow {
+    from { overflow: hidden; }
+}
+
+.dialog:not(.hidden) {
+    animation: show-overflow 2s;  /* scroll only appears after dialog has full height */
+}

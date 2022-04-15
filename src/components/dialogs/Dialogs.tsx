@@ -5,7 +5,6 @@ import { GrAttachment } from 'react-icons/gr';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import TextareaAutosize from 'react-textarea-autosize';
 
 import styles from './Dialogs.module.css';
 
@@ -30,27 +29,34 @@ export const Dialogs = (): ComponentReturnType => {
     state => state.interlocutors,
   );
 
+  const lastInterlocutor = useSelector<RootStateType, InterlocutorType>(
+    state => state.interlocutors[FIRST_ARRAY_ITEM_INDEX],
+  );
+
+  // this should go to Formik form
   const [messageText, setMessageText] = useState('');
+
   const [messageFieldExpanded, setMessageFieldExpanded] = useState(false);
 
   const { interlocutorID } = useParams();
 
-  const currentInterlocutorName = useSelector<RootStateType, string>(state =>
-    interlocutorID
-      ? state.interlocutors.filter(user => user.id === Number(interlocutorID))[
-          FIRST_ARRAY_ITEM_INDEX
-        ].userName
-      : 'Choose somebody',
-  );
+  const currentInterlocutorName = interlocutorID
+    ? useSelector<RootStateType, string>(
+        state =>
+          state.interlocutors.filter(user => user.id === Number(interlocutorID))[
+            FIRST_ARRAY_ITEM_INDEX
+          ].userName,
+      )
+    : lastInterlocutor.userName;
 
   const handleNewMessageChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
     setMessageText(event.currentTarget.value);
   };
 
-  const expandMessageField = () => {
+  const expandMessageField = (): void => {
     setMessageFieldExpanded(true);
   };
-  const collapseMessageField = () => {
+  const collapseMessageField = (): void => {
     setMessageFieldExpanded(false);
   };
 
@@ -94,7 +100,7 @@ export const Dialogs = (): ComponentReturnType => {
       <div className={styles.pageRight}>
         <div className={styles.chatHeader}>{currentInterlocutorName}</div>
         <Dialog
-          interlocutorID={Number(interlocutorID) || 3}
+          interlocutorID={Number(interlocutorID) || lastInterlocutor.id}
           className={messageFieldExpanded ? styles.collapsedBox : ''}
           hidden={messageFieldExpanded}
         />
