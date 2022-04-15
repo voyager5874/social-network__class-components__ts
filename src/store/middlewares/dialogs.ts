@@ -3,13 +3,15 @@ import { Dispatch } from 'redux';
 
 import { dialogsAPI } from 'api/dialogsAPI';
 import { ResponseCodes } from 'enums';
+import { setAppEntityStatus } from 'store/reducers/app';
 import { setInterlocutors } from 'store/reducers/interlocutorsReducer';
 import { setWithUserMessages } from 'store/reducers/messagesReducer';
+import { EntityStatus } from 'store/reducers/types';
 
 export const getInterlocutors = () => async (dispatch: Dispatch) => {
+  dispatch(setAppEntityStatus(EntityStatus.busy));
   try {
     const response = await dialogsAPI.getInterlocutors();
-    debugger;
     if (response.data) {
       dispatch(setInterlocutors(response.data));
     } else {
@@ -20,11 +22,13 @@ export const getInterlocutors = () => async (dispatch: Dispatch) => {
     // eslint-disable-next-line no-alert
     alert((error as AxiosError).message);
   }
+  dispatch(setAppEntityStatus(EntityStatus.idle));
 };
 
 export const getWithUserMessages =
   (userID: number, pageNumber: number = 1, itemsPerPage: number = 20) =>
   async (dispatch: Dispatch) => {
+    dispatch(setAppEntityStatus(EntityStatus.busy));
     try {
       const response = await dialogsAPI.getWithUserDialog(
         userID,
@@ -32,26 +36,25 @@ export const getWithUserMessages =
         itemsPerPage,
       );
       if (response.data.items) {
-        debugger;
         dispatch(setWithUserMessages(response.data.items));
       }
     } catch (error) {
       // eslint-disable-next-line no-alert
       alert((error as AxiosError).message);
     }
+    dispatch(setAppEntityStatus(EntityStatus.idle));
   };
 
 export const sendMessage = (userID: number, message: string) => async (dispatch: any) => {
-  debugger;
-
   try {
     const response = await dialogsAPI.postMessageToWithUserDialog(userID, message);
     if (response.data.resultCode === ResponseCodes.Success) {
       // eslint-disable-next-line no-alert
       alert(`Sent! recipient: ${response.data.data.message.recipientName}`);
       dispatch(getWithUserMessages(userID));
+    } else {
+      console.dir(response);
     }
-    console.dir(response);
   } catch (error) {
     console.log((error as AxiosError).message);
   }

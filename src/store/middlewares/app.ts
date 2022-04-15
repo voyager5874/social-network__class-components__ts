@@ -22,8 +22,8 @@ import { ThunkType } from 'store/types';
 export const initializeApp = (): ThunkType => async dispatch => {
   dispatch(setAppEntityStatus(EntityStatus.busy));
   const promisesList = [
-    dispatch(authMeWithAdditionalData()),
-    dispatch(getInterlocutors()),
+    await dispatch(authMeWithAdditionalData()),
+    await dispatch(getInterlocutors()),
   ];
   try {
     await Promise.all(promisesList);

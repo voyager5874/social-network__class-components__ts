@@ -1,4 +1,4 @@
-import { axiosInstance } from 'api/config';
+import { axiosInstanceDev, axiosInstanceTest } from 'api/config';
 import {
   BasicResponseType,
   GetUserProfileResponseType,
@@ -7,6 +7,11 @@ import {
   UpdateUserProfileRequestDataType,
 } from 'api/types';
 import { Nullable } from 'types';
+
+const axiosInstance =
+  // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+  window.loggedInUserID === 21647 ? axiosInstanceDev : axiosInstanceTest;
 
 export const usersAPI = {
   getUsers: (pageNumber: number, usersPerPage: number) =>

@@ -1,4 +1,4 @@
-import { axiosInstance } from 'api/config';
+import { axiosInstance, chooseAxiosInstance } from 'api/config';
 import {
   BasicResponseType,
   dialogsPostPayloadType,
@@ -21,7 +21,8 @@ export const dialogsAPI = {
     const requestBody: dialogsPostPayloadType = {
       body: message,
     };
-    return axiosInstance.post<BasicResponseType<MessageOnServerDataType>>(
+    debugger;
+    return chooseAxiosInstance().post<BasicResponseType<MessageOnServerDataType>>(
       `dialogs/${userID}/messages`,
       requestBody,
     );

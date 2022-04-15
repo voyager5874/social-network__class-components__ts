@@ -8,6 +8,9 @@ import {
 
 export const authAPI = {
   authMe() {
+    // eslint-disable-next-line no-console
+    console.log(axiosInstance.defaults.headers);
+    debugger;
     return axiosInstance.get<BasicResponseType<AuthMeResponseDataType>>('auth/me');
   },
   login(data: LoginDataType) {

@@ -26,11 +26,11 @@ export const Dialog: FC<DialogPropsType> = ({
   // console.log('interlocutorID', interlocutorID);
 
   useEffect(() => {
-    dispatch(getWithUserMessages(interlocutorID));
+    dispatch(getWithUserMessages(interlocutorID, 1, 20));
   }, []);
 
   useEffect(() => {
-    dispatch(getWithUserMessages(interlocutorID));
+    dispatch(getWithUserMessages(interlocutorID, 1, 20));
   }, [interlocutorID]);
 
   const messages = useSelector<RootStateType, MessageOnServerType[]>(

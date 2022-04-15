@@ -81,6 +81,7 @@ export const logout = () => (dispatch: Dispatch<AppActionsType>) => {
         // dispatch(setLoginStatus(false));
         dispatch(resetAuthState());
         dispatch(resetMessagesReducerState());
+        localStorage.removeItem('it-inc-network');
       } else {
         processServerError('logout(TC)', response.data, dispatch);
       }
@@ -116,8 +117,15 @@ export const authMeWithAdditionalData =
         dispatch(setLoginStatus(true));
 
         // there must be better ways but...
-        // @ts-ignore
-        window.loggedInUserID = response.data.data.id;
+        const currentStorageAsString = localStorage.getItem('it-inc-network');
+        const currentStorageAsObject =
+          currentStorageAsString && JSON.parse(currentStorageAsString);
+        const userData = JSON.stringify({
+          ...currentStorageAsObject,
+          loggedInUserID: response.data.data.id,
+        });
+
+        localStorage.setItem('it-inc-network', userData);
         const loggedInUserData = await usersAPI.getUserProfile(response.data.data.id!);
         if (loggedInUserData.data.fullName) {
           dispatch(setLoggedInUserFullName(loggedInUserData.data.fullName));

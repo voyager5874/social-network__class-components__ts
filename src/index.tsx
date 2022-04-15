@@ -13,14 +13,14 @@ import { store } from 'store/store';
 
 ReactDOM.render(
   <React.StrictMode>
-    <HashRouter>
-      {/* <BrowserRouter> */}
+    {/* <HashRouter> */}
+    <BrowserRouter>
       {/* eslint-disable-next-line no-undef */}
       <Provider store={store}>
         <App />
       </Provider>
-      {/* </BrowserRouter> */}
-    </HashRouter>
+    </BrowserRouter>
+    {/* </HashRouter> */}
   </React.StrictMode>,
   document.getElementById('root'),
 );

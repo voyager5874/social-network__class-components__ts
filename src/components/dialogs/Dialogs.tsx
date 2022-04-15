@@ -4,10 +4,11 @@ import { BsImageFill } from 'react-icons/bs';
 import { GrAttachment } from 'react-icons/gr';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
 import styles from './Dialogs.module.css';
 
+import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { UniversalButton } from 'components/common/universalButton/UniversalButton';
 import { Dialog } from 'components/dialogs/dialog/Dialog';
 import { Interlocutor } from 'components/dialogs/interlocutor/Interlocutor';
@@ -15,39 +16,47 @@ import { InterlocutorType } from 'components/dialogs/types';
 import { FIRST_ARRAY_ITEM_INDEX } from 'constants/base';
 import { sendMessage } from 'store/middlewares';
 import { getInterlocutors } from 'store/middlewares/dialogs';
+import { EntityStatus } from 'store/reducers/types';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
 
 export const Dialogs = (): ComponentReturnType => {
   const dispatch = useDispatch();
+  // const navigate = useNavigate();
+
+  const [messageText, setMessageText] = useState('');
+  const [messageFieldExpanded, setMessageFieldExpanded] = useState(false);
 
   useEffect(() => {
     dispatch(getInterlocutors());
   }, []);
 
+  const appStatus = useSelector<RootStateType, EntityStatus>(
+    state => state.app.entityStatus,
+  );
+
+  const appInitialized = useSelector<RootStateType, boolean>(
+    state => state.app.isInitialized,
+  );
+
   const people = useSelector<RootStateType, InterlocutorType[]>(
     state => state.interlocutors,
   );
-
+  // people[0] ??
   const lastInterlocutor = useSelector<RootStateType, InterlocutorType>(
     state => state.interlocutors[FIRST_ARRAY_ITEM_INDEX],
   );
-
   // this should go to Formik form
-  const [messageText, setMessageText] = useState('');
-
-  const [messageFieldExpanded, setMessageFieldExpanded] = useState(false);
 
   const { interlocutorID } = useParams();
 
-  const currentInterlocutorName = interlocutorID
-    ? useSelector<RootStateType, string>(
-        state =>
-          state.interlocutors.filter(user => user.id === Number(interlocutorID))[
-            FIRST_ARRAY_ITEM_INDEX
-          ].userName,
-      )
-    : lastInterlocutor.userName;
+  const currentInterlocutorName = useSelector<RootStateType, string>(state =>
+    interlocutorID
+      ? state.interlocutors.filter(user => user.id === Number(interlocutorID))[
+          FIRST_ARRAY_ITEM_INDEX
+        ].userName
+      : lastInterlocutor.userName,
+  );
 
   const handleNewMessageChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
     setMessageText(event.currentTarget.value);
@@ -66,6 +75,20 @@ export const Dialogs = (): ComponentReturnType => {
     dispatch(sendMessage(idAsNumber, messageText));
     setMessageText('');
   };
+
+  // if (appStatus === EntityStatus.busy) {
+  //   return <LoadingVisualizer />;
+  // }
+
+  if (appInitialized && !people.length) {
+    // eslint-disable-next-line no-alert
+    alert('no active dialogs yet');
+    return <Navigate replace to="/users" />;
+  }
+
+  if (!interlocutorID) {
+    return <Navigate to={`${lastInterlocutor.id}`} />;
+  }
 
   return (
     <div className={styles.dialogs}>
@@ -101,7 +124,6 @@ export const Dialogs = (): ComponentReturnType => {
         <div className={styles.chatHeader}>{currentInterlocutorName}</div>
         <Dialog
           interlocutorID={Number(interlocutorID) || lastInterlocutor.id}
-          className={messageFieldExpanded ? styles.collapsedBox : ''}
           hidden={messageFieldExpanded}
         />
         <div
