@@ -17,6 +17,7 @@ export enum EntityStatus {
   busy,
 }
 
+// I can add lastInterlocutor property to the state to avoid request to the server
 export type InterlocutorsStateType = InterlocutorType[];
 
 export type MessagesStateType = {

@@ -1,38 +1,39 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 import { BsImageFill } from 'react-icons/bs';
 import { GrAttachment } from 'react-icons/gr';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 
 import styles from './Dialogs.module.css';
 
-import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVisualizer';
 import { UniversalButton } from 'components/common/universalButton/UniversalButton';
 import { Dialog } from 'components/dialogs/dialog/Dialog';
 import { Interlocutor } from 'components/dialogs/interlocutor/Interlocutor';
 import { InterlocutorType } from 'components/dialogs/types';
 import { FIRST_ARRAY_ITEM_INDEX } from 'constants/base';
 import { sendMessage } from 'store/middlewares';
-import { getInterlocutors } from 'store/middlewares/dialogs';
-import { EntityStatus } from 'store/reducers/types';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
 
 export const Dialogs = (): ComponentReturnType => {
+  // eslint-disable-next-line no-console
+  console.log('dialogs rendering');
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
-
   const [messageText, setMessageText] = useState('');
   const [messageFieldExpanded, setMessageFieldExpanded] = useState(false);
 
-  useEffect(() => {
-    dispatch(getInterlocutors());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getInterlocutors());
+  // }, []);
 
-  const appStatus = useSelector<RootStateType, EntityStatus>(
-    state => state.app.entityStatus,
+  // const appStatus = useSelector<RootStateType, EntityStatus>(
+  //   state => state.app.entityStatus,
+  // );
+
+  const userIsLoggedIn = useSelector<RootStateType, boolean>(
+    state => state.authData.isLoggedIn,
   );
 
   const appInitialized = useSelector<RootStateType, boolean>(
@@ -42,21 +43,14 @@ export const Dialogs = (): ComponentReturnType => {
   const people = useSelector<RootStateType, InterlocutorType[]>(
     state => state.interlocutors,
   );
-  // people[0] ??
-  const lastInterlocutor = useSelector<RootStateType, InterlocutorType>(
-    state => state.interlocutors[FIRST_ARRAY_ITEM_INDEX],
-  );
-  // this should go to Formik form
+  const lastInterlocutor = people[FIRST_ARRAY_ITEM_INDEX];
 
   const { interlocutorID } = useParams();
 
-  const currentInterlocutorName = useSelector<RootStateType, string>(state =>
-    interlocutorID
-      ? state.interlocutors.filter(user => user.id === Number(interlocutorID))[
-          FIRST_ARRAY_ITEM_INDEX
-        ].userName
-      : lastInterlocutor.userName,
-  );
+  const currentInterlocutorName = interlocutorID
+    ? people.filter(user => user.id === Number(interlocutorID))[FIRST_ARRAY_ITEM_INDEX]
+        .userName
+    : null;
 
   const handleNewMessageChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
     setMessageText(event.currentTarget.value);
@@ -76,9 +70,9 @@ export const Dialogs = (): ComponentReturnType => {
     setMessageText('');
   };
 
-  // if (appStatus === EntityStatus.busy) {
-  //   return <LoadingVisualizer />;
-  // }
+  if (!userIsLoggedIn) {
+    return <Navigate replace to="/login" />;
+  }
 
   if (appInitialized && !people.length) {
     // eslint-disable-next-line no-alert
@@ -89,6 +83,10 @@ export const Dialogs = (): ComponentReturnType => {
   if (!interlocutorID) {
     return <Navigate to={`${lastInterlocutor.id}`} />;
   }
+
+  // if (appStatus === EntityStatus.busy) {
+  //   return <LoadingVisualizer />;
+  // }
 
   return (
     <div className={styles.dialogs}>
@@ -122,10 +120,7 @@ export const Dialogs = (): ComponentReturnType => {
 
       <div className={styles.pageRight}>
         <div className={styles.chatHeader}>{currentInterlocutorName}</div>
-        <Dialog
-          interlocutorID={Number(interlocutorID) || lastInterlocutor.id}
-          hidden={messageFieldExpanded}
-        />
+        <Dialog interlocutorID={Number(interlocutorID)} hidden={messageFieldExpanded} />
         <div
           className={`${styles.sendMessageForm} ${
             messageFieldExpanded ? styles.sendMessageFormExpanded : ''

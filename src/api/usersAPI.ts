@@ -1,4 +1,4 @@
-import { axiosInstanceDev, axiosInstanceTest } from 'api/config';
+import { axiosInstance, chooseAxiosInstance } from 'api/config';
 import {
   BasicResponseType,
   GetUserProfileResponseType,
@@ -7,11 +7,6 @@ import {
   UpdateUserProfileRequestDataType,
 } from 'api/types';
 import { Nullable } from 'types';
-
-const axiosInstance =
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-  window.loggedInUserID === 21647 ? axiosInstanceDev : axiosInstanceTest;
 
 export const usersAPI = {
   getUsers: (pageNumber: number, usersPerPage: number) =>
@@ -30,15 +25,15 @@ export const usersAPI = {
   getUserStatus: (userID: number | string) =>
     axiosInstance.get<Nullable<string>>(`profile/status/${userID}`),
   updateCurrentUserStatus: (statusText: string) =>
-    axiosInstance.put<BasicResponseType>('profile/status', {
+    chooseAxiosInstance().put<BasicResponseType>('profile/status', {
       status: `${statusText}`,
     }),
   putNewCurrentUserProfileData: (data: Partial<UpdateUserProfileRequestDataType>) =>
-    axiosInstance.put<BasicResponseType>('profile', data),
+    chooseAxiosInstance().put<BasicResponseType>('profile', data),
   putProfilePhoto: (imgFile: File) => {
     const formData = new FormData();
     formData.append('image', imgFile);
-    return axiosInstance.put<BasicResponseType<PutProfilePhotoResponseDataType>>(
+    return chooseAxiosInstance().put<BasicResponseType<PutProfilePhotoResponseDataType>>(
       '/profile/photo',
       formData,
     );

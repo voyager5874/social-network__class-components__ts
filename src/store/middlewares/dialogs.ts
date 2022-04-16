@@ -52,6 +52,7 @@ export const sendMessage = (userID: number, message: string) => async (dispatch:
       // eslint-disable-next-line no-alert
       alert(`Sent! recipient: ${response.data.data.message.recipientName}`);
       dispatch(getWithUserMessages(userID));
+      dispatch(getInterlocutors());
     } else {
       console.dir(response);
     }
