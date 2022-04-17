@@ -5,6 +5,7 @@ import styles from './Message.module.css';
 import noAvatar from 'components/common/assets/userWithoutPhoto.png';
 import { MessagePropsType } from 'components/dialogs/types';
 import { ComponentReturnType } from 'types';
+import { formatDateString } from 'utils';
 
 // export const Message = ({ messageText }: MessagePropsType): ComponentReturnType => (
 //   <div className={styles.message}>{messageText}</div>
@@ -17,14 +18,7 @@ export const Message: FC<MessagePropsType> = ({
   senderAvatar,
   isLoggedInUserTheAuthor,
 }): ComponentReturnType => {
-  const msec = Date.parse(addedAt);
-  const date = new Date(msec);
-  const stringTime = date.toLocaleTimeString();
-  const stringDate = date.toLocaleDateString(undefined, {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const formattedDate = formatDateString(addedAt);
   return (
     <div
       className={
@@ -48,8 +42,8 @@ export const Message: FC<MessagePropsType> = ({
       >
         <div className={styles.author}>{userName}</div>
         <div className={styles.text}>{messageText}</div>
-        <div className={styles.time}>{stringDate}</div>
-        <div className={styles.time}>{stringTime}</div>
+        <div className={styles.time}>{formattedDate.date}</div>
+        <div className={styles.time}>{formattedDate.time}</div>
       </div>
       {isLoggedInUserTheAuthor && (
         <>

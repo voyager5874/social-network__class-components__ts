@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import { UserProfileContactsType } from 'api/types';
 import styles from 'components/profile/profileInfo/ProfileTextInfo.module.css';
-import { Nullable } from 'types';
+import { ComponentReturnType, Nullable } from 'types';
 
 type ProfileInfoPropsType = {
   contacts: UserProfileContactsType;
@@ -18,7 +18,7 @@ const ProfileTextInfo = ({
   lookingForAJobDescription,
   aboutMe,
   userId,
-}: ProfileInfoPropsType) => {
+}: ProfileInfoPropsType): ComponentReturnType => {
   const socialMediaList = Object.keys(contacts) as Array<keyof typeof contacts>;
   return (
     <div className={styles.profileTextInfo}>

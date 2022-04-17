@@ -71,7 +71,7 @@
     /*align-items: flex-end;*/
     min-width: 200px;
     color: #031a25;
-    word-break: break-all;
+    word-break: break-word;
     margin-bottom: 10px;
 }
 

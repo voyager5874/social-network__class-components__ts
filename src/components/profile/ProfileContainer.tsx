@@ -30,7 +30,7 @@ class ProfileContainer extends Component<UserProfilePropsType> {
     this.collectProfilePageData();
   }
 
-  componentDidUpdate(prevProps: UserProfilePropsType) {
+  componentDidUpdate(prevProps: UserProfilePropsType): void {
     if (prevProps.router.params.id === this.props.router.params.id) return;
     this.collectProfilePageData();
   }
@@ -117,7 +117,9 @@ type MapDispatchToPropsType = {
   // findRealSamurai: () => any;
   findRealSamurai: typeof findRealSamurai;
   // findRealSamurai: () => () => Promise<number>;
-  startNewChat: typeof startNewChat;
+  // startNewChat: typeof startNewChat;
+  // TS2322 not assignable
+  startNewChat: (userID: number) => Promise<boolean>;
 };
 
 type MapStateToPropsType = {

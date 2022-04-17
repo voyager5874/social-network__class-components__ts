@@ -2,28 +2,36 @@ import { AxiosError } from 'axios';
 import { Dispatch } from 'redux';
 
 import { dialogsAPI } from 'api/dialogsAPI';
+import { InterlocutorType } from 'components/dialogs/types';
+import { FIRST_ARRAY_ITEM_INDEX } from 'constants/base';
 import { ResponseCodes } from 'enums';
 import { setAppEntityStatus } from 'store/reducers/app';
 import { setInterlocutors } from 'store/reducers/interlocutorsReducer';
 import { setWithUserMessages } from 'store/reducers/messagesReducer';
 import { EntityStatus } from 'store/reducers/types';
 
-export const getInterlocutors = () => async (dispatch: Dispatch) => {
-  dispatch(setAppEntityStatus(EntityStatus.busy));
-  try {
-    const response = await dialogsAPI.getInterlocutors();
-    if (response.data) {
-      dispatch(setInterlocutors(response.data));
-    } else {
+export const getInterlocutors =
+  () =>
+  async (dispatch: Dispatch): Promise<InterlocutorType[] | []> => {
+    dispatch(setAppEntityStatus(EntityStatus.busy));
+    try {
+      const response = await dialogsAPI.getInterlocutors();
+      if (response.data.length) {
+        debugger;
+        dispatch(setInterlocutors(response.data));
+        return response.data;
+      }
       // eslint-disable-next-line no-alert
-      alert('no interlocutors');
+      // alert('no interlocutors');
+      return [];
+    } catch (error) {
+      // eslint-disable-next-line no-alert
+      alert((error as AxiosError).message);
+      return [];
+    } finally {
+      dispatch(setAppEntityStatus(EntityStatus.idle));
     }
-  } catch (error) {
-    // eslint-disable-next-line no-alert
-    alert((error as AxiosError).message);
-  }
-  dispatch(setAppEntityStatus(EntityStatus.idle));
-};
+  };
 
 export const getWithUserMessages =
   (userID: number, pageNumber: number = 1, itemsPerPage: number = 20) =>
@@ -61,14 +69,19 @@ export const sendMessage = (userID: number, message: string) => async (dispatch:
   }
 };
 
-export const startNewChat = (userID: number) => async (dispatch: Dispatch) => {
-  try {
-    const response = await dialogsAPI.putNewChat(userID);
-    debugger;
-    if (response) {
-      console.log(response);
+export const startNewChat =
+  (userID: number) =>
+  async (dispatch: any): Promise<boolean> => {
+    try {
+      const response = await dialogsAPI.putNewChat(userID);
+      if (response.data.resultCode === ResponseCodes.Success) {
+        const interlocutorsList: InterlocutorType[] = await dispatch(getInterlocutors());
+        return interlocutorsList[FIRST_ARRAY_ITEM_INDEX].id === userID;
+      }
+      console.warn(response.data.messages[FIRST_ARRAY_ITEM_INDEX]);
+      return false;
+    } catch (error) {
+      console.warn((error as AxiosError).message);
+      return false;
     }
-  } catch (error) {
-    console.log((error as AxiosError).message);
-  }
-};
+  };

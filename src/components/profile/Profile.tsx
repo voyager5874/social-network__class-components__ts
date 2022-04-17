@@ -17,7 +17,6 @@ import { ProfileInfoEditForm } from 'components/profile/profileInfo/ProfileInfoE
 import ProfileTextInfo from 'components/profile/profileInfo/ProfileTextInfo';
 import { UserStatus } from 'components/profile/profileInfo/UserStatus';
 import { PostType } from 'components/profile/types';
-import { startNewChat } from 'store/middlewares/dialogs';
 import { ComponentReturnType, Nullable } from 'types';
 
 type ProfileCardPropsType = GetUserProfileResponseType & {
@@ -32,7 +31,7 @@ type ProfileCardPropsType = GetUserProfileResponseType & {
   newPostText: string;
   addPost: () => void;
   updateNewPostText: (text: string) => void;
-  startChatWithThisUser: (userID: number) => void;
+  startChatWithThisUser: (userID: number) => Promise<boolean>;
   navigate: (path: string) => void;
 };
 
@@ -68,16 +67,25 @@ export const Profile = ({
     }
   };
 
-  const handleFollowedStatusChange = (newStatus: boolean) => {
+  const handleFollowedStatusChange = (newStatus: boolean): void => {
     if (userId) {
       changeFollowed(userId, newStatus);
     }
   };
 
-  const handleStartChat = () => {
-    debugger;
+  const handleStartChat = async (): Promise<void> => {
     if (!userId) return;
-    startChatWithThisUser(userId);
+    // try {
+    //   const success = await startChatWithThisUser(userId);
+    //   if (success) {
+    //     navigate(`../dialogs/${userId}`);
+    //   }
+    // } catch (error) {
+    //   // I'm not throwing any error in the thunk
+    //   console.warn('failed to start new chat');
+    // }
+    const success = await startChatWithThisUser(userId);
+    if (!success) return;
     navigate(`../dialogs/${userId}`);
   };
 

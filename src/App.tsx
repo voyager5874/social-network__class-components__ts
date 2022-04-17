@@ -60,7 +60,11 @@ const App = (): ComponentReturnType => {
           </Route>
           {/* <Route path="/profile/:id" element={<UserProfileContainer />} /> */}
           <Route path="/friends" element={<Friends />} />
-          <Route path="/" element={<Navigate to="/profile" />} />
+          <Route
+            path="/social-network__class-components__ts" // why ??
+            element={<Navigate replace to="/profile" />}
+          />
+          <Route path="/" element={<Navigate replace to="/profile" />} />
           <Route path="/dialogs" element={<Dialogs />}>
             <Route path=":interlocutorID" element={Dialogs} />
           </Route>

@@ -1,10 +1,10 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useLayoutEffect, useState } from 'react';
 
 import { BsImageFill } from 'react-icons/bs';
 import { GrAttachment } from 'react-icons/gr';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, NavLink, useParams } from 'react-router-dom';
 
 import styles from './Dialogs.module.css';
 
@@ -14,6 +14,7 @@ import { Interlocutor } from 'components/dialogs/interlocutor/Interlocutor';
 import { InterlocutorType } from 'components/dialogs/types';
 import { FIRST_ARRAY_ITEM_INDEX } from 'constants/base';
 import { sendMessage } from 'store/middlewares';
+import { getInterlocutors } from 'store/middlewares/dialogs';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
 
@@ -24,9 +25,9 @@ export const Dialogs = (): ComponentReturnType => {
   const [messageText, setMessageText] = useState('');
   const [messageFieldExpanded, setMessageFieldExpanded] = useState(false);
 
-  // useEffect(() => {
-  //   dispatch(getInterlocutors());
-  // }, []);
+  useEffect(() => {
+    dispatch(getInterlocutors());
+  }, []);
 
   // const appStatus = useSelector<RootStateType, EntityStatus>(
   //   state => state.app.entityStatus,
@@ -43,10 +44,9 @@ export const Dialogs = (): ComponentReturnType => {
   const people = useSelector<RootStateType, InterlocutorType[]>(
     state => state.interlocutors,
   );
-  const lastInterlocutor = people[FIRST_ARRAY_ITEM_INDEX];
+  const recentInterlocutor = people[FIRST_ARRAY_ITEM_INDEX];
 
   const { interlocutorID } = useParams();
-
   const currentInterlocutorName = interlocutorID
     ? people.filter(user => user.id === Number(interlocutorID))[FIRST_ARRAY_ITEM_INDEX]
         .userName
@@ -81,7 +81,7 @@ export const Dialogs = (): ComponentReturnType => {
   }
 
   if (!interlocutorID) {
-    return <Navigate to={`${lastInterlocutor.id}`} />;
+    return <Navigate to={`${recentInterlocutor.id}`} />;
   }
 
   // if (appStatus === EntityStatus.busy) {
@@ -104,6 +104,7 @@ export const Dialogs = (): ComponentReturnType => {
               lastDialogActivityDate,
             }) => (
               <Interlocutor
+                chosen={id === Number(interlocutorID)}
                 key={id}
                 id={id}
                 userName={userName}
@@ -119,7 +120,9 @@ export const Dialogs = (): ComponentReturnType => {
       </div>
 
       <div className={styles.pageRight}>
-        <div className={styles.chatHeader}>{currentInterlocutorName}</div>
+        <div className={styles.chatHeader}>
+          <NavLink to={`../profile/${interlocutorID}`}>{currentInterlocutorName}</NavLink>
+        </div>
         <Dialog interlocutorID={Number(interlocutorID)} hidden={messageFieldExpanded} />
         <div
           className={`${styles.sendMessageForm} ${
