@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useLayoutEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { BsImageFill } from 'react-icons/bs';
 import { GrAttachment } from 'react-icons/gr';
@@ -15,6 +15,7 @@ import { InterlocutorType } from 'components/dialogs/types';
 import { FIRST_ARRAY_ITEM_INDEX } from 'constants/base';
 import { sendMessage } from 'store/middlewares';
 import { getInterlocutors } from 'store/middlewares/dialogs';
+import { setCurrentInterlocutor } from 'store/reducers/messagesReducer';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType } from 'types';
 
@@ -47,6 +48,11 @@ export const Dialogs = (): ComponentReturnType => {
   const recentInterlocutor = people[FIRST_ARRAY_ITEM_INDEX];
 
   const { interlocutorID } = useParams();
+
+  useEffect(() => {
+    dispatch(setCurrentInterlocutor(Number(interlocutorID)));
+  }, [interlocutorID]);
+
   const currentInterlocutorName = interlocutorID
     ? people.filter(user => user.id === Number(interlocutorID))[FIRST_ARRAY_ITEM_INDEX]
         .userName

@@ -67,7 +67,7 @@
     border-radius: 5px;
     border: none;
     outline: none;
-    box-shadow: none !important;
+    box-shadow: none;
     text-shadow: none;
     margin-bottom: 10px;
 }

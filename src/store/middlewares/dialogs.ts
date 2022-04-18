@@ -7,8 +7,15 @@ import { FIRST_ARRAY_ITEM_INDEX } from 'constants/base';
 import { ResponseCodes } from 'enums';
 import { setAppEntityStatus } from 'store/reducers/app';
 import { setInterlocutors } from 'store/reducers/interlocutorsReducer';
-import { setWithUserMessages } from 'store/reducers/messagesReducer';
+import {
+  addMoreWithUserMessages,
+  setMessagesCurrentPage,
+  setMessagesEntityStatus,
+  setWithUserMessages,
+  setWithUserMessagesTotalCount,
+} from 'store/reducers/messagesReducer';
 import { EntityStatus } from 'store/reducers/types';
+import { RootStateType } from 'store/types';
 
 export const getInterlocutors =
   () =>
@@ -17,7 +24,7 @@ export const getInterlocutors =
     try {
       const response = await dialogsAPI.getInterlocutors();
       if (response.data.length) {
-        debugger;
+        // debugger;
         dispatch(setInterlocutors(response.data));
         return response.data;
       }
@@ -34,9 +41,13 @@ export const getInterlocutors =
   };
 
 export const getWithUserMessages =
-  (userID: number, pageNumber: number = 1, itemsPerPage: number = 20) =>
-  async (dispatch: Dispatch) => {
-    dispatch(setAppEntityStatus(EntityStatus.busy));
+  (userID: number, pageNumber: number = 1, itemsPerPage: number = 10) =>
+  async (dispatch: Dispatch, getState: () => RootStateType) => {
+    // dispatch(setAppEntityStatus(EntityStatus.busy));
+    dispatch(setMessagesEntityStatus(EntityStatus.busy));
+    const isAnotherUser: boolean = getState().messages.currentInterlocutorID !== userID;
+    const { currentPage } = getState().messages; // why?
+    const isNewPageRequest: boolean = currentPage < pageNumber;
     try {
       const response = await dialogsAPI.getWithUserDialog(
         userID,
@@ -44,13 +55,23 @@ export const getWithUserMessages =
         itemsPerPage,
       );
       if (response.data.items) {
-        dispatch(setWithUserMessages(response.data.items));
+        debugger;
+        if (!isAnotherUser && isNewPageRequest) {
+          dispatch(addMoreWithUserMessages(response.data.items));
+          dispatch(setMessagesCurrentPage(currentPage + 1));
+        } else {
+          // @ts-ignore
+          dispatch(setWithUserMessagesTotalCount(response.data.totalCount));
+          dispatch(setMessagesCurrentPage(1));
+          dispatch(setWithUserMessages(response.data.items));
+        }
       }
     } catch (error) {
       // eslint-disable-next-line no-alert
       alert((error as AxiosError).message);
     }
-    dispatch(setAppEntityStatus(EntityStatus.idle));
+    // dispatch(setAppEntityStatus(EntityStatus.idle));
+    dispatch(setMessagesEntityStatus(EntityStatus.idle));
   };
 
 export const sendMessage = (userID: number, message: string) => async (dispatch: any) => {

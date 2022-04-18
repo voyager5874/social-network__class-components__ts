@@ -13,7 +13,7 @@
     justify-content: flex-start;
     align-items: center;
     width: 30%;
-    min-width: 250px;
+    min-width: 290px;
     height: 100%;
     border-right: 2px solid rgba(106, 110, 112, 0.43);
 }
@@ -37,7 +37,8 @@
     /*background-color: #d5c979;*/
     padding-top: 20px;
     height: 95%;
-    overflow: auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
     width: 100%;
 }
 
@@ -68,6 +69,7 @@
     font-size: 1.3rem;
     font-weight: bold;
     border-bottom: 2px solid rgba(106, 110, 112, 0.43);
+    text-decoration: none;
 }
 
 

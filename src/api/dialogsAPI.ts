@@ -21,7 +21,6 @@ export const dialogsAPI = {
     const requestBody: dialogsPostPayloadType = {
       body: message,
     };
-    debugger;
     return chooseAxiosInstance().post<BasicResponseType<MessageOnServerDataType>>(
       `dialogs/${userID}/messages`,
       requestBody,

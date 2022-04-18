@@ -22,7 +22,12 @@ export const rootReducer = combineReducers({
   friends: friendsReducer,
 });
 
-export const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(thunk)),
-);
+// const persistedReducer = persistReducer(persistConfig, reducers);
+const composeEnhancers = composeWithDevTools({ trace: true, traceLimit: 25 });
+
+export const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
+
+// export const store = createStore(
+//   rootReducer,
+//   composeWithDevTools(applyMiddleware(thunk)),
+// );

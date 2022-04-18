@@ -13,7 +13,7 @@ import { formatDateString } from 'utils';
 //   <div className={styles.interlocutor}>{name}</div>
 // );
 
-export const Interlocutor: FC<InterlocutorType & {chosen?: boolean}> = ({
+export const Interlocutor: FC<InterlocutorType & { chosen: boolean }> = ({
   id,
   photos,
   userName,
@@ -21,7 +21,7 @@ export const Interlocutor: FC<InterlocutorType & {chosen?: boolean}> = ({
   newMessagesCount,
   lastDialogActivityDate,
   lastUserActivityDate,
-  chosen,
+  chosen = false,
 }): ComponentReturnType => {
   const path = `/dialogs/${id}`;
   const formattedDate = formatDateString(lastUserActivityDate);

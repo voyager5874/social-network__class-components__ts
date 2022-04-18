@@ -1,4 +1,9 @@
-export const formatDateString = (dateString: string) => {
+type formatDateStringReturnType = {
+  date: string;
+  time: string;
+};
+
+export const formatDateString = (dateString: string): formatDateStringReturnType => {
   const msec = Date.parse(dateString);
   const date = new Date(msec);
   const stringTime = date.toLocaleTimeString();

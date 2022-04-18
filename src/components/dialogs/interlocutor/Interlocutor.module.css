@@ -3,7 +3,7 @@
     align-items: center;
     word-break: break-word;
     width: 100%;
-    min-width: 220px;
+    min-width: 280px;
     background-color: white;
     /*border-radius: 5px;*/
     /*margin-bottom: 20px;*/
@@ -15,8 +15,18 @@
 }
 
 .interlocutor.chosen{
-    border-left: 3px solid #22658c;
+    /*border-left: 3px solid #22658c;*/
+    /*background-color: rgba(62, 152, 199, 0.16);*/
     font-weight: bolder;
+    font-size: 0.7rem;
+    /*box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;*/
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    /*box-sizing: border-box;*/
+    transform: scale(1.07);
+    border: none;
+    border-top: 2px solid rgba(106, 110, 112, 0.43);
+    padding-left: 30px;
+    z-index: 10;
 }
 
 .avatar{

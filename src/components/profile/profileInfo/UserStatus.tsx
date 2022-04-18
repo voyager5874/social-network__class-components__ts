@@ -5,7 +5,7 @@ import { AiFillEdit } from 'react-icons/ai';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import styles from 'components/profile/profileInfo/UserStatus.module.css';
-import { Nullable } from 'types';
+import { ComponentReturnType, Nullable } from 'types';
 import { getTrimmedValue } from 'utils';
 
 type UserStatusPropsType = {
@@ -35,7 +35,7 @@ export class UserStatus extends Component<UserStatusPropsType, UserStatusStateTy
   componentDidUpdate(
     previousProps: UserStatusPropsType,
     previousState: UserStatusStateType,
-  ) {
+  ): void {
     if (previousProps.statusText !== this.props.statusText) {
       this.setState({
         status: this.props.statusText,
@@ -43,7 +43,7 @@ export class UserStatus extends Component<UserStatusPropsType, UserStatusStateTy
     }
   }
 
-  handleStatusUpdate = () => {
+  handleStatusUpdate = (): void => {
     if (this.state.status === null || this.state.status === this.props.statusText) return;
     if (this.state.status !== null) {
       const trimmedString = getTrimmedValue(this.state.status);
@@ -52,42 +52,42 @@ export class UserStatus extends Component<UserStatusPropsType, UserStatusStateTy
     }
   };
 
-  handleEnterKeyPress = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+  handleEnterKeyPress = (event: KeyboardEvent<HTMLTextAreaElement>): void => {
     if (event.key === 'Enter') {
       this.handleStatusUpdate();
     }
   };
 
-  handleShowIcon = () => {
+  handleShowIcon = (): void => {
     if (!this.props.isProfileOwner) return;
     this.setState({ showEditIcon: true });
   };
 
-  handleHideIcon = () => {
+  handleHideIcon = (): void => {
     // if (!this.props.isProfileOwner) return;
     this.setState({ showEditIcon: false });
   };
 
-  activateEditMode = () => {
+  activateEditMode = (): void => {
     if (!this.props.isProfileOwner) return;
     this.setState({
       editMode: true,
     });
   };
 
-  deactivateEditMode = () => {
+  deactivateEditMode = (): void => {
     this.setState({
       editMode: false,
     });
     this.handleStatusUpdate();
   };
 
-  handleInputTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  handleInputTextChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
     // this.props.updateCurrentUserStatus(event.currentTarget.value);
     this.setState({ status: event.currentTarget.value });
   };
 
-  render() {
+  render(): ComponentReturnType {
     const statusTextStyle = css({
       statusText: true,
       highlightedText: this.state.showEditIcon,

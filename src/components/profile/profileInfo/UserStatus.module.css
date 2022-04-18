@@ -1,5 +1,6 @@
 .statusContainer{
     margin-bottom: 20px;
+    position: relative;
     /*max-height: 80px;*/
 }
 .statusText{
@@ -28,10 +29,16 @@
     width: 20px;
     padding-left: 5px;
     height: 1rem;
+    font-size: 1rem;
     cursor: pointer;
+    position: relative;
+    top: 3px;
+
 }
 
 .editIcon:hover{
     cursor: pointer;
-    height: 1.1rem;
+    height: 1.5rem;
+    font-size: 1.5rem;
+    top: 10px;
 }
