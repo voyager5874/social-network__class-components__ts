@@ -45,7 +45,7 @@ export const getWithUserMessages =
   async (dispatch: Dispatch, getState: () => RootStateType) => {
     // dispatch(setAppEntityStatus(EntityStatus.busy));
     dispatch(setMessagesEntityStatus(EntityStatus.busy));
-    const isAnotherUser: boolean = getState().messages.currentInterlocutorID !== userID;
+    const sameUser: boolean = getState().messages.currentInterlocutorID === userID;
     const { currentPage } = getState().messages; // why?
     const isNewPageRequest: boolean = currentPage < pageNumber;
     try {
@@ -56,7 +56,7 @@ export const getWithUserMessages =
       );
       if (response.data.items) {
         debugger;
-        if (!isAnotherUser && isNewPageRequest) {
+        if (sameUser && isNewPageRequest) {
           dispatch(addMoreWithUserMessages(response.data.items));
           dispatch(setMessagesCurrentPage(currentPage + 1));
         } else {

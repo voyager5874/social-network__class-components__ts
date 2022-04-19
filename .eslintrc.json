@@ -39,7 +39,7 @@
       }
     ],
     "@typescript-eslint/no-shadow": [
-      "error"
+      "warn"
     ],
     "@typescript-eslint/no-unused-vars": [
       "warn"
@@ -66,6 +66,7 @@
         "endOfLine": "auto"
       }
     ],
+    "react/require-default-props": "off",
     "react/prop-types": 0,
     "react/display-name": "off",
     "react/react-in-jsx-scope": "off",
