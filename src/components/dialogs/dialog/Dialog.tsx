@@ -26,12 +26,16 @@ export const Dialog: FC<DialogPropsType> = ({
   const scrollAnchor = useRef<HTMLDivElement>(null);
   const [scrolledToTop, setScrolledToTop] = useState(false);
 
+  const dataPortion = useSelector<RootStateType, number>(
+    state => state.messages.portionSize,
+  );
+
   useEffect(() => {
-    dispatch(getWithUserMessages(interlocutorID, 1, 10));
+    dispatch(getWithUserMessages(interlocutorID, 1, dataPortion));
   }, []);
 
   useEffect(() => {
-    dispatch(getWithUserMessages(interlocutorID, 1, 10));
+    dispatch(getWithUserMessages(interlocutorID, 1, dataPortion));
   }, [interlocutorID]);
 
   // useEffect(() => {
@@ -83,15 +87,11 @@ export const Dialog: FC<DialogPropsType> = ({
   const entityStatus = useSelector<RootStateType, EntityStatus>(
     state => state.messages.entityStatus,
   );
-  // useEffect(() => {
-  //   if (!dialogContainer.current) return;
-  //   const { clientHeight, scrollHeight, scrollTop } = dialogContainer.current;
-  //   debugger;
-  //   if (clientHeight < scrollHeight && scrollTop < 10) {
-  //     dialogContainer.current.scrollTop =
-  //       dialogContainer.current.scrollHeight - dialogContainer.current.clientHeight; // trying to scroll down when already scrolled down
-  //   }
-  // }, [messages]);
+  useEffect(() => {
+    if (!dialogContainer.current) return;
+    // const { clientHeight, scrollHeight, scrollTop } = dialogContainer.current;
+    dialogContainer.current.scrollTop = 10;
+  }, [messages, entityStatus]);
 
   // useEffect(() => {
   //   if (!scrollAnchor.current) return;
@@ -118,10 +118,6 @@ export const Dialog: FC<DialogPropsType> = ({
     }
   }, [messages]);
 
-  const dataPortion = useSelector<RootStateType, number>(
-    state => state.messages.portionSize,
-  );
-
   const totalPagesNumber = Math.ceil((totalMessagesNumber || 0) / dataPortion);
 
   const handleScroll = (): void => {
@@ -135,7 +131,7 @@ export const Dialog: FC<DialogPropsType> = ({
     if (scrollTop < 1) {
       setScrolledToTop(true);
     }
-    if (scrollTop > 1) {
+    if (scrolledToTop && scrollTop > 1) {
       setScrolledToTop(false);
     }
   };
@@ -144,14 +140,18 @@ export const Dialog: FC<DialogPropsType> = ({
     debugger;
     if (currentPage >= totalPagesNumber || !scrolledToTop) return;
     dispatch(getWithUserMessages(interlocutorID, currentPage + 1, dataPortion));
-    if (dialogContainer.current) dialogContainer.current.scrollTop = 1; // scroll down a bit to prevent another request firing
+    // if (dialogContainer.current) dialogContainer.current.scrollTop = 100; // scroll down a bit to prevent another request firing
+    // setScrolledToTop(false);
   }, [scrolledToTop]);
 
   return (
     <div
       className={`${styles.dialog} ${hidden ? styles.hidden : ''} ${className}`}
       ref={dialogContainer}
-      onScroll={handleScroll}
+      // onScroll={entityStatus === EntityStatus.idle ? handleScroll : undefined}
+      onWheel={entityStatus === EntityStatus.idle ? handleScroll : undefined}
+      // onScroll={handleScroll}
+      // style={{ overflowY: `${entityStatus === EntityStatus.busy ? 'hidden' : 'auto'}` }}
     >
       {entityStatus === EntityStatus.busy && (
         <div
