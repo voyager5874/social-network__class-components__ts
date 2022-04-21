@@ -128,10 +128,16 @@
     align-items: center;
     font-size: 1.2rem;
     font-weight: bold;
+    height: 1.5rem;
 }
 
 .attachmentItem{
     margin-right: 15px;
+    width: 1.3rem;
+}
+.attachmentItem:hover{
+    cursor: pointer;
+    font-size: 1.3rem;
 }
 
 

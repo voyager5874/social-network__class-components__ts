@@ -1,7 +1,7 @@
 import { ChangeEvent, Component, KeyboardEvent } from 'react';
 
 import classNames from 'classnames/bind';
-import { AiFillEdit } from 'react-icons/ai';
+import { GrEdit } from 'react-icons/gr';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import styles from 'components/profile/profileInfo/UserStatus.module.css';
@@ -112,10 +112,10 @@ export class UserStatus extends Component<UserStatusPropsType, UserStatusStateTy
             onMouseEnter={this.handleShowIcon}
             onMouseLeave={this.handleHideIcon}
           >
-            {this.props.statusText}{' '}
-            {this.state.showEditIcon && (
-              <AiFillEdit className={styles.editIcon} onClick={this.activateEditMode} />
-            )}
+            {this.props.statusText}
+            <span className={styles.editIcon}>
+              {this.state.showEditIcon && <GrEdit onClick={this.activateEditMode} />}
+            </span>
           </span>
         )}
       </div>

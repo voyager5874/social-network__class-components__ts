@@ -4,12 +4,14 @@
     /*max-height: 80px;*/
 }
 .statusText{
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     word-break: break-word;
+    /*text-indent: 30px;*/
 }
 
 .highlightedText{
     background-color: rgba(100, 158, 187, 0.29);
+    transition: background-color 400ms;
 }
 
 .statusInput{
@@ -20,25 +22,25 @@
     padding: 10px;
     max-height: 70px;
     word-break: break-word;
-    /*overflow-wrap: break-word;*/
     overflow: hidden;
-    /*word-wrap: break-word;*/
 }
 
 .editIcon{
-    width: 20px;
+    /*background-color: #006699;*/
+    display: inline-block;
+    width: 25px;
+    text-align: right;
     padding-left: 5px;
-    height: 1rem;
-    font-size: 1rem;
+    margin: 0;
+    box-sizing: border-box;
     cursor: pointer;
     position: relative;
-    top: 3px;
+    top: 1px;
+    font-size: 0.8rem;
 
 }
 
 .editIcon:hover{
     cursor: pointer;
-    height: 1.5rem;
-    font-size: 1.5rem;
-    top: 10px;
+    font-size: 0.9rem;
 }
