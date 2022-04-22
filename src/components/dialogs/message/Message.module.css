@@ -75,11 +75,24 @@
     margin-bottom: 10px;
 }
 
-.time {
-    /*display: flex;*/
+.metadataContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.time{
+    /*background-color: #7ec1ff;*/
+    display: flex;
+    flex-direction: column;
     /*align-items: flex-end;*/
+}
+
+.timeItem {
     text-align: right;
     font: 0.6rem Arial, sans-serif;
     color: rgba(3, 26, 37, 0.8);
     color:white;
+    margin-bottom: 3px;
 }

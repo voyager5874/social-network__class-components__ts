@@ -20,6 +20,7 @@ export type MessagePropsType = {
   addedAt: string;
   senderAvatar: Nullable<string>;
   isLoggedInUserTheAuthor: boolean;
+  viewed: boolean;
 };
 
 export type MessageType = {

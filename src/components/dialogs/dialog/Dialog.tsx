@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -24,45 +24,38 @@ export const Dialog: FC<DialogPropsType> = ({
   const dispatch = useDispatch();
   const dialogContainer = useRef<HTMLDivElement>(null);
   const scrollAnchor = useRef<HTMLDivElement>(null);
-  const [scrolledToTop, setScrolledToTop] = useState(false);
+  const [needNewPortion, setNeedNewPortion] = useState(false);
   const dataPortion = useSelector<RootStateType, number>(
     state => state.messages.portionSize,
   );
 
   useEffect(() => {
-    dispatch(getWithUserMessages(interlocutorID, 1, dataPortion));
+    const fetchMessages = async () => {
+      await dispatch(getWithUserMessages(interlocutorID, 1, dataPortion));
+      if (scrollAnchor.current) {
+        scrollAnchor.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'end',
+          inline: 'nearest',
+        });
+      }
+    };
+    fetchMessages().catch(console.error);
   }, []);
 
   useEffect(() => {
-    dispatch(getWithUserMessages(interlocutorID, 1, dataPortion));
+    const fetchMessages = async () => {
+      await dispatch(getWithUserMessages(interlocutorID, 1, dataPortion));
+      if (scrollAnchor.current) {
+        scrollAnchor.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'end',
+          inline: 'nearest',
+        });
+      }
+    };
+    fetchMessages().catch(console.error);
   }, [interlocutorID]);
-
-  // useEffect(() => {
-  //   // how to scroll down on interlocutor change?
-  //   if (!dialogContainer.current) return;
-  //   const { clientHeight, scrollHeight } = dialogContainer.current;
-  //   if (clientHeight < scrollHeight) {
-  //     dialogContainer.current.scrollTop = scrollHeight - clientHeight; // scroll down
-  //   }
-  // }, [dialogContainer.current && dialogContainer.current.scrollHeight, interlocutorID]);
-
-  useLayoutEffect(() => {
-    if (!scrollAnchor.current) return;
-    scrollAnchor.current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'end',
-      inline: 'nearest',
-    });
-  }, [interlocutorID]);
-
-  useLayoutEffect(() => {
-    if (!scrollAnchor.current) return;
-    scrollAnchor.current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'end',
-      inline: 'nearest',
-    });
-  }, []);
 
   const messages = useSelector<RootStateType, MessageOnServerType[]>(
     state => state.messages.messages,
@@ -93,18 +86,19 @@ export const Dialog: FC<DialogPropsType> = ({
   const entityStatus = useSelector<RootStateType, EntityStatus>(
     state => state.messages.entityStatus,
   );
-  useEffect(() => {
-    if (!dialogContainer.current || !scrolledToTop) return;
-    dialogContainer.current.scrollTop = 10; // to reset local state
-  }, [messages, entityStatus]);
 
   useEffect(() => {
-    if (!scrollAnchor.current || !dialogContainer.current) return;
+    if (
+      !scrollAnchor.current ||
+      !dialogContainer.current ||
+      entityStatus === EntityStatus.busy
+    )
+      return;
     if (
       dialogContainer.current.scrollTop >=
       dialogContainer.current.scrollHeight - dialogContainer.current.offsetHeight
       // I need a condition "when scrolled to bottom" the one above doesn't seem to work
-      // possibly div parameters are not up to date yet when the hook is firing
+      // messages need to be mapped before scrolling to bottom else dummy div is not at the bottom
     ) {
       scrollAnchor.current.scrollIntoView({
         behavior: 'smooth',
@@ -112,12 +106,12 @@ export const Dialog: FC<DialogPropsType> = ({
         inline: 'nearest',
       });
     }
-  }, [entityStatus]);
+  }, [messages]);
 
   const totalPagesNumber = Math.ceil((totalMessagesNumber || 0) / dataPortion);
 
   let dialogContainerScrollPosition = 0;
-  const handleScroll = (event: React.UIEvent<HTMLDivElement>): void => {
+  const handleScroll = (): void => {
     // event or ref? //es-lint says: "no param reassignment"
     if (!dialogContainer.current) return;
     const { scrollTop, scrollHeight, clientHeight } = dialogContainer.current;
@@ -128,41 +122,34 @@ export const Dialog: FC<DialogPropsType> = ({
     }
     dialogContainerScrollPosition = dialogContainer.current.scrollTop;
 
-    if (scrollTop < 1 && entityStatus === EntityStatus.idle) {
-      setScrolledToTop(true);
+    if (
+      scrollTop < 1 &&
+      entityStatus === EntityStatus.idle &&
+      currentPage < totalPagesNumber
+    ) {
+      setNeedNewPortion(true);
     }
-    if (scrolledToTop && scrollTop > 1) {
-      setScrolledToTop(false);
+    if (needNewPortion && scrollTop > 1) {
+      setNeedNewPortion(false);
     }
   };
 
-  // const handleScroll = (): void => {
-  //   if (!dialogContainer.current) return;
-  //   const { scrollTop, scrollHeight, clientHeight } = dialogContainer.current;
-  //   if (clientHeight >= scrollHeight) return;
-  //   //   console.log('clientHeight', dialogContainer.current.clientHeight);
-  //   //   console.log('scrollHeight', dialogContainer.current.scrollHeight);
-  //   //   console.log('scrollTop', dialogContainer.current.scrollTop);
-  //   //   console.log('offsetHeight', dialogContainer.current.offsetHeight);
-  //   if (scrollTop < 1) {
-  //     setScrolledToTop(true);
-  //   }
-  //   if (scrolledToTop && scrollTop > 1) {
-  //     setScrolledToTop(false);
-  //   }
-  // };
-
   useEffect(() => {
     if (
-      currentPage >= totalPagesNumber ||
-      !scrolledToTop ||
-      entityStatus === EntityStatus.busy
+      !needNewPortion
+      // currentPage >= totalPagesNumber ||
+      // !needNewPortion ||
+      // entityStatus === EntityStatus.busy
     )
       return;
-    dispatch(getWithUserMessages(interlocutorID, currentPage + 1, dataPortion));
-    // if (dialogContainer.current) dialogContainer.current.scrollTop = 100; // scroll down a bit to prevent another request firing
-    // setScrolledToTop(false);
-  }, [scrolledToTop]);
+    const fetchMessages = async () => {
+      await dispatch(getWithUserMessages(interlocutorID, currentPage + 1, dataPortion));
+      if (dialogContainer.current) {
+        dialogContainer.current.scrollTop = 20; // to reset needNewPortion
+      }
+    };
+    fetchMessages().catch(console.error);
+  }, [needNewPortion]);
 
   return (
     <div
@@ -191,6 +178,7 @@ export const Dialog: FC<DialogPropsType> = ({
           isLoggedInUserTheAuthor={senderId === loggedInUserID}
           messageText={body}
           addedAt={addedAt}
+          viewed={viewed}
           senderAvatar={
             senderId === Number(interlocutorID) ? interlocutorAvatar : currentUserAvatar
           }

@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import { BsEnvelopeFill, BsEnvelopeOpenFill } from 'react-icons/bs';
+
 import styles from './Message.module.css';
 
 import noAvatar from 'components/common/assets/userWithoutPhoto.png';
@@ -17,6 +19,7 @@ export const Message: FC<MessagePropsType> = ({
   addedAt,
   senderAvatar,
   isLoggedInUserTheAuthor,
+  viewed,
 }): ComponentReturnType => {
   const formattedDate = formatDateString(addedAt);
   return (
@@ -42,8 +45,13 @@ export const Message: FC<MessagePropsType> = ({
       >
         <div className={styles.author}>{userName}</div>
         <div className={styles.text}>{messageText}</div>
-        <div className={styles.time}>{formattedDate.date}</div>
-        <div className={styles.time}>{formattedDate.time}</div>
+        <div className={styles.metadataContainer}>
+          <div>{viewed ? <BsEnvelopeOpenFill /> : <BsEnvelopeFill />}</div>
+          <div className={styles.time}>
+            <div className={styles.timeItem}>{formattedDate.date}</div>
+            <div className={styles.timeItem}>{formattedDate.time}</div>
+          </div>
+        </div>
       </div>
       {isLoggedInUserTheAuthor && (
         <>
