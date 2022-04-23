@@ -8,6 +8,7 @@ import { MessageOnServerType } from 'api/types';
 import { Message } from 'components/dialogs/message/Message';
 import { getWithUserMessages } from 'store/middlewares/dialogs';
 import { EntityStatus } from 'store/reducers/types';
+import { DispatchType } from 'store/store';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType, Nullable } from 'types';
 
@@ -21,44 +22,32 @@ export const Dialog: FC<DialogPropsType> = ({
   className = '',
   hidden = false,
 }): ComponentReturnType => {
+  // const dispatch: DispatchType = useDispatch();
   const dispatch = useDispatch();
   const dialogContainer = useRef<HTMLDivElement>(null);
   const scrollAnchor = useRef<HTMLDivElement>(null);
   const [needNewPortion, setNeedNewPortion] = useState(false);
+
   const dataPortion = useSelector<RootStateType, number>(
     state => state.messages.portionSize,
   );
+  const currentPage = useSelector<RootStateType, number>(
+    state => state.messages.currentPage,
+  );
+  const totalMessagesNumber = useSelector<RootStateType, Nullable<number>>(
+    state => state.messages.totalCount,
+  );
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-      await dispatch(getWithUserMessages(interlocutorID, 1, dataPortion));
-      if (scrollAnchor.current) {
-        scrollAnchor.current.scrollIntoView({
-          behavior: 'smooth',
-          block: 'end',
-          inline: 'nearest',
-        });
-      }
-    };
-    fetchMessages().catch(console.error);
-  }, []);
+  const currentUserAvatar = useSelector<RootStateType, Nullable<string>>(
+    state => state.authData.photo,
+  );
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-      await dispatch(getWithUserMessages(interlocutorID, 1, dataPortion));
-      if (scrollAnchor.current) {
-        scrollAnchor.current.scrollIntoView({
-          behavior: 'smooth',
-          block: 'end',
-          inline: 'nearest',
-        });
-      }
-    };
-    fetchMessages().catch(console.error);
-  }, [interlocutorID]);
+  const loggedInUserID = useSelector<RootStateType, Nullable<number>>(
+    state => state.authData.id,
+  );
 
-  const messages = useSelector<RootStateType, MessageOnServerType[]>(
-    state => state.messages.messages,
+  const entityStatus = useSelector<RootStateType, EntityStatus>(
+    state => state.messages.entityStatus,
   );
 
   const interlocutorAvatar = useSelector<RootStateType, Nullable<string>>(state => {
@@ -69,23 +58,49 @@ export const Dialog: FC<DialogPropsType> = ({
     return interlocutor ? interlocutor.photos.large : null;
   });
 
-  const currentUserAvatar = useSelector<RootStateType, Nullable<string>>(
-    state => state.authData.photo,
+  const messages = useSelector<RootStateType, MessageOnServerType[]>(
+    state => state.messages.messages,
   );
 
-  const loggedInUserID = useSelector<RootStateType, Nullable<number>>(
-    state => state.authData.id,
-  );
-  const currentPage = useSelector<RootStateType, number>(
-    state => state.messages.currentPage,
-  );
-  const totalMessagesNumber = useSelector<RootStateType, Nullable<number>>(
-    state => state.messages.totalCount,
-  );
+  const totalPagesNumber = Math.ceil((totalMessagesNumber || 0) / dataPortion);
 
-  const entityStatus = useSelector<RootStateType, EntityStatus>(
-    state => state.messages.entityStatus,
-  );
+  // const fetchMessagesFirstPortion = async () => {
+  //   // await has no effect? seems it does though
+  //   await dispatch(getWithUserMessages(interlocutorID, 1, dataPortion));
+  //   if (scrollAnchor.current) {
+  //     scrollAnchor.current.scrollIntoView({
+  //       behavior: 'smooth',
+  //       block: 'end',
+  //       inline: 'nearest',
+  //     });
+  //   }
+  //   return Promise.resolve();
+  // };
+  //
+  // useEffect(() => {
+  //   fetchMessagesFirstPortion().catch(console.error);
+  // }, []);
+
+  // useEffect(() => {
+  //   fetchMessagesFirstPortion().catch(console.error);
+  // }, [interlocutorID]);
+
+  useEffect(() => {
+    dispatch(getWithUserMessages(interlocutorID, 1, dataPortion));
+  }, []);
+
+  useEffect(() => {
+    dispatch(getWithUserMessages(interlocutorID, 1, dataPortion));
+  }, [interlocutorID]);
+
+  useEffect(() => {
+    if (!scrollAnchor.current || entityStatus !== EntityStatus.initialization) return;
+    scrollAnchor.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end',
+      inline: 'nearest',
+    });
+  }, [entityStatus]);
 
   useEffect(() => {
     if (
@@ -98,7 +113,7 @@ export const Dialog: FC<DialogPropsType> = ({
       dialogContainer.current.scrollTop >=
       dialogContainer.current.scrollHeight - dialogContainer.current.offsetHeight
       // I need a condition "when scrolled to bottom" the one above doesn't seem to work
-      // messages need to be mapped before scrolling to bottom else dummy div is not at the bottom
+      // messages need to be mapped before scrolling to bottom else dummy div is not at the bottom -> async?
     ) {
       scrollAnchor.current.scrollIntoView({
         behavior: 'smooth',
@@ -108,15 +123,13 @@ export const Dialog: FC<DialogPropsType> = ({
     }
   }, [messages]);
 
-  const totalPagesNumber = Math.ceil((totalMessagesNumber || 0) / dataPortion);
-
   let dialogContainerScrollPosition = 0;
   const handleScroll = (): void => {
     // event or ref? //es-lint says: "no param reassignment"
     if (!dialogContainer.current) return;
     const { scrollTop, scrollHeight, clientHeight } = dialogContainer.current;
     if (clientHeight >= scrollHeight) return;
-    if (entityStatus === EntityStatus.busy) {
+    if (entityStatus !== EntityStatus.idle) {
       dialogContainer.current.scrollTop = dialogContainerScrollPosition;
       return;
     }
@@ -134,22 +147,32 @@ export const Dialog: FC<DialogPropsType> = ({
     }
   };
 
+  // useEffect(() => {
+  //   if (
+  //     !needNewPortion
+  //     // currentPage >= totalPagesNumber ||
+  //     // !needNewPortion ||
+  //     // entityStatus === EntityStatus.busy
+  //   )
+  //     return;
+  //   const fetchMessages = async () => {
+  //     await dispatch(getWithUserMessages(interlocutorID, currentPage + 1, dataPortion));
+  //     if (dialogContainer.current) {
+  //       dialogContainer.current.scrollTop = 20; // to reset needNewPortion
+  //     }
+  //   };
+  //   fetchMessages().catch(console.error);
+  // }, [needNewPortion]);
+
   useEffect(() => {
-    if (
-      !needNewPortion
-      // currentPage >= totalPagesNumber ||
-      // !needNewPortion ||
-      // entityStatus === EntityStatus.busy
-    )
-      return;
-    const fetchMessages = async () => {
-      await dispatch(getWithUserMessages(interlocutorID, currentPage + 1, dataPortion));
-      if (dialogContainer.current) {
-        dialogContainer.current.scrollTop = 20; // to reset needNewPortion
-      }
-    };
-    fetchMessages().catch(console.error);
+    if (!needNewPortion) return;
+    dispatch(getWithUserMessages(interlocutorID, currentPage + 1, dataPortion));
   }, [needNewPortion]);
+
+  useEffect(() => {
+    if (!dialogContainer.current || entityStatus !== EntityStatus.expansion) return;
+    dialogContainer.current.scrollTop = 20;
+  }, [entityStatus]);
 
   return (
     <div

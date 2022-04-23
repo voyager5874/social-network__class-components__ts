@@ -1,5 +1,8 @@
 import { AiOutlineCaretDown } from 'react-icons/ai';
+import { BsChatDotsFill, BsPeopleFill } from 'react-icons/bs';
+import { IoMdHome, IoMdSettings } from 'react-icons/io';
 import { MdLogout } from 'react-icons/md';
+import { RiUserSearchFill } from 'react-icons/ri';
 import Popup from 'reactjs-popup';
 
 import styles from './Header.module.css';
@@ -52,6 +55,13 @@ export const Header = ({
         <div className={styles.appFlag}>
           <img src={logo} alt="site-logo" className={styles.siteLogo} />
           <h1 className={styles.siteCaption}>IT-INCUBATOR NETWORK</h1>
+        </div>
+        <div className={styles.navbar}>
+          <IoMdHome className={styles.navbarItem} />
+          <RiUserSearchFill className={styles.navbarItem} />
+          <BsPeopleFill className={styles.navbarItem} />
+          {/* <IoMdSettings /> */}
+          <BsChatDotsFill className={styles.navbarItem} />
         </div>
         <Popup
           trigger={

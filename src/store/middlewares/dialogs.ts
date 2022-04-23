@@ -59,11 +59,13 @@ export const getWithUserMessages =
         if (sameUser && isNewPageRequest) {
           dispatch(addMoreWithUserMessages(response.data.items));
           dispatch(setMessagesCurrentPage(currentPage + 1));
+          dispatch(setMessagesEntityStatus(EntityStatus.expansion));
         } else {
           // @ts-ignore
           dispatch(setWithUserMessagesTotalCount(response.data.totalCount));
           dispatch(setMessagesCurrentPage(1));
           dispatch(setWithUserMessages(response.data.items));
+          dispatch(setMessagesEntityStatus(EntityStatus.initialization));
         }
       }
     } catch (error) {

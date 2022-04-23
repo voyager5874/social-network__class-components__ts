@@ -15,6 +15,7 @@ export enum EntityStatus {
   idle,
   initialization,
   busy,
+  expansion,
 }
 
 // I can add lastInterlocutor property to the state to avoid request to the server

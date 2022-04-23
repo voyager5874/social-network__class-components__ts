@@ -1,6 +1,6 @@
 import { composeWithDevTools } from '@redux-devtools/extension';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
-import thunk from 'redux-thunk';
+import thunk, { ThunkDispatch } from 'redux-thunk';
 
 import { appReducer } from 'store/reducers/app';
 import { authReducer } from 'store/reducers/authReducer';
@@ -26,7 +26,7 @@ export const rootReducer = combineReducers({
 const composeEnhancers = composeWithDevTools({ trace: true, traceLimit: 25 });
 
 export const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
-
+export type DispatchType = ThunkDispatch<ReturnType<typeof rootReducer>, any, any>;
 // export const store = createStore(
 //   rootReducer,
 //   composeWithDevTools(applyMiddleware(thunk)),
