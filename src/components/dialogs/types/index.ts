@@ -1,6 +1,7 @@
 import { Nullable } from 'types';
 
 export type InterlocutorType = {
+  onClick?: () => void;
   id: number;
   userName: string;
   hasNewMessages: boolean;

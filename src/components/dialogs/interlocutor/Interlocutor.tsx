@@ -22,11 +22,13 @@ export const Interlocutor: FC<InterlocutorType & { chosen: boolean }> = ({
   lastDialogActivityDate,
   lastUserActivityDate,
   chosen = false,
+  onClick,
 }): ComponentReturnType => {
   const path = `/dialogs/${id}`;
   const formattedDate = formatDateString(lastUserActivityDate);
   return (
     <NavLink
+      onClick={onClick}
       className={`${styles.interlocutor} ${chosen ? styles.chosen : ''}`}
       to={path}
       style={({ isActive }) => ({ color: isActive ? 'black' : 'darkblue' })}

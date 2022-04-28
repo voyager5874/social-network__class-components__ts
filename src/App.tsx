@@ -53,7 +53,7 @@ const App = (): ComponentReturnType => {
     <div className="appWrapper">
       <HeaderContainer />
       <div className="content">
-        <LeftSideBar />
+        {/* <LeftSideBar /> */}
         <Routes>
           <Route path="/profile" element={<UserProfileContainer />}>
             <Route path=":id" element={<UserProfileContainer />} />

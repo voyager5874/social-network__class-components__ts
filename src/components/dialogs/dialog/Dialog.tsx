@@ -64,27 +64,6 @@ export const Dialog: FC<DialogPropsType> = ({
 
   const totalPagesNumber = Math.ceil((totalMessagesNumber || 0) / dataPortion);
 
-  // const fetchMessagesFirstPortion = async () => {
-  //   // await has no effect? seems it does though
-  //   await dispatch(getWithUserMessages(interlocutorID, 1, dataPortion));
-  //   if (scrollAnchor.current) {
-  //     scrollAnchor.current.scrollIntoView({
-  //       behavior: 'smooth',
-  //       block: 'end',
-  //       inline: 'nearest',
-  //     });
-  //   }
-  //   return Promise.resolve();
-  // };
-  //
-  // useEffect(() => {
-  //   fetchMessagesFirstPortion().catch(console.error);
-  // }, []);
-
-  // useEffect(() => {
-  //   fetchMessagesFirstPortion().catch(console.error);
-  // }, [interlocutorID]);
-
   useEffect(() => {
     dispatch(getWithUserMessages(interlocutorID, 1, dataPortion));
   }, []);
@@ -147,23 +126,6 @@ export const Dialog: FC<DialogPropsType> = ({
     }
   };
 
-  // useEffect(() => {
-  //   if (
-  //     !needNewPortion
-  //     // currentPage >= totalPagesNumber ||
-  //     // !needNewPortion ||
-  //     // entityStatus === EntityStatus.busy
-  //   )
-  //     return;
-  //   const fetchMessages = async () => {
-  //     await dispatch(getWithUserMessages(interlocutorID, currentPage + 1, dataPortion));
-  //     if (dialogContainer.current) {
-  //       dialogContainer.current.scrollTop = 20; // to reset needNewPortion
-  //     }
-  //   };
-  //   fetchMessages().catch(console.error);
-  // }, [needNewPortion]);
-
   useEffect(() => {
     if (!needNewPortion) return;
     dispatch(getWithUserMessages(interlocutorID, currentPage + 1, dataPortion));
@@ -178,10 +140,7 @@ export const Dialog: FC<DialogPropsType> = ({
     <div
       className={`${styles.dialog} ${hidden ? styles.hidden : ''} ${className}`}
       ref={dialogContainer}
-      // onScroll={entityStatus === EntityStatus.idle ? handleScroll : undefined}
-      // onWheel={entityStatus === EntityStatus.idle ? handleScroll : undefined}
       onScroll={handleScroll}
-      // style={{ overflowY: `${entityStatus === EntityStatus.busy ? 'hidden' : 'auto'}` }}
     >
       {entityStatus === EntityStatus.busy && (
         <div

@@ -1,17 +1,26 @@
 .appWrapper {
+  /*border: 2px solid red;*/
   /*padding-top: 8vh;*/
   /*width: 70%;*/
   background-color: lightgray;
   /*min-height: 100vh;*/
+  min-width: 500px;
 }
 
 .content{
-  /*border: 3px solid fuchsia;*/
+  border: 3px solid fuchsia;
   margin: 0 auto;
   display: flex;
   /*flex-wrap: wrap;*/
-  /*justify-content: center;*/
+  justify-content: center;
+  align-items: flex-start;
   padding-top: 70px;
   width: 70%;
   min-height: 100vh;
+}
+
+@media screen and (max-width: 730px){
+  .content{
+    width: 90%;
+  }
 }

@@ -2,6 +2,7 @@
     /*border: 3px solid greenyellow;*/
     display: flex;
     justify-content: center;
+    align-items: flex-start;
     flex-wrap: wrap;
     width: 100%; /* i.e. 70% of the screen - leftSideBar width
     /*margin-bottom: 20px;*/
@@ -10,26 +11,43 @@
 .pageCenter{
     /*background-color: #649ebb;*/
     /*border: 2px solid;*/
-    width: 65%;
-    min-width: 350px;
+    width: 60%;
+    min-width: 300px;
+}
 
+@media only screen and (max-width: 870px) {
+    /* For mobile phones: */
+    .pageCenter {
+        width: 100%;
+    }
 }
 
 .pageLeft{
-    min-width: 200px;
+    width: 30%;
+    min-width: 220px;
     background-color: white;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
     padding: 20px;
     margin-right: 20px;
-    max-height: 450px;
+    /*margin-left: 10px;*/
     margin-bottom: 20px;
 
 }
 
+@media only screen and (max-width: 870px) {
+    /* For mobile phones: */
+    .pageLeft {
+        width: 100%;
+        margin-right: 0;
+    }
+}
+
+
 .profilePicture{
-    height: 260px;
+    /*height: 260px;*/
+    width: 100%;
     border-radius: 5px;
     margin-bottom: 20px;
 }
@@ -95,7 +113,7 @@
 .profilePhotoPopup{
     background-color: rgba(0, 16, 23, 0.42);
     padding: 20px;
-    width: 240px;
+    min-width: 90%;
     border-radius: 5px;
     display: block;
     height: 100px;

@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import { BsImageFill } from 'react-icons/bs';
+import { BsArrowLeft, BsImageFill } from 'react-icons/bs';
 import { GrAttachment } from 'react-icons/gr';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,14 +25,15 @@ export const Dialogs = (): ComponentReturnType => {
   const dispatch = useDispatch();
   const [messageText, setMessageText] = useState('');
   const [messageFieldExpanded, setMessageFieldExpanded] = useState(false);
+  // const [visiblePart, setVisiblePart] = useState<'interlocutors' | 'messages'>(
+  //   'interlocutors',
+  // );
+  const [showChat, setShowChat] = useState(false);
+  const VW_THRESHOLD = 1100;
 
   useEffect(() => {
     dispatch(getInterlocutors());
   }, []);
-
-  // const appStatus = useSelector<RootStateType, EntityStatus>(
-  //   state => state.app.entityStatus,
-  // );
 
   const userIsLoggedIn = useSelector<RootStateType, boolean>(
     state => state.authData.isLoggedIn,
@@ -76,6 +77,21 @@ export const Dialogs = (): ComponentReturnType => {
     setMessageText('');
   };
 
+  // const showMessages = () => {
+  //   if (window.innerWidth > VW_THRESHOLD) return;
+  //   setVisiblePart('messages');
+  // };
+  //
+  // const showInterlocutors = () => {
+  //   if (window.innerWidth >= VW_THRESHOLD) return;
+  //   setVisiblePart('interlocutors');
+  // };
+
+  const toggleShowChat = () => {
+    // if (window.innerWidth > VW_THRESHOLD) return;
+    setShowChat(!showChat);
+  };
+
   if (!userIsLoggedIn) {
     return <Navigate replace to="/login" />;
   }
@@ -90,13 +106,14 @@ export const Dialogs = (): ComponentReturnType => {
     return <Navigate to={`${recentInterlocutor.id}`} />;
   }
 
-  // if (appStatus === EntityStatus.busy) {
-  //   return <LoadingVisualizer />;
-  // }
-
   return (
     <div className={styles.dialogs}>
-      <div className={styles.pageLeft}>
+      <div
+        className={`${styles.pageLeft} ${
+          // visiblePart === 'messages' ? styles.hidden : ''
+          showChat ? styles.hidden : ''
+        }`}
+      >
         <div className={styles.peopleListHeader}>You were chatting with</div>
         <div className={styles.peopleList}>
           {people.map(
@@ -110,6 +127,7 @@ export const Dialogs = (): ComponentReturnType => {
               lastDialogActivityDate,
             }) => (
               <Interlocutor
+                onClick={toggleShowChat}
                 chosen={id === Number(interlocutorID)}
                 key={id}
                 id={id}
@@ -125,8 +143,14 @@ export const Dialogs = (): ComponentReturnType => {
         </div>
       </div>
 
-      <div className={styles.pageRight}>
+      <div
+        className={`${styles.pageRight} ${
+          // visiblePart === 'messages' ? styles.visible : ''
+          showChat ? styles.visible : ''
+        }`}
+      >
         <div className={styles.chatHeader}>
+          <BsArrowLeft onClick={toggleShowChat} className={styles.backIcon} />
           <NavLink to={`../profile/${interlocutorID}`}>{currentInterlocutorName}</NavLink>
         </div>
         <Dialog interlocutorID={Number(interlocutorID)} hidden={messageFieldExpanded} />

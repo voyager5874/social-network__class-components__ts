@@ -46,7 +46,11 @@ export const Message: FC<MessagePropsType> = ({
         <div className={styles.author}>{userName}</div>
         <div className={styles.text}>{messageText}</div>
         <div className={styles.metadataContainer}>
-          <div>{viewed ? <BsEnvelopeOpenFill /> : <BsEnvelopeFill />}</div>
+          {isLoggedInUserTheAuthor ? (
+            <div> {viewed ? <BsEnvelopeOpenFill /> : <BsEnvelopeFill />}</div>
+          ) : (
+            <div />
+          )}
           <div className={styles.time}>
             <div className={styles.timeItem}>{formattedDate.date}</div>
             <div className={styles.timeItem}>{formattedDate.time}</div>
