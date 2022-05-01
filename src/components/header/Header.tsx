@@ -32,7 +32,9 @@ export const Header = ({
     const userData = JSON.stringify({
       ...currentStorageAsObject,
       // eslint-disable-next-line no-alert
-      customApiKey: prompt('for the app to work properly you need to use your own key'),
+      customApiKey: prompt(
+        'for the app to work properly right from gh-pages or other hosting provider you need to use your own key and to change domain name in your social-network.samuraijs.com account',
+      ),
     });
 
     localStorage.setItem('it-inc-network', userData);

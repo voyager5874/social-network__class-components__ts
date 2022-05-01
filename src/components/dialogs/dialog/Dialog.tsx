@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,7 +8,7 @@ import { MessageOnServerType } from 'api/types';
 import { Message } from 'components/dialogs/message/Message';
 import { getWithUserMessages } from 'store/middlewares/dialogs';
 import { EntityStatus } from 'store/reducers/types';
-import { DispatchType } from 'store/store';
+// import { DispatchType } from 'store/store';
 import { RootStateType } from 'store/types';
 import { ComponentReturnType, Nullable } from 'types';
 
@@ -66,6 +66,7 @@ export const Dialog: FC<DialogPropsType> = ({
 
   useEffect(() => {
     dispatch(getWithUserMessages(interlocutorID, 1, dataPortion));
+    // dispatch(getInterlocutors());
   }, []);
 
   useEffect(() => {
@@ -85,7 +86,7 @@ export const Dialog: FC<DialogPropsType> = ({
     if (
       !scrollAnchor.current ||
       !dialogContainer.current ||
-      entityStatus === EntityStatus.busy
+      entityStatus !== EntityStatus.idle
     )
       return;
     if (

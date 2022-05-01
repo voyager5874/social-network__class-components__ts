@@ -8,7 +8,7 @@
 }
 
 .content{
-  border: 3px solid fuchsia;
+  /*border: 3px solid fuchsia;*/
   margin: 0 auto;
   display: flex;
   /*flex-wrap: wrap;*/

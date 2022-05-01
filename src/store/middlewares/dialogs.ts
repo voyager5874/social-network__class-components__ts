@@ -42,7 +42,7 @@ export const getInterlocutors =
 
 export const getWithUserMessages =
   (userID: number, pageNumber: number = 1, itemsPerPage: number = 10) =>
-  async (dispatch: Dispatch, getState: () => RootStateType) => {
+  async (dispatch: any, getState: () => RootStateType) => {
     // dispatch(setAppEntityStatus(EntityStatus.busy));
     dispatch(setMessagesEntityStatus(EntityStatus.busy));
     const sameUser: boolean = getState().messages.currentInterlocutorID === userID;
@@ -67,6 +67,7 @@ export const getWithUserMessages =
           dispatch(setWithUserMessages(response.data.items));
           dispatch(setMessagesEntityStatus(EntityStatus.initialization));
         }
+        dispatch(getInterlocutors()); // reset new messages count, the alternative would be to just set 0 to the store
       }
     } catch (error) {
       // eslint-disable-next-line no-alert

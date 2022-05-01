@@ -10,7 +10,7 @@ import { UsersPureFunc } from 'components/users/UsersPureFunc';
 import { changeFollowedByCurrentUserState, getUsers } from 'store/middlewares/users';
 import { EntityStatus } from 'store/reducers/types';
 import { setCurrentPage, setUsersPerPageCount } from 'store/reducers/usersReducer';
-import 'react-circular-progressbar/dist/styles.css';
+// import 'react-circular-progressbar/dist/styles.css';
 import {
   selectUsers,
   selectUsersBusyEntities,

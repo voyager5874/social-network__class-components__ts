@@ -84,6 +84,8 @@ export const Profile = ({
     //   // I'm not throwing any error in the thunk
     //   console.warn('failed to start new chat');
     // }
+
+    // Do I have to react to some store parameter like EntityStatus.success ?
     const success = await startChatWithThisUser(userId);
     if (!success) return;
     navigate(`../dialogs/${userId}`);
@@ -152,7 +154,10 @@ export const Profile = ({
             </UniversalButton>
           ))}
         {isProfileOwner && (
-          <UniversalButton onClick={showRandomProfile}>
+          <UniversalButton
+            onClick={showRandomProfile}
+            className={styles.userProfileButton}
+          >
             show random samurai profile
           </UniversalButton>
         )}
@@ -167,11 +172,11 @@ export const Profile = ({
             trigger={
               <div className={styles.popupTrigger}>
                 {followed ? (
-                  <UniversalButton style={{ width: '100%' }}>
+                  <UniversalButton className={styles.userProfileButton}>
                     Among your friends <AiFillCaretDown />
                   </UniversalButton>
                 ) : (
-                  <UniversalButton style={{ width: '100%' }}>
+                  <UniversalButton className={styles.userProfileButton}>
                     Add to friends <AiFillCaretDown />
                   </UniversalButton>
                 )}
@@ -187,7 +192,8 @@ export const Profile = ({
                 labelForTrueValue="unfollow"
                 currentToggledValue={followed}
                 changeValueCallback={handleFollowedStatusChange}
-                style={{ marginBottom: '20px' }}
+                // style={{ marginBottom: '20px' }}
+                className={styles.userProfileButton}
               >
                 {followed ? (
                   <RiUserUnfollowFill style={{ marginRight: '10px' }} />
