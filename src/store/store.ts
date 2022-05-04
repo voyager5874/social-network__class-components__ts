@@ -31,3 +31,5 @@ export type DispatchType = ThunkDispatch<ReturnType<typeof rootReducer>, any, an
 //   rootReducer,
 //   composeWithDevTools(applyMiddleware(thunk)),
 // );
+
+// export type AppDispatch = typeof store.dispatch

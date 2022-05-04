@@ -25,6 +25,10 @@ import { resetMessagesReducerState } from 'store/reducers/messagesReducer';
 import { EntityStatus } from 'store/reducers/types';
 import { setUserProfileEntityStatus } from 'store/reducers/userProfileReducer';
 import { AppActionsType, ThunkType } from 'store/types';
+import {
+  addDataToLocalStorage,
+  deleteAppDataFromLocalStorage,
+} from 'utils/localStorageUtils';
 
 export const getCaptcha = () => async (dispatch: Dispatch<AuthReducerActionsType>) => {
   try {
@@ -81,7 +85,7 @@ export const logout = () => (dispatch: Dispatch<AppActionsType>) => {
         // dispatch(setLoginStatus(false));
         dispatch(resetAuthState());
         dispatch(resetMessagesReducerState());
-        localStorage.removeItem('it-inc-network');
+        deleteAppDataFromLocalStorage();
       } else {
         processServerError('logout(TC)', response.data, dispatch);
       }
@@ -108,7 +112,9 @@ export const logout = () => (dispatch: Dispatch<AppActionsType>) => {
 
 export const authMeWithAdditionalData =
   () =>
-  async (dispatch: Dispatch<AuthReducerActionsType>): Promise<boolean | string> => {
+  async (
+    dispatch: Dispatch<AuthReducerActionsType>,
+  ): Promise<boolean | string | Error> => {
     // no need to return anything, I'm just experimenting
     try {
       const response = await authAPI.authMe();
@@ -117,15 +123,7 @@ export const authMeWithAdditionalData =
         dispatch(setLoginStatus(true));
 
         // there must be better ways but...
-        const currentStorageAsString = localStorage.getItem('it-inc-network');
-        const currentStorageAsObject =
-          currentStorageAsString && JSON.parse(currentStorageAsString);
-        const userData = JSON.stringify({
-          ...currentStorageAsObject,
-          loggedInUserID: response.data.data.id,
-        });
-
-        localStorage.setItem('it-inc-network', userData);
+        addDataToLocalStorage('loggedInUserID', response.data.data.id);
         const loggedInUserData = await usersAPI.getUserProfile(response.data.data.id!);
         if (loggedInUserData.data.fullName) {
           dispatch(setLoggedInUserFullName(loggedInUserData.data.fullName));
@@ -136,7 +134,8 @@ export const authMeWithAdditionalData =
         return true;
       }
       processServerError('authMe(TC)', response.data, dispatch);
-      throw new Error(response.data.messages[0]);
+      return false;
+      // return new Error(response.data.messages[FIRST_ARRAY_ITEM_INDEX]);
     } catch (error) {
       processNetworkError('auth(TC)', error as AxiosError, dispatch);
       throw new Error((error as AxiosError).message);

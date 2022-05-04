@@ -1,13 +1,13 @@
 import axios from 'axios';
 
+import { getFromLocalStorage } from 'utils/localStorageUtils';
+
 const key = process.env.REACT_APP_API_KEY as string;
 const testKey = process.env.REACT_APP_TEST_ACCOUNT_API_KEY as string;
-const testAccountID = Number(process.env.REACT_APP_TEST_ACCOUNT_ID as string);
+const testAccountID = process.env.REACT_APP_TEST_ACCOUNT_ID as string;
 
-const localStorageData = localStorage.getItem('it-inc-network');
-const savedState = localStorageData && JSON.parse(localStorageData);
-const customKey = savedState && savedState.customApiKey;
-const loggedInUserID = savedState && Number(savedState.loggedInUserID);
+const customKey = getFromLocalStorage('customApiKey') || '';
+const loggedInUserID = getFromLocalStorage('loggedInUserID');
 
 export const axiosInstanceDev = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
@@ -42,7 +42,8 @@ export const chooseAxiosInstance = (): typeof axiosInstanceDev => {
   if (customKey) {
     return axiosInstanceCustom;
   }
-  if (testAccountID && loggedInUserID === testAccountID) {
+  debugger;
+  if (testAccountID && loggedInUserID && loggedInUserID === testAccountID) {
     return axiosInstanceTest;
   }
   return axiosInstanceDev;

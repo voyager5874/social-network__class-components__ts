@@ -9,6 +9,7 @@ import noAvatar from 'components/common/assets/ninja-coder.jpg';
 import { UniversalButton } from 'components/common/universalButton/UniversalButton';
 import { Navbar } from 'components/navbar/Navbar';
 import { ComponentReturnType, Nullable } from 'types';
+import { addDataToLocalStorage } from 'utils/localStorageUtils';
 
 type HeaderPropsType = {
   isLoggedIn: boolean;
@@ -26,28 +27,11 @@ export const Header = ({
   photo,
 }: HeaderPropsType): ComponentReturnType => {
   const addAPIkeyToLocalStorage = (): void => {
-    const currentStorageAsString = localStorage.getItem('it-inc-network');
-    const currentStorageAsObject =
-      currentStorageAsString && JSON.parse(currentStorageAsString);
-    const userData = JSON.stringify({
-      ...currentStorageAsObject,
-      // eslint-disable-next-line no-alert
-      customApiKey: prompt(
-        'for the app to work properly right from gh-pages or other hosting provider you need to use your own key and to change domain name in your social-network.samuraijs.com account',
-      ),
-    });
-
-    localStorage.setItem('it-inc-network', userData);
-
-    // const currentStorageAsString = localStorage.getItem('it-inc-network');
-    // const currentStorageAsObject =
-    //     currentStorageAsString && JSON.parse(currentStorageAsString);
-    // const userData = JSON.stringify({
-    //   ...currentStorageAsObject,
-    //   loggedInUserID: response.data.data.id,
-    // });
-    //
-    // localStorage.setItem('it-inc-network', userData);
+    // eslint-disable-next-line no-alert
+    const userInput = prompt(
+      'for the app to work properly right from gh-pages or other hosting provider you need to use your own key and to change domain name in your social-network.samuraijs.com account',
+    );
+    addDataToLocalStorage('customApiKey', userInput);
   };
   return (
     <div className={styles.header}>
@@ -89,29 +73,25 @@ export const Header = ({
   );
 };
 
-// <div className={styles.header}>
-//   <div className={styles.headerContent}>
-//     <div className={styles.appFlag}>
-//       <img src={logo} alt="site-logo" className={styles.siteLogo} />
-//       <h1 className={styles.siteCaption}>IT-INCUBATOR NETWORK</h1>
-//     </div>
+// const currentStorageAsString = localStorage.getItem('it-inc-network');
+// const currentStorageAsObject =
+//   currentStorageAsString && JSON.parse(currentStorageAsString);
+// const userData = JSON.stringify({
+//   ...currentStorageAsObject,
+//   // eslint-disable-next-line no-alert
+//   customApiKey: prompt(
+//     'for the app to work properly right from gh-pages or other hosting provider you need to use your own key and to change domain name in your social-network.samuraijs.com account',
+//   ),
+// });
 //
-//     <div className={styles.user}>
-//       <img
-//         src={photo || noAvatar}
-//         alt="logged in user avatar"
-//         className={styles.headerAvatar}
-//       />
-//       <div className={styles.headerName}>{name}</div>
-//       <div>
-//         {isLoggedIn ? (
-//           <button type="button" onClick={logout}>
-//             Logout
-//           </button>
-//         ) : (
-//           <NavLink to="/login">Login</NavLink>
-//         )}
-//       </div>
-//     </div>
-//   </div>
-// </div>
+// localStorage.setItem('it-inc-network', userData);
+
+// const currentStorageAsString = localStorage.getItem('it-inc-network');
+// const currentStorageAsObject =
+//     currentStorageAsString && JSON.parse(currentStorageAsString);
+// const userData = JSON.stringify({
+//   ...currentStorageAsObject,
+//   loggedInUserID: response.data.data.id,
+// });
+//
+// localStorage.setItem('it-inc-network', userData);
