@@ -1,4 +1,4 @@
-import { ThunkAction } from 'redux-thunk';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { AppReducerActionsType } from 'store/reducers/app';
 import { AuthReducerActionsType } from 'store/reducers/authReducer';
@@ -23,3 +23,8 @@ export type AppActionsType =
   | MessagesReducerActionsType;
 
 export type ThunkType = ThunkAction<void, RootStateType, unknown, AppActionsType>;
+export type AppDispatchType = ThunkDispatch<
+  ReturnType<typeof rootReducer>,
+  any,
+  AppActionsType
+>;

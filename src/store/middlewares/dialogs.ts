@@ -15,11 +15,11 @@ import {
   setWithUserMessagesTotalCount,
 } from 'store/reducers/messagesReducer';
 import { EntityStatus } from 'store/reducers/types';
-import { RootStateType } from 'store/types';
+import { AppActionsType, AppDispatchType, RootStateType } from 'store/types';
 
 export const getInterlocutors =
   () =>
-  async (dispatch: Dispatch): Promise<InterlocutorType[] | []> => {
+  async (dispatch: Dispatch<AppActionsType>): Promise<InterlocutorType[] | []> => {
     dispatch(setAppEntityStatus(EntityStatus.busy));
     try {
       const response = await dialogsAPI.getInterlocutors();
@@ -42,7 +42,7 @@ export const getInterlocutors =
 
 export const getWithUserMessages =
   (userID: number, pageNumber: number = 1, itemsPerPage: number = 10) =>
-  async (dispatch: any, getState: () => RootStateType) => {
+  async (dispatch: AppDispatchType, getState: () => RootStateType) => {
     // dispatch(setAppEntityStatus(EntityStatus.busy));
     dispatch(setMessagesEntityStatus(EntityStatus.busy));
     const sameUser: boolean = getState().messages.currentInterlocutorID === userID;
@@ -55,7 +55,6 @@ export const getWithUserMessages =
         itemsPerPage,
       );
       if (response.data.items) {
-        debugger;
         if (sameUser && isNewPageRequest) {
           dispatch(addMoreWithUserMessages(response.data.items));
           dispatch(setMessagesCurrentPage(currentPage + 1));
@@ -67,7 +66,7 @@ export const getWithUserMessages =
           dispatch(setWithUserMessages(response.data.items));
           dispatch(setMessagesEntityStatus(EntityStatus.initialization));
         }
-        dispatch(getInterlocutors()); // reset new messages count, the alternative would be to just set 0 to the store
+        await dispatch(getInterlocutors()); // reset new messages count, the alternative would be to just set 0 to the store
       }
     } catch (error) {
       // eslint-disable-next-line no-alert
@@ -77,25 +76,26 @@ export const getWithUserMessages =
     dispatch(setMessagesEntityStatus(EntityStatus.idle));
   };
 
-export const sendMessage = (userID: number, message: string) => async (dispatch: any) => {
-  try {
-    const response = await dialogsAPI.postMessageToWithUserDialog(userID, message);
-    if (response.data.resultCode === ResponseCodes.Success) {
-      // eslint-disable-next-line no-alert
-      alert(`Sent! recipient: ${response.data.data.message.recipientName}`);
-      dispatch(getWithUserMessages(userID));
-      dispatch(getInterlocutors());
-    } else {
-      console.dir(response);
+export const sendMessage =
+  (userID: number, message: string) => async (dispatch: AppDispatchType) => {
+    try {
+      const response = await dialogsAPI.postMessageToWithUserDialog(userID, message);
+      if (response.data.resultCode === ResponseCodes.Success) {
+        // eslint-disable-next-line no-alert
+        alert(`Sent! recipient: ${response.data.data.message.recipientName}`);
+        await dispatch(getWithUserMessages(userID));
+        await dispatch(getInterlocutors());
+      } else {
+        console.dir(response);
+      }
+    } catch (error) {
+      console.log((error as AxiosError).message);
     }
-  } catch (error) {
-    console.log((error as AxiosError).message);
-  }
-};
+  };
 
 export const startNewChat =
   (userID: number) =>
-  async (dispatch: any): Promise<boolean> => {
+  async (dispatch: AppDispatchType): Promise<boolean> => {
     try {
       const response = await dialogsAPI.putNewChat(userID);
       if (response.data.resultCode === ResponseCodes.Success) {

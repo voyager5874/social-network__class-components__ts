@@ -148,6 +148,14 @@ export type UserProfilePropsType = MapStateToPropsType &
   MapDispatchToPropsType &
   WithRouterPropsType;
 
+// const connector = connect(mapStateToProps, mapDispatchToProps)
+
+// The inferred type will look like:
+// {isOn: boolean, toggleOn: () => void}
+// type PropsFromRedux = ConnectedProps<typeof connector>
+
+// type ComponentPropsType = PropsFromRedux & WithRouterPropsType;
+
 export default compose<ComponentType>(
   withAuthRedirect,
   withRouter,

@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 
 import { usersAPI } from 'api';
 import { UpdateUserProfileRequestDataType } from 'api/types';
-import { FIRST_USER_ID } from 'constants/base';
+import { FIRST_USER_ID, INITIAL_DATA_PORTION_SIZE } from 'constants/base';
 import { ResponseCodes } from 'enums';
 import {
   processNetworkError,
@@ -19,7 +19,7 @@ import {
   setUserStatus,
 } from 'store/reducers/userProfileReducer';
 import { setTotalUsersCount } from 'store/reducers/usersReducer';
-import { AppActionsType, RootStateType, ThunkType } from 'store/types';
+import { AppActionsType, AppDispatchType, RootStateType, ThunkType } from 'store/types';
 import { getRandomInteger, validateUserContact } from 'utils';
 
 export const getFollowedStatus =
@@ -38,27 +38,25 @@ export const getFollowedStatus =
     dispatch(setUserProfileEntityStatus(EntityStatus.idle));
   };
 
-export const getProfile =
-  (userID: number): ThunkType =>
-  async dispatch => {
-    dispatch(setUserProfileEntityStatus(EntityStatus.busy));
-    try {
-      const response = await usersAPI.getUserProfile(userID);
-      if (response.data.userId) {
-        dispatch(setUserProfile(response.data));
-        await dispatch(getFollowedStatus(userID));
-      } else {
-        processServerError(
-          'getUserProfile(TC)',
-          "server reached but hasn't respond with data",
-          dispatch,
-        );
-      }
-    } catch (error) {
-      processNetworkError('getUsers(TC)', error as AxiosError, dispatch);
+export const getProfile = (userID: number) => async (dispatch: AppDispatchType) => {
+  dispatch(setUserProfileEntityStatus(EntityStatus.busy));
+  try {
+    const response = await usersAPI.getUserProfile(userID);
+    if (response.data.userId) {
+      dispatch(setUserProfile(response.data));
+      await dispatch(getFollowedStatus(userID));
+    } else {
+      processServerError(
+        'getUserProfile(TC)',
+        "server reached but hasn't respond with data",
+        dispatch,
+      );
     }
-    dispatch(setUserProfileEntityStatus(EntityStatus.idle));
-  };
+  } catch (error) {
+    processNetworkError('getUsers(TC)', error as AxiosError, dispatch);
+  }
+  dispatch(setUserProfileEntityStatus(EntityStatus.idle));
+};
 
 export const getUserStatus = (userID: number) => (dispatch: Dispatch<AppActionsType>) => {
   dispatch(setUserProfileEntityStatus(EntityStatus.busy));
@@ -97,7 +95,7 @@ export const updateCurrentUserStatus =
   };
 
 export const updateCurrentUserAvatar =
-  (image: File) => async (dispatch: Dispatch<AppActionsType>) => {
+  (image: File) => async (dispatch: AppDispatchType) => {
     dispatch(setUserProfileEntityStatus(EntityStatus.busy));
     try {
       const response = await usersAPI.putProfilePhoto(image);
@@ -114,8 +112,8 @@ export const updateCurrentUserAvatar =
   };
 
 export const updateCurrentUserProfile =
-  (data: Partial<UpdateUserProfileRequestDataType>): ThunkType =>
-  async (dispatch, getState: () => RootStateType) => {
+  (data: Partial<UpdateUserProfileRequestDataType>) =>
+  async (dispatch: AppDispatchType, getState: () => RootStateType) => {
     dispatch(setUserProfileEntityStatus(EntityStatus.busy));
     const currentUserID = getState().authData.id;
     if (!currentUserID) return;
@@ -133,23 +131,20 @@ export const updateCurrentUserProfile =
   };
 
 export const findRealSamurai =
-  (): ThunkType =>
-  async (
-    dispatch: Dispatch<AppActionsType>,
-    getState: () => RootStateType,
-  ): Promise<number> => {
+  () =>
+  async (dispatch: AppDispatchType, getState: () => RootStateType): Promise<number> => {
     dispatch(setUserProfileEntityStatus(EntityStatus.busy));
     let usersCount = getState().users.totalCount;
     let userID: number = 0;
     if (!usersCount) {
       try {
-        const response = await usersAPI.getUsers(1, 10);
+        const response = await usersAPI.getUsers(1, INITIAL_DATA_PORTION_SIZE);
         if (response.data.totalCount) {
           dispatch(setTotalUsersCount(response.data.totalCount));
           usersCount = response.data.totalCount;
         } else {
           processServerError('findRealSamurai', 'no data received', dispatch);
-          throw new Error(
+          throw new Error( // caught locally, so what? I don't need resolved Promise when there is no data
             'error receiving users count while running findRealSamurai - server returned no data',
           );
         }
@@ -163,15 +158,6 @@ export const findRealSamurai =
       }
     }
 
-    // if (!usersCount) {
-    //   debugger;
-    //   const getUsersResponse = await getUsers(1, 10);
-    //   console.log(getUsersResponse);
-    //   usersCount = getState().users.totalCount;
-    // }
-
-    // the function won't get here if getUsers fails but I'm throwing an error anyways
-    // because of typescript and Nullable type of totalUsersCount
     const searchProfile = async (): Promise<number | string> => {
       // userID = getRandomInteger(3, usersCount || 23304); // total users count last checked - 18299, but last user ID is 23304
       if (!usersCount) throw new Error('total users count is unknown');
@@ -186,7 +172,11 @@ export const findRealSamurai =
         }
         await searchProfile();
       } catch (error) {
-        console.warn(`there is no user with id ${userID}?`);
+        console.warn(
+          `some error: ${
+            (error as AxiosError).message
+          }. There is no user with id ${userID}?`,
+        );
         await searchProfile();
       }
       return userID;
