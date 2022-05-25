@@ -135,7 +135,7 @@ export const authMeWithAdditionalData =
       }
       processServerError('authMe(TC)', response.data, dispatch);
       return false;
-      // return new Error(response.data.messages[FIRST_ARRAY_ITEM_INDEX]);
+      //
     } catch (error) {
       processNetworkError('auth(TC)', error as AxiosError, dispatch);
       throw new Error((error as AxiosError).message);

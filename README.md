@@ -41,7 +41,7 @@
     <a href="https://github.com/voyager5874/social-network__class-components__ts"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/voyager5874/social-network__class-components__ts">View Demo</a>
+    <a href="https://voyager5874.github.io/social-network__class-components__ts">View Demo</a>
     ·
     <a href="https://github.com/voyager5874/social-network__class-components__ts/issues">Report Bug</a>
     ·
@@ -97,7 +97,6 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 * [Redux](https://redux.js.org/)
 * [React-redux](https://react-redux.js.org/)
 * [Typescript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-* [JavaScript](https://vuejs.org/)
 * [React-router-dom v6](https://reactrouter.com/docs/en/v6)
 * [Axios](https://axios-http.com/)
 * [ESLint](https://laravel.com)

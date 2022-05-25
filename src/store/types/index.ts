@@ -23,8 +23,4 @@ export type AppActionsType =
   | MessagesReducerActionsType;
 
 export type ThunkType = ThunkAction<void, RootStateType, unknown, AppActionsType>;
-export type AppDispatchType = ThunkDispatch<
-  ReturnType<typeof rootReducer>,
-  any,
-  AppActionsType
->;
+export type AppDispatchType = ThunkDispatch<RootStateType, unknown, AppActionsType>;

@@ -1,6 +1,6 @@
 import './App.css';
 
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
@@ -38,14 +38,11 @@ const App = (): ComponentReturnType => {
     `app rendering, login status (isLoggedIn state variable): ${userLoggedIn} , user id set in profile store part is ${profileID}`,
   );
 
-  // useEffect(() => {
-  //   dispatch(initializeApp());
-  // }, [userLoggedIn]); // if this dependency not set user name won't appear in the header
-  // right after login alternatively authMe (initializeApp[TC]) request can be done in login(TC)
-
-  useLayoutEffect(() => {
+  useEffect(() => {
     dispatch(initializeApp());
-  }, []);
+  }, [userLoggedIn]);
+  // if this dependency not set user name won't appear in the header right after login
+  // alternatively authMe (initializeApp[TC]) request can be done in login(TC)
 
   return !appIsInitialized ? (
     <LoadingVisualizer />

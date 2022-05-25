@@ -4,34 +4,18 @@ import { setAppEntityStatus, setAppInitialized } from 'store/reducers/app';
 import { EntityStatus } from 'store/reducers/types';
 import { ThunkType } from 'store/types';
 
-// thunk type! this is thunk creator dispatch inside thunk creator
-
-// export const initializeApp = (): ThunkType => async dispatch => {
-//   dispatch(setAppEntityStatus(EntityStatus.busy));
-//   const promisesList = [await dispatch(authMeWithAdditionalData())];
-//   Promise.all(promisesList)
-//     .then(() => {
-//       dispatch(setAppInitialized());
-//     })
-//     .catch(error => {
-//       // eslint-disable-next-line no-alert
-//       alert(JSON.stringify(error));
-//     });
-// };
-
 export const initializeApp = (): ThunkType => async dispatch => {
   dispatch(setAppEntityStatus(EntityStatus.busy));
-  const promisesList = [
-    await dispatch(authMeWithAdditionalData()),
-    await dispatch(getInterlocutors()),
+  const promisesList: Promise<any>[] = [
+    dispatch(authMeWithAdditionalData()),
+    dispatch(getInterlocutors()),
   ];
   try {
     await Promise.all(promisesList);
-    dispatch(setAppInitialized());
   } catch (error) {
     // eslint-disable-next-line no-alert
     alert(`initialization: ${error}`);
-    dispatch(setAppInitialized());
   }
+  dispatch(setAppInitialized());
   dispatch(setAppEntityStatus(EntityStatus.idle));
 };
