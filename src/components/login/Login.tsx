@@ -13,8 +13,8 @@ import { RootStateType } from 'store/types';
 import { ComponentReturnType, Nullable } from 'types';
 
 const initialValues: LoginDataType = {
-  email: process.env.REACT_APP_LOGIN || '',
-  password: process.env.REACT_APP_PASSWORD || '',
+  email: process.env.REACT_APP_LOGIN || 'free@samuraijs.com',
+  password: process.env.REACT_APP_PASSWORD || 'free',
   rememberMe: false,
   captcha: '',
 };
@@ -49,61 +49,62 @@ export const Login = (): ComponentReturnType => {
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      {formik => {
-        console.log('formik');
-        return (
-          <Form className={styles.loginFormContainer}>
-            <div className={styles.loginForm}>
-              <div className={styles.formStatus}>
-                {formik.status && <ErrorTag>{formik.status}</ErrorTag>}
-              </div>
-
-              <div className={styles.inputContainer}>
-                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                <label htmlFor="email" className={styles.inputLabel}>
-                  <span>email</span>
-                  <Field id="email" name="email" />
-                </label>
-                <ErrorMessage name="email">
-                  {error => <div className={styles.errorText}>{error}</div>}
-                </ErrorMessage>
-              </div>
-
-              <div className={styles.inputContainer}>
-                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                <label htmlFor="password" className={styles.inputLabel}>
-                  <span>password</span>
-                  <Field id="password" name="password" type="password" />
-                </label>
-                <ErrorMessage name="password" component={ErrorTag} />
-              </div>
-              <div className={styles.checkboxContainer}>
-                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                <label htmlFor="rememberMe" className={styles.checkboxLabel}>
-                  <span>Remember me</span>
-                  <Field type="checkbox" id="rememberMe" name="rememberMe" />
-                </label>
-              </div>
-              {captcha && <img src={captcha || ''} alt="captcha" />}
-              {captcha && (
-                <div className={styles.inputContainer}>
-                  {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                  <label htmlFor="captcha" className={styles.inputLabel}>
-                    captcha
-                    <Field id="captcha" name="captcha" type="text" />
-                  </label>
-                </div>
-              )}
-              <UniversalButton
-                type="submit"
-                disabled={formik.isSubmitting || !formik.isValid}
-              >
-                Submit
-              </UniversalButton>
+      {formik => (
+        <Form className={styles.loginFormContainer}>
+          <div className={styles.loginForm}>
+            <p>
+              sign up on <a href="https://social-network.samuraijs.com/">samuraiJS</a>
+            </p>
+            <p>or use the default credentials</p>
+            <p>Email: free@samuraijs.com, Password: free</p>
+            <div className={styles.formStatus}>
+              {formik.status && <ErrorTag>{formik.status}</ErrorTag>}
             </div>
-          </Form>
-        );
-      }}
+            <div className={styles.inputContainer}>
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+              <label htmlFor="email" className={styles.inputLabel}>
+                <span>email</span>
+                <Field id="email" name="email" />
+              </label>
+              <ErrorMessage name="email">
+                {error => <div className={styles.errorText}>{error}</div>}
+              </ErrorMessage>
+            </div>
+
+            <div className={styles.inputContainer}>
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+              <label htmlFor="password" className={styles.inputLabel}>
+                <span>password</span>
+                <Field id="password" name="password" type="password" />
+              </label>
+              <ErrorMessage name="password" component={ErrorTag} />
+            </div>
+            <div className={styles.checkboxContainer}>
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+              <label htmlFor="rememberMe" className={styles.checkboxLabel}>
+                <span>Remember me</span>
+                <Field type="checkbox" id="rememberMe" name="rememberMe" />
+              </label>
+            </div>
+            {captcha && <img src={captcha || ''} alt="captcha" />}
+            {captcha && (
+              <div className={styles.inputContainer}>
+                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                <label htmlFor="captcha" className={styles.inputLabel}>
+                  captcha
+                  <Field id="captcha" name="captcha" type="text" />
+                </label>
+              </div>
+            )}
+            <UniversalButton
+              type="submit"
+              disabled={formik.isSubmitting || !formik.isValid}
+            >
+              Submit
+            </UniversalButton>
+          </div>
+        </Form>
+      )}
     </Formik>
   );
 };

@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import { AxiosError } from 'axios';
 import { Dispatch } from 'redux';
 
@@ -32,8 +33,7 @@ export const getInterlocutors =
       // alert('no interlocutors');
       return [];
     } catch (error) {
-      // eslint-disable-next-line no-alert
-      alert((error as AxiosError).message);
+      message.error((error as AxiosError).message);
       return [];
     } finally {
       dispatch(setAppEntityStatus(EntityStatus.idle));

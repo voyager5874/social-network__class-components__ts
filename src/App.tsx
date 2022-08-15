@@ -10,7 +10,6 @@ import { LoadingVisualizer } from 'components/common/loadingVisualizer/LoadingVi
 import { Dialogs } from 'components/dialogs/Dialogs';
 import { Friends } from 'components/friends/Friends';
 import HeaderContainer from 'components/header/HeaderContainer';
-import { LeftSideBar } from 'components/leftSideBar/LeftSideBar';
 import { News } from 'components/news/News';
 import { NotFound } from 'components/notFound/NotFound';
 import UserProfileContainer from 'components/profile/ProfileContainer';
@@ -39,6 +38,7 @@ const App = (): ComponentReturnType => {
   );
 
   useEffect(() => {
+    if (appIsInitialized) return;
     dispatch(initializeApp());
   }, [userLoggedIn]);
   // if this dependency not set user name won't appear in the header right after login
@@ -50,7 +50,6 @@ const App = (): ComponentReturnType => {
     <div className="appWrapper">
       <HeaderContainer />
       <div className="content">
-        {/* <LeftSideBar /> */}
         <Routes>
           <Route path="/profile" element={<UserProfileContainer />}>
             <Route path=":id" element={<UserProfileContainer />} />
